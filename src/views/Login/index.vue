@@ -3,8 +3,7 @@
     <div class="loginFormBox">
       <h1 class="loginTopic">用户登录</h1>
       <input type="text" name="" id="">
-
-      <input type="text" name="" id=""><button>发送验证码</button>
+      <a-button type="primary"></a-button>
 
       <!-- <div class="LoginBtn" style="border-radius: 50%;width: 90px;height: 90px;background-color: grey;"> -->
     </div>
@@ -27,7 +26,6 @@ axios.get('http://127.0.0.1:8080/findById?id=1')
   });
 </script>
 <style lang="scss" scoped>
-
 #loginBox{
   width: 100vw;
   height: 100vh;
@@ -49,6 +47,9 @@ axios.get('http://127.0.0.1:8080/findById?id=1')
     background: rgb(234, 234, 234);
 
     padding: 30px;
+    .loginTopic{
+      margin-bottom: 2vh;
+    }
   }
 }
 </style>
