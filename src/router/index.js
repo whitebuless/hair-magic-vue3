@@ -1,7 +1,7 @@
 // 引入依赖
 import {createRouter,createWebHashHistory} from "vue-router"
 
-import LoginView from "../components/LoginView.vue"
+import LoginView from "../views/Login/index.vue"
 const routes=[
   {
     path:'/',
