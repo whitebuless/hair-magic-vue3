@@ -12,7 +12,7 @@ function userLoginApi(phoneNumber,password){
     console.log(error);
   })
   .finally(function () {
-    // 总是会执行
+    // 总是会执行的
   });
 }
 
