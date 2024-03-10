@@ -9,9 +9,9 @@
         </div>
       </div>
       <form action="" class="formBox">
-        <input type="text" name="account" id="" placeholder="输入手机号">
+        <input type="text" name="account" id="" placeholder="输入手机号" v-model="account">
         <div style="display: flex;" v-if="loginWay==true">
-          <input type="text" name="password" id="" placeholder="输入密码" >
+          <input type="text" name="password" id="" placeholder="输入密码" v-model="password">
         </div>
         <div  v-else-if="loginWay==false">
           <div style="display: flex;">
@@ -52,12 +52,17 @@ import { ref } from "vue";
 import {userLoginApi} from "../../apis/userApi"
 // 登录方式标志
 let loginWay=ref(true)
+// 用户登录信息
+let account=ref("")
+let password=ref("")
 // 改变登陆方式
 let changeWay=function(status){
   loginWay.value=status
 }
 let clickLogin=function(){
-  userLoginApi("123","321")
+  if(loginWay.value==true){
+    userLoginApi(account.value,password.value)
+  }
 }
 
 </script>
