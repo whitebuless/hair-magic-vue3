@@ -19,7 +19,7 @@
             <a-button type="primary" >发送验证码</a-button>
           </div>
         </div>
-        <a-button type="primary" class="loginBtn">登录/注册</a-button>
+        <a-button type="primary" class="loginBtn" @click="clickLogin()">登录/注册</a-button>
 
       </form>
       <div class="texts">
@@ -46,11 +46,18 @@
   </div>
 </template>
 <script setup>
+// 导入Vue相关依赖
 import { ref } from "vue";
+// 导入请求
+import {userLoginApi} from "../../apis/userApi"
+// 登录方式标志
 let loginWay=ref(true)
-
+// 改变登陆方式
 let changeWay=function(status){
   loginWay.value=status
+}
+let clickLogin=function(){
+  userLoginApi("123","321")
 }
 
 </script>

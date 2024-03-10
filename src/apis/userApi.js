@@ -1,7 +1,7 @@
-import { axios } from "../http/index.js"
+import {axios}  from "../http/index.js"
 
 
-function userLoginApi(phoneNumber,password){
+const userLoginApi=function(phoneNumber,password){
   axios.get('/user?ID=12345')
   .then(function (response) {
     // 处理成功情况
@@ -14,5 +14,9 @@ function userLoginApi(phoneNumber,password){
   .finally(function () {
     // 总是会执行的
   });
+}
+
+export {
+  userLoginApi
 }
 
