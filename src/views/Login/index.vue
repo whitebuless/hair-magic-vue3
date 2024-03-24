@@ -9,7 +9,7 @@
         </div>
       </div>
       <form action="" class="formBox">
-        <input type="text" name="account" id="" placeholder="输入手机号" v-model="account">
+        <input type="text" name="account" id="" placeholder="输入手机号" v-model="phoneNumber">
         <div style="display: flex;" v-if="loginWay==true">
           <input type="text" name="password" id="" placeholder="输入密码" v-model="password">
         </div>
@@ -19,15 +19,18 @@
             <a-button type="primary" >发送验证码</a-button>
           </div>
         </div>
+        <div style="display: flex;">
+          <input type="text" name="" id="" placeholder="输入图形验证码" v-model="userCode">
+          <canvas ref="myCanvas" width="120" height="45" @click="generateCode()"></canvas>
+        </div>
         <a-button type="primary" class="loginBtn" @click="clickLogin()">登录/注册</a-button>
-
       </form>
       <div class="texts">
         <span style="color: #aaa;">账号不存在将自动注册</span>
         <span>
           <div class="checkbox">
-            <label>
-              <input type="checkbox" value="">
+            <label :style="{color:checkedColor}" style="transition: all 0.3s;">
+              <input type="checkbox" value="" v-model="checked" >
                 同意<a>用户隐私协议</a>
             </label>
           </div>
@@ -47,23 +50,106 @@
 </template>
 <script setup>
 // 导入Vue相关依赖
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
+import { useUserStore } from '../../stores/user'
+const user = useUserStore()
 // 导入请求
 import {userLoginApi} from "../../apis/userApi"
 // 登录方式标志
 let loginWay=ref(true)
 // 用户登录信息
-let account=ref("")
+let phoneNumber=ref("")
 let password=ref("")
+// 验证码相关
+let userCode=ref('')
+const myCanvas=ref(null)
+const checkCode=ref('')
+// 同意协议
+let checked=ref(false)
+let checkedColor=ref('black')
+
+
+// 生命周期钩子
+onMounted(()=>{
+  generateCode()
+
+})
+
+function generateCode(){
+  const canvas=myCanvas.value;
+  // 获取Canvas的上下文
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  // 随机生成四个字母和颜色
+  const captchaText = generateCaptcha();
+  checkCode.value=captchaText
+  console.log(checkCode.value)
+  const colors = generateColors();
+  // 设置文字样式
+  ctx.font = 'bold 22px Arial'; // 调整字体大小为24px
+  ctx.textBaseline = 'middle';
+  ctx.textAlign = 'right';
+  // 对每个字母设置不同的颜色并在Canvas上绘制扭曲和旋转后的文字
+  for (let i = 0; i < 4; i++) {
+    ctx.fillStyle = colors[i];
+    drawDistortedText(ctx, captchaText[i], i * 30 + 15, 22); // 调整位置
+  }
+
+}
+// 验证码字母生成
+function generateCaptcha() {
+  const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  let captcha = '';
+  for (let i = 0; i < 4; i++) {
+    captcha += letters.charAt(Math.floor(Math.random() * letters.length));
+  }
+  return captcha;
+}
+// 随机生成颜色
+function generateColors() {
+  const colors = [];
+  for (let i = 0; i < 4; i++) {
+    const color = '#' + Math.floor(Math.random()*16777215).toString(16); // 随机生成颜色值
+    colors.push(color);
+  }
+  return colors;
+}
+// 验证码文字变换
+function drawDistortedText(ctx, text, x, y) {
+  // 设置扭曲和旋转变换
+  ctx.setTransform(1, 0.2 * Math.random(), -0.2 * Math.random(), 1, 0, 0);
+
+  // 在Canvas上绘制文字
+  ctx.fillText(text, x, y);
+}
+
+
 // 改变登陆方式
 let changeWay=function(status){
   loginWay.value=status
 }
+// 点击登录事件
 let clickLogin=function(){
+  // 验证码模块检验
+  if(userCode.value.toUpperCase()!=checkCode.value){
+    alert("验证码错误")
+    generateCode()
+    userCode.value=''
+    return
+  }
+  // 用户协议模块检验
+  if(checked.value!=true){
+    checkedColor.value='red'
+    alert("请勾选用户隐私协议")
+    return
+  }
+  
   if(loginWay.value==true){
     userLoginApi(account.value,password.value)
   }
 }
+
+
 
 </script>
 <style lang="scss" scoped>
