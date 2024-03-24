@@ -143,9 +143,9 @@ let clickLogin=function(){
     alert("请勾选用户隐私协议")
     return
   }
-  
+
   if(loginWay.value==true){
-    userLoginApi(account.value,password.value)
+    user.login(phoneNumber.value,password.value)
   }
 }
 
@@ -157,8 +157,9 @@ let clickLogin=function(){
   width: 100vw;
   height: 100vh;
   background-image: url("../../assets/topicImg.jpg");
+  background-size: 110% auto;
+  background-position: center center; 
   background-repeat: no-repeat;
-  background-size: 100%;
   background-color: #910000;
   .loginFormBox{
     position: absolute;
@@ -231,7 +232,6 @@ let clickLogin=function(){
     top: 15vh;
     left: 20vw;
     padding: 40px;
-    animation: upAndDown 5s infinite linear;
     h1{
       font-size: 90px;
       display: block;
@@ -264,15 +264,5 @@ let clickLogin=function(){
     }
   }
 }
-@keyframes upAndDown{
-  0%{
-    top: 15vh;
-  }
-  50%{
-    top: 17vh;
-  }
-  100%{
-    top: 15vh;
-  }
-}
+
 </style>

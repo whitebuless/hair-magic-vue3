@@ -1,20 +1,23 @@
 import {axiosInstance}  from "../http/index.js"
 
 
+
 const userLoginApi=function(phoneNumber,password){
+  // 定义要发送的数据
+  const userData = {
+    phoneNumber: phoneNumber,
+    password: password
+  };
   axiosInstance({
-    url:'/findByPhoneNumberAndPassword',
-    params:{
-      phoneNumber:phoneNumber,
-      password:password
-    }
+    url:'/user/login',
+    method:'POST',
+    data:userData
   })
   .then(function (response) {
     // 处理成功情况
-    console.log(response);
-    if(response.data){alert("登陆成功")}
+    if(response.data.data){alert("登陆成功")}
     else{
-      alert("用户名与密码不匹配")
+      alert(response.data.msg)
     }
   })
   .catch(function (error) {

@@ -13,7 +13,7 @@ export const useUserStore = defineStore('user', {
     increment() {
       this.count++
     },
-    login(phoneNumber,password,checkCode){
+    login(phoneNumber,password){
       userLoginApi(phoneNumber,password)
     }
   },
