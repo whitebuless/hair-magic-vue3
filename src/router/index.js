@@ -12,10 +12,11 @@ const routes=[
     path:'/home',
     component:HomeView
   }
-]
+] 
 
 const router=createRouter({
   history:createWebHashHistory(),
   routes,
 })
+// 
 export default router
