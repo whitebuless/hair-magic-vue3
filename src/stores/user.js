@@ -14,7 +14,7 @@ export const useUserStore = defineStore('user', {
       this.count++
     },
     login(phoneNumber,password){
-      userLoginApi(phoneNumber,password)
+      console.log(userLoginApi(phoneNumber,password));
     }
   },
 })

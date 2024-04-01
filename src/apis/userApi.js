@@ -15,10 +15,7 @@ const userLoginApi=function(phoneNumber,password){
   })
   .then(function (response) {
     // 处理成功情况
-    if(response.data.data){alert("登陆成功")}
-    else{
-      alert(response.data.msg)
-    }
+    console.log(response);
   })
   .catch(function (error) {
     // 处理错误情况

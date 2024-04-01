@@ -6,11 +6,13 @@ import HomeView from "../views/Home/index.vue"
 const routes=[
   {
     path:'/',
-    component:LoginView
+    component:LoginView,
+    name:'login'
   },
   {
     path:'/home',
-    component:HomeView
+    component:HomeView,
+    name:'home'
   }
 ] 
 
