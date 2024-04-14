@@ -9,9 +9,9 @@
         </div>
       </div>
       <form action="" class="formBox">
-        <input type="text" name="account" id="" placeholder="输入手机号" v-model="phoneNumber">
+        <input type="text" name="account" id="" placeholder="输入手机号" v-model="userData.phoneNumber">
         <div style="display: flex;" v-if="loginWay==true">
-          <input type="text" name="password" id="" placeholder="输入密码" v-model="password">
+          <input type="text" name="password" id="" placeholder="输入密码" v-model="userData.password">
         </div>
         <div  v-else-if="loginWay==false">
           <div style="display: flex;">
@@ -58,8 +58,7 @@ import {userLoginApi} from "../../apis/userApi"
 // 登录方式标志
 let loginWay=ref(true)
 // 用户登录信息
-let phoneNumber=ref("")
-let password=ref("")
+let userData=ref({})
 // 验证码相关
 let userCode=ref('')
 const myCanvas=ref(null)
@@ -145,7 +144,7 @@ let clickLogin=function(){
   }
 
   if(loginWay.value==true){
-    user.login(phoneNumber.value,password.value)
+    user.login(userData.value.phoneNumber,userData.value.password)
   }
 }
 

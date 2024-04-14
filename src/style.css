@@ -1,7 +1,19 @@
-@import url("http://at.alicdn.com/t/c/font_4456847_7hi9aow0vh9.css");
+@import url("https://at.alicdn.com/t/c/font_4456847_082ywpiim2lb.css?spm=a313x.manage_type_myprojects.i1.9.63e33a81vrecQv&file=font_4456847_082ywpiim2lb.css");
 
 *{
   box-sizing: border-box;
+}
+html{
+  background: linear-gradient(rgb(255, 255, 255), rgb(255, 252, 252),rgb(255, 255, 255));
+}
+
+ul{
+  list-style:none;   
+
+}
+li{
+  list-style-type:none;   
+  text-align: center;
 }
 
 /* :root {
