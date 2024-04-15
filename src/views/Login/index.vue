@@ -2,7 +2,13 @@
   <div id="loginBox">
     <div class="loginFormBox">
       <div class="topicBox">
-        <h1 class="loginTopic">用户登录</h1>
+        <h1 class="loginTopic"
+        :style="{color:roleColor}"
+        @click="role=!role"
+        >用户登录</h1>
+        <h1 class="loginTopic"
+        :style="{color:roleColor2}"
+        @click="role=!role">商家登录</h1>
         <div class="topicRight">
           <span class="iconfont icon-mimadenglu" :class="loginWay==true?'hightLight':'lowLight'" @click="changeWay(true)"></span>
           <span class="iconfont icon-yanzhengmadenglu" :class="loginWay==false?'hightLight':'lowLight'" @click="changeWay(false)"></span>
@@ -50,11 +56,15 @@
 </template>
 <script setup>
 // 导入Vue相关依赖
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useUserStore } from '../../stores/user'
 const user = useUserStore()
 // 导入请求
 import {userLoginApi} from "../../apis/userApi"
+// 用户类型
+const role=ref(true)
+const roleColor=computed(()=>role.value==true?'black':'#aaaaaa')
+const roleColor2=computed(()=>role.value==false?'black':'#aaaaaa')
 // 登录方式标志
 let loginWay=ref(true)
 // 用户登录信息
@@ -171,6 +181,9 @@ let clickLogin=function(){
     box-shadow: 0px 0px 10px 10px rgba(0, 0, 0, 0.1);
     background: rgb(242, 242, 242);
     padding: 30px;
+    .topicBox{
+      cursor: pointer;
+    }
     .texts{
       height: 10vh;
       display: flex;

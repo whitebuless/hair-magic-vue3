@@ -5,7 +5,8 @@
       <img 
       src="https://img2.imgtp.com/2024/04/12/t8p6tbU8.png" 
       alt="Logo"
-      style="width: 25px;margin-right: 1rem;">
+      style="width: 25px;margin-right: 1rem;"
+      @click="router.push('/home/find')">
       <div >
         > 山东
       </div>
@@ -48,6 +49,13 @@
             height: 30px;
             margin-left: 10px;
             background-color: rgb(179, 179, 179);"></div>
+        <div class="actives">
+          <ul>
+            <li>个人中心</li>
+            <li>我的分享</li>
+          </ul>
+
+        </div>
       </div>
     </div>
 
@@ -56,7 +64,7 @@
   </div>
 </template>
 <script setup>
-import router from '../../../router';
+import router from '../../../router/index.js';
 </script>
 <style lang="scss" scoped>
 .headerBox{
@@ -70,6 +78,9 @@ import router from '../../../router';
   align-items: center;
   
   margin-bottom: 1rem;
+  .logoBox{
+    cursor: pointer;
+  }
   .searchBox{
     input{
       width: 400px;
@@ -83,6 +94,37 @@ import router from '../../../router';
         border:  2px solid rgb(248, 248, 248);
       }
       border-radius: 10px;
+    }
+  }
+  .functionBox{
+    .userBox{
+      &:hover{
+        .actives{
+          visibility:visible;
+        }
+      }
+      .actives{
+        visibility:hidden;
+        cursor: pointer;
+        color: black;
+        top: 50px;
+        position: absolute;
+        width: 100px;
+        right: 10px;
+        background-color: rgb(255, 255, 255);
+        z-index: 999;
+        box-shadow: 0px 0px 3px black;
+        ul{
+          width: 100%;
+          li{
+            padding: 10px;
+            &:hover{
+              background:rgb(104, 0, 0);
+              color: white;
+            }
+          }
+        }
+      }
     }
   }
 }
