@@ -36,7 +36,7 @@ import SideBar from './components/SideBar/index.vue'
       height: 100%;
       .list-item{
         background-color: white;
-        border-radius: 15px;
+        border-radius: 10px;
         height: 100%;
         padding: 30px;
         box-shadow: 0 0 4px 4px rgb(207, 207, 207);

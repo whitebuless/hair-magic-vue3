@@ -36,7 +36,7 @@ const items = ref([
   {
     key: '3',
     icon: () => h(CalendarOutlined),
-    label: '顾客会员管理',
+    label: '顾客管理',
     title: 'client',
   },
   {
