@@ -1,6 +1,6 @@
 <template>
   <div class="navBarBox">
-    <div class="">    欢迎来到{{ userStore.userInfo.username }}管理系统</div>
+    <div class="">    欢迎来到{{ userStore.userInfo.username }}后台管理系统</div>
     <div class=""></div>
   </div>
 </template>
