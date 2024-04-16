@@ -2,6 +2,7 @@
 
 *{
   box-sizing: border-box;
+    --theme:#6e0000;
 }
 html{
   background: linear-gradient(rgb(255, 255, 255), rgb(255, 252, 252),rgb(255, 255, 255));

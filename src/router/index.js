@@ -6,7 +6,39 @@ import HomeView from "../views/Home/index.vue"
 import ShareView from "../views/Share/index.vue"
 import FuncView from "../views/Func/index.vue"
 import UploadingClientView from "../views/UploadClient/index.vue"
+import MerchantView from "../views/merchant/index.vue"
+import DataShowView from "../views/merchant/list/DataShow/index.vue"
+import StaffView from "../views/merchant/list/Staff/index.vue"
+import ClientView from "../views/merchant/list/Client/index.vue"
+import ReservationView from "../views/merchant/list/Reservation/index.vue"
 const routes=[
+  {
+    path:'/merchant',
+    component:MerchantView,
+    name:'merchant',
+    children:[
+      {
+        path:'datashow',
+        component:DataShowView,
+        name:'datashow'
+      },
+      {
+        path:'staff',
+        component:StaffView,
+        name:'staff'
+      },
+      {
+        path:'client',
+        component:ClientView,
+        name:'client'
+      },
+      {
+        path:'reservation',
+        component:ReservationView,
+        name:'reservation'
+      }
+    ]
+  },
   {
     path:'/',
     component:LoginView,
