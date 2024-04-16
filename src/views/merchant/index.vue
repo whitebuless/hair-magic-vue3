@@ -11,10 +11,44 @@
       </div>
     </div>
   </div>
+  <div class="cover" v-show="!solvedBefore">
+    <div>
+      <h1>选择店铺</h1>
+      <ul>
+      <li v-for="item in merchantList" @click="handleChooseMerchant(item)" >
+        {{ item.name }}
+      </li>
+    </ul>
+    </div>
+  </div>
 </template>
 <script setup>
+import { onMounted, ref } from 'vue';
 import NavBar from './components/NavBar/index.vue'
 import SideBar from './components/SideBar/index.vue'
+import { useMerchantStore } from '../../stores/merchant';
+import { useUserStore } from '../../stores/user';
+import {getMerchantByUserIdApi} from '../..//apis/merchantApi.js'
+const userStore=useUserStore()
+const merchantStore=useMerchantStore()
+const merchantList=ref([])
+const solvedBefore=ref(false)
+onMounted(()=>{
+  getMerchantList(userStore.userInfo.id);
+})
+
+async function getMerchantList(id){
+  await getMerchantByUserIdApi(id).then((res=>{
+    merchantList.value=res.data.data
+  }))
+  console.log(merchantList.value);
+}
+
+function handleChooseMerchant(item){
+  solvedBefore.value=true
+  merchantStore.merchantInfo=item
+}
+
 </script>
 <style lang="scss" scoped>
 .merchantBox{
@@ -42,6 +76,39 @@ import SideBar from './components/SideBar/index.vue'
         box-shadow: 0 0 4px 4px rgb(207, 207, 207);
       }
     }
+  }
+}
+.cover{
+  z-index: 99999;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.403);
+  div{
+    width: 300px;
+    background-color: white;
+    position: relative;
+    left: 50%;
+    border-radius: 10px;
+    padding: 20px;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    ul{
+      li{
+        border-radius: 5px;
+        padding: 15px;
+        background-color: rgb(238, 238, 238);
+        cursor: pointer;
+        margin-bottom: 5px;
+        &:hover{
+          background-color:var(--theme);
+          color: white;
+        }
+      }
+    }
+    
   }
 }
 </style>
