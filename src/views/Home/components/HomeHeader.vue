@@ -13,7 +13,9 @@
     </div>
     <!-- 搜索框区域 -->
     <div class="searchBox">
-      <input type="text"  placeholder="输入搜索内容/发型/店铺">
+      <input type="text"  
+      placeholder="输入搜索内容/发型/店铺"
+      v-model="searchText">
 
     </div>
     <!-- 功能区域 -->
@@ -64,7 +66,15 @@
   </div>
 </template>
 <script setup>
+import { ref,watch,provide } from 'vue';
 import router from '../../../router/index.js';
+const searchText = ref('');
+
+// 监听输入框内容的变化，更新提供的值
+watch(searchText, newValue => {
+  provide('searchText', newValue);
+});
+
 </script>
 <style lang="scss" scoped>
 .headerBox{

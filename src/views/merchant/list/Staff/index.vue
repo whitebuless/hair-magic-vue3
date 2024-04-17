@@ -12,16 +12,13 @@
 
     <a-table
     :columns="columns"
-    :row-key="record => record.login.uuid"
-    :data-source="dataSource"
-    :pagination="pagination"
-    :loading="loading"
+    :dataSource="dataSource"
     @change="handleTableChange"
   >
     <template #bodyCell="{ column, text }">
       <template v-if="column.key === 'action'">
         <span>
-          <a>Invite 一 {{ record.name }}</a>
+          <a>Invite</a>
           <a-divider type="vertical" />
           <a>Delete</a>
           <a-divider type="vertical" />
@@ -38,9 +35,12 @@
 </template>
 
 <script setup>
-import { computed,ref } from 'vue';
+import { computed,onMounted,ref } from 'vue';
 import { usePagination } from 'vue-request';
+import { staffInMerchantApi } from '../../../../apis/staffApi';
 import axios from 'axios';
+import { useMerchantStore } from '../../../../stores/merchant';
+const merchantStore=useMerchantStore()
 //表格配置
 const columns = [
   {
@@ -61,7 +61,6 @@ const columns = [
         value: 'female',
       },
     ],
-    width: '20%',
   },
   {
     title:'电话',
@@ -86,42 +85,33 @@ const columns = [
     key:'action'
   }
 ];
-// 查询数据
-const queryData = params => {
-  return axios.get('https://localhost:8080/staff/get', {
-    params,
-  });
-};
 // 
-const {
-  data: dataSource,
-  run,
-  loading,
-  current,
-  pageSize,
-} = usePagination(queryData, {
-  formatResult: res => res.data.results,
-  pagination: {
-    currentKey: 'page',
-    pageSizeKey: 'results',
+const dataSource=ref([])
+const data = [
+  {
+    key: '1',
+    name: 'John Brown',
+    phoneNumber:'1231231231',
+    gender:'male',
+    price:20,
+    years:3,
+    detail:"gugugde",
   },
-});
+];
 
-const pagination = computed(() => ({
-  total: 200,
-  current: current.value,
-  pageSize: pageSize.value,
-}));
+onMounted(()=>{
+  getStaffList(merchantStore.merchantInfo.id)
+})
+async function getStaffList(id){
+  await staffInMerchantApi(id).then((res=>{
+    dataSource.value=res.data.data
+  }))
+}
 
-const handleTableChange = (pag, filters, sorter) => {
-  run({
-    results: pag.pageSize,
-    page: pag?.current,
-    sortField: sorter.field,
-    sortOrder: sorter.order,
-    ...filters,
-  });
-};
+
+function onChange(pagination, filters, sorter, extra) {
+  console.log('params', pagination, filters, sorter, extra);
+}
 
 // 搜索框配置
 const value = ref('');

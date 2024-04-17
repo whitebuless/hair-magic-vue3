@@ -12,8 +12,8 @@
         {{ shareBody.description }}
       </div>
       <div class="infos">
-        <span class="iconfont icon-dianzan">122</span>
-        <span class="iconfont icon-pinglun">222</span>
+        <span class="iconfont icon-dianzan">{{shareBody.likes}}</span>
+        <span class="iconfont icon-pinglun">{{ shareBody.comments }}</span>
       </div>
     </div>
   </div>
@@ -26,8 +26,8 @@ defineProps({
 <style lang="scss" scoped>
 .shareCardBox{
   margin: 0.5rem;
-  height: 300px;
   width: 250px;
+  overflow: hidden;
   background-color: rgb(252, 252, 252);
   border-radius: 10px;
   padding: 15px;
