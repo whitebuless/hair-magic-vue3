@@ -2,6 +2,7 @@
 import { onMounted, ref,inject, watchEffect } from "vue";
 import { getShareApi } from "../../apis/shareAPpi"
 import ShareCardModelVue from "./components/shareCardModel.vue";
+
 const shareArray=ref([])
 
 const searchText = inject('searchText');

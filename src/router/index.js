@@ -54,6 +54,11 @@ const routes=[
     name:'home',
     children:[
       {
+        
+        path:'',
+        redirect:'/home/find'
+      },
+      {
         path:'find',
         component:ShareView,
         name:'share'

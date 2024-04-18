@@ -9,10 +9,19 @@ const getMerchantByUserIdApi=function(id){
       id
     }
   })
-
 }
 
+
+const getMerchantByAllApi=function(merchant){
+  // 定义要发送的数据
+  return axiosInstance({
+    url:'/merchant/getbyall',
+    method:'POST',
+    data:merchant
+  })
+}
 export {
-  getMerchantByUserIdApi
+  getMerchantByUserIdApi,
+  getMerchantByAllApi
 }
 

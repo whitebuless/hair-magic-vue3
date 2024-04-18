@@ -28,6 +28,16 @@
 import HomeHeader from './components/HomeHeader.vue'
 import HomeFooter from './components/HomeFooter.vue'
 import router from '../../router';
+import { onMounted } from 'vue';
+import { useUserStore } from "../../stores/user";
+const userStore=useUserStore()
+
+onMounted(()=>{
+  if(userStore.userInfo.identity!="用户"){
+    router.replace("/")
+  }
+
+})
 
 </script>
 <style lang="scss" scoped>
