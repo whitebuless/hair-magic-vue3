@@ -9,7 +9,7 @@
             <span class="iconfont icon-faxian"
                   >发现</span>
           </li>
-          <li>
+          <li @click="router.push('/home/shop')">
             <span class="iconfont icon-dianpu">店铺</span>
           </li>
           <li>

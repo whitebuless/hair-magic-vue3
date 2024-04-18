@@ -4,9 +4,13 @@ import {createRouter,createWebHashHistory} from "vue-router"
 import LoginView from "../views/Login/index.vue"
 import HomeView from "../views/Home/index.vue"
 import ShareView from "../views/Share/index.vue"
+import ShopView from "../views/Shop/index.vue"
 import FuncView from "../views/Func/index.vue"
+
 import UploadingClientView from "../views/UploadClient/index.vue"
 import MerchantView from "../views/merchant/index.vue"
+
+
 import DataShowView from "../views/merchant/list/DataShow/index.vue"
 import StaffView from "../views/merchant/list/Staff/index.vue"
 import ClientView from "../views/merchant/list/Client/index.vue"
@@ -53,6 +57,11 @@ const routes=[
         path:'find',
         component:ShareView,
         name:'share'
+      },
+      {
+        path:'shop',
+        component:ShopView,
+        name:'shop'
       }
     ]
   },

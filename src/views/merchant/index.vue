@@ -35,6 +35,9 @@ const merchantList=ref([])
 const solvedBefore=ref(false)
 onMounted(()=>{
   getMerchantList(userStore.userInfo.id);
+  if(merchantStore.merchantInfo!=null){
+    solvedBefore.value=true
+  }
 })
 
 async function getMerchantList(id){
