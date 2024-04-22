@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="homeBox">
     <HomeHeader></HomeHeader>
     <!--  -->
     <div class="content">
@@ -18,7 +18,7 @@
         </ul>
       </div>
       <div class="BOX">
-        <router-view ></router-view>
+        <router-view @show="show"></router-view>
       </div>
     </div>
     <HomeFooter></HomeFooter>
@@ -28,15 +28,13 @@
 import HomeHeader from './components/HomeHeader.vue'
 import HomeFooter from './components/HomeFooter.vue'
 import router from '../../router';
-import { onMounted } from 'vue';
+import { onMounted, ref,inject } from 'vue';
 import { useUserStore } from "../../stores/user";
 const userStore=useUserStore()
-
 onMounted(()=>{
   if(userStore.userInfo.identity!="用户"){
     router.replace("/")
   }
-
 })
 
 </script>
@@ -50,7 +48,7 @@ onMounted(()=>{
   }
   .menu{
     background-color: rgb(251, 251, 255);
-    flex: 1;
+    flex: 0.7;
     margin-right: 1rem;
     height: 400px;
     ul{

@@ -1,72 +1,78 @@
 <template>
   <div class="shareCardBox">
-    <img src="https://img2.imgtp.com/2024/04/13/IjkjcvVF.jpg" alt="">
+    <img :src="shareBody.imgs" alt="">
     <div class="content">
       <div class="title">
-        <b>        {{ shareBody.title }}</b>
-        <span style="font-size: 0.8rem;
-                    color: #888888;
-                    float: right;">{{ shareBody.hairType }}</span>
+        <b>{{ shareBody.title }}</b>
+        <span>{{ shareBody.hairType }}</span>
       </div>
       <div class="description">
         {{ shareBody.description }}
       </div>
       <div class="infos">
-        <span class="iconfont icon-dianzan">{{shareBody.likes}}</span>
+        <span class="iconfont icon-dianzan">{{ shareBody.likes }}</span>
         <span class="iconfont icon-pinglun">{{ shareBody.comments }}</span>
       </div>
     </div>
   </div>
 </template>
+
 <script setup>
 defineProps({
-  shareBody:Object
+  shareBody: Object
 })
 </script>
+
 <style lang="scss" scoped>
-.shareCardBox{
+.shareCardBox {
   margin: 0.5rem;
-  width: 250px;
+  width: calc(100% - 1rem); /* 使用calc函数来动态计算每个卡片的宽度 */
+  float: left; /* 左浮动实现瀑布流布局 */
+  box-sizing: border-box; /* 计算边框和填充在内 */
   overflow: hidden;
   background-color: rgb(252, 252, 252);
   border-radius: 10px;
   padding: 15px;
   cursor: pointer;
   transition: all 0.2s;
-  &:hover{
+
+  &:hover {
     background-color: #dcdcdc;
   }
-  img{
+
+  img {
     width: 100%;
     margin-bottom: 0.5rem;
   }
-  .content{
+
+  .content {
     padding: 2px 2px 5px;
-    .title{
+
+    .title {
       padding: 2px;
       margin-bottom: 0.6rem;
     }
-    .description{
+
+    .description {
       font-family: 'Courier New', Courier, monospace;
     }
-    .infos{
+
+    .infos {
       float: right;
       margin-top: 1rem;
       color: rgb(153, 153, 153);
-      span{
+      span {
         margin: 0.3rem;
         font-size: 1rem;
         color: rgb(153, 153, 153);
-        &:hover{
-          &::before{
+
+        &:hover {
+          &::before {
             color: rgb(112, 0, 0);
           }
         }
       }
     }
-    
   }
-
 }
-
 </style>
