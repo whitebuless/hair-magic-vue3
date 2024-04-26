@@ -16,6 +16,7 @@ import StaffView from "../views/merchant/list/Staff/index.vue"
 import ClientView from "../views/merchant/list/Client/index.vue"
 import ReservationView from "../views/merchant/list/Reservation/index.vue"
 import ShopDetailView from "../views/ShopDetail/index.vue"
+import UserInfoView from "../views/UserInfo/index.vue"
 const routes=[
   {
     path:'/merchant',
@@ -73,6 +74,11 @@ const routes=[
         path:'shopdetail/:id',
         component:ShopDetailView,
         name:'shopDetial'
+      },
+      {
+        path:'user/:id',
+        component:UserInfoView,
+        name:'userInfo'
       }
     ]
   },

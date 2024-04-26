@@ -11,10 +11,20 @@ const userLoginApi=function(phoneNumber,password){
     method:'POST',
     data:userData
   })
+}
 
+const findUserById=function(id){
+  return axiosInstance({
+    url:'/user/findbyid',
+    method:'GET',
+    params:{
+      id
+    }
+  })
 }
 
 export {
-  userLoginApi
+  userLoginApi,
+  findUserById
 }
 

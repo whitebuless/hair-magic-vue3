@@ -6,6 +6,10 @@ import { useShareStore } from "../../stores/share";
 import { getCommentByShareIdApi } from "../../apis/commentApi"
 import { useCommentStore } from "../../stores/comment";
 import { useUserStore } from "../../stores/user";
+// test
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+
 const shareStore=useShareStore()
 const commentStore=useCommentStore()
 const userStore=useUserStore()
@@ -55,6 +59,23 @@ async function subCommentClick(){
     },1000)
   })
 }
+
+
+dayjs.extend(relativeTime);
+const likes = ref(0);
+const dislikes = ref(0);
+const action = ref();
+const like = () => {
+  likes.value = 1;
+  dislikes.value = 0;
+  action.value = 'liked';
+};
+const dislike = () => {
+  likes.value = 0;
+  dislikes.value = 1;
+  action.value = 'disliked';
+};
+
 </script>
 <template>
   <div id="shareBox">
@@ -95,13 +116,51 @@ async function subCommentClick(){
       <div class="rightBox">
         <h1><b>评论</b></h1>
         <div class="comments">
-          <div v-for="item in commenList" class="pcomment">
-            <div class="userName">{{ item.userName }}</div>
-            <div class="comment">{{ item.comment }}</div>
-            <div class="foot">
-              <span class="iconfont icon-dianzan">{{ item.likes }}</span>
-            </div>
-          </div>
+          <a-comment v-for="i in commenList">
+            <template #actions>
+              <span key="comment-basic-like">
+                <a-tooltip title="Like">
+                  <template v-if="action === 'liked'">
+                    <LikeFilled @click="like" />
+                  </template>
+                  <template v-else>
+                    <LikeOutlined @click="like" />
+                  </template>
+                </a-tooltip>
+                <span style="padding-left: 8px; cursor: auto">
+                  {{ i.likes }}
+                </span>
+              </span>
+              <span key="comment-basic-dislike">
+                <a-tooltip title="Dislike">
+                  <template v-if="action === 'disliked'">
+                    <DislikeFilled @click="dislike" />
+                  </template>
+                  <template v-else>
+                    <DislikeOutlined @click="dislike" />
+                  </template>
+                </a-tooltip>
+                <span style="padding-left: 8px; cursor: auto">
+                  {{ dislikes }}
+                </span>
+              </span>
+              <span key="comment-basic-reply-to">Reply to</span>
+            </template>
+            <template #author><a>{{i.userName}}</a></template>
+            <template #avatar>
+              <a-avatar src="https://th.bing.com/th/id/R.0f7e0f8f147bb9dfafc5e4c3bece59f2?rik=auXMf%2b3yZ3xMLQ&riu=http%3a%2f%2fimg.qqtouxiangzq.com%2f6%2f1182%2f32.jpg&ehk=kLA%2fNQgc8j3Poiz5Hva1NiVpJlwbSQosepCOeN5wde4%3d&risl=&pid=ImgRaw&r=0" alt="Han Solo" />
+            </template>
+            <template #content>
+              <p>
+                {{ i.comment }}
+              </p>
+            </template>
+            <template #datetime>
+              <a-tooltip :title="dayjs().format('YYYY-MM-DD HH:mm:ss')">
+                <span>{{ dayjs().from(i.createTime) }}</span>
+              </a-tooltip>
+            </template>
+          </a-comment>
         </div>
         <a-textarea v-model:value="commentEdit" 
         placeholder="说点什么吧~"

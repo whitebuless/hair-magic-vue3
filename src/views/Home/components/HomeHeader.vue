@@ -53,7 +53,7 @@
             background-color: rgb(179, 179, 179);"></div>
         <div class="actives">
           <ul>
-            <li>个人中心</li>
+            <li @click="router.push(`/home/user/${userStore.userInfo.id}`)">个人中心</li>
             <li>我的分享</li>
             <li>我的预约</li>
           </ul>
@@ -69,6 +69,8 @@
 <script setup>
 import { ref,watch,provide } from 'vue';
 import router from '../../../router/index.js';
+import { useUserStore } from '../../../stores/user.js';
+const userStore=useUserStore()
 const searchText = ref('');
 
 // 监听输入框内容的变化，更新提供的值
@@ -118,7 +120,7 @@ watch(searchText, newValue => {
         visibility:hidden;
         cursor: pointer;
         color: black;
-        top: 50px;
+        top: 46px;
         position: absolute;
         width: 100px;
         right: 10px;

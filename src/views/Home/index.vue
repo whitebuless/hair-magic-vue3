@@ -18,7 +18,7 @@
         </ul>
       </div>
       <div class="BOX">
-        <router-view @show="show"></router-view>
+        <router-view></router-view>
       </div>
     </div>
     <HomeFooter></HomeFooter>
