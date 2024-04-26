@@ -13,7 +13,7 @@ export const useUserStore = defineStore('user', {
   // 也可以这样定义
   // state: () => ({ count: 0 })
   actions: {
-    login(phoneNumber, password) {
+    login(phoneNumber, password,role) {
       userLoginApi(phoneNumber, password)
         .then(response => {
           // 处理成功情况

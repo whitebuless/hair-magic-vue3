@@ -4,11 +4,11 @@
       <div class="topicBox">
         <h1 class="loginTopic"
         :style="{color:roleColor}"
-        @click="role=!role"
+        @click="role=true"
         >用户登录</h1>
         <h1 class="loginTopic"
         :style="{color:roleColor2}"
-        @click="role=!role">商家登录</h1>
+        @click="role=false">商家登录</h1>
         <div class="topicRight">
           <span class="iconfont icon-mimadenglu" :class="loginWay==true?'hightLight':'lowLight'" @click="changeWay(true)"></span>
           <span class="iconfont icon-yanzhengmadenglu" :class="loginWay==false?'hightLight':'lowLight'" @click="changeWay(false)"></span>
@@ -152,9 +152,8 @@ let clickLogin=function(){
     alert("请勾选用户隐私协议")
     return
   }
-
   if(loginWay.value==true){
-    user.login(userData.value.phoneNumber,userData.value.password)
+    user.login(userData.value.phoneNumber,userData.value.password,role.value)
   }
 }
 

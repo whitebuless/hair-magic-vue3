@@ -1,17 +1,17 @@
 <template>
   <div class="shareCardBox">
-    <img :src="shareBody.imgs" alt="">
+    <img :src="shareBody.imgs.split(' ')[0]" alt="">
     <div class="content">
       <div class="title">
-        <b>{{ shareBody.title }}</b>
+        <b style="margin-right: 10px;">{{ shareBody.title }}</b>
         <span>{{ shareBody.hairType }}</span>
       </div>
       <div class="description">
         {{ shareBody.description }}
       </div>
       <div class="infos">
+        <span style="float: left;">{{ shareBody.userName }}</span>
         <span class="iconfont icon-dianzan">{{ shareBody.likes }}</span>
-        <span class="iconfont icon-pinglun">{{ shareBody.comments }}</span>
       </div>
     </div>
   </div>
@@ -35,7 +35,6 @@ defineProps({
   padding: 15px;
   cursor: pointer;
   transition: all 0.2s;
-
   &:hover {
     background-color: #dcdcdc;
   }
@@ -58,10 +57,12 @@ defineProps({
     }
 
     .infos {
-      float: right;
+      width: 100%;
+
       margin-top: 1rem;
       color: rgb(153, 153, 153);
       span {
+        float: right;
         margin: 0.3rem;
         font-size: 1rem;
         color: rgb(153, 153, 153);

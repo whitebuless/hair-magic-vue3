@@ -5,7 +5,7 @@
     </div>
 
     <div class="rightView">
-      <NavBar></NavBar>
+      <NavBar @click="solvedBefore=false"></NavBar>
       <div class="tableBox">
         <router-view></router-view>
       </div>

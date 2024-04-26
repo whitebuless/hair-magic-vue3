@@ -55,7 +55,7 @@ const routes=[
     children:[
       {
         
-        path:'',
+        path:'/',
         redirect:'/home/find'
       },
       {

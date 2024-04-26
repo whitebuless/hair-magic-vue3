@@ -12,7 +12,16 @@ const getShareApi=function(title){
   })
 }
 
+const uploadShareApi=function(share){
+  return axiosInstance({
+    url:'/share/upload',
+    method:'POST',
+    data:share
+  })
+}
+
 export {
-  getShareApi
+  getShareApi,
+  uploadShareApi
 }
 

@@ -34,10 +34,35 @@
         <p :style="cardPStyle">999+</p>
       </a-card>
     </div>
+    <div class="chart">
+      <div id="chartBody" style="height:70vh;width:100%" ></div>
+    </div>
   </div>
 </template>
 <script setup>
-import { ref } from 'vue';
+import { ref,onMounted } from 'vue';
+import * as echarts from 'echarts';
+// 图标配置
+onMounted(()=>{
+  let myChart = echarts.init(document.getElementById('chartBody'));
+  myChart.setOption({
+    title: {
+      text: '营业额'
+    },
+    tooltip: {},
+    xAxis: {
+    data: ['A', 'B', 'C', 'D', 'E']
+  },
+  yAxis: {},
+  series: [
+    {
+      data: [10, 22, 28, 23, 19],
+      type: 'line',
+      smooth: true
+    }
+  ]
+  });
+})
 
 const cardStyle=ref({
   width:'250px',
