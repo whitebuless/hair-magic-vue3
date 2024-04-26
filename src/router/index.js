@@ -15,6 +15,7 @@ import DataShowView from "../views/merchant/list/DataShow/index.vue"
 import StaffView from "../views/merchant/list/Staff/index.vue"
 import ClientView from "../views/merchant/list/Client/index.vue"
 import ReservationView from "../views/merchant/list/Reservation/index.vue"
+import ShopDetailView from "../views/ShopDetail/index.vue"
 const routes=[
   {
     path:'/merchant',
@@ -55,7 +56,7 @@ const routes=[
     children:[
       {
         
-        path:'/',
+        path:'',
         redirect:'/home/find'
       },
       {
@@ -67,6 +68,11 @@ const routes=[
         path:'shop',
         component:ShopView,
         name:'shop'
+      },
+      {
+        path:'shopdetail/:id',
+        component:ShopDetailView,
+        name:'shopDetial'
       }
     ]
   },

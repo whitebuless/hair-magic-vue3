@@ -37,19 +37,22 @@ function handleCardClick(item){
 }
 
 // 发表评论
-function subCommentClick(){
+async function subCommentClick(){
   if(commentEdit.value==''){
     alert('空字符')
     return
   }
-  commentStore.subComment(
+  await commentStore.subComment(
     userStore.userInfo.id,
     userStore.userInfo.username,
     commentEdit.value,
     shareStore.shareInfo.id
-  )
-  getCommentByShareIdApi(item.id).then(res=>{
+  ).then(()=>{
+    setTimeout(()=>{
+      getCommentByShareIdApi(item.id).then(res=>{
     commenList.value=res.data.data
+  })
+    },1000)
   })
 }
 </script>

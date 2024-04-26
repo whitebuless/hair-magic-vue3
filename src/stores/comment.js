@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { subCommentApi } from '../apis/commentApi.js'
+import { getCommentByShareIdApi } from '../apis/commentApi.js'
 import router from '../router/index.js'
 
 

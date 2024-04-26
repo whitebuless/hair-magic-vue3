@@ -48,12 +48,11 @@ onMounted(()=>{
   }
   .menu{
     background-color: rgb(251, 251, 255);
-    flex: 0.7;
+    flex: 0.8;
     margin-right: 1rem;
-    height: 400px;
     ul{
       li{
-        padding: 0.9rem;
+        padding: 0.6rem;
         cursor: pointer;
         &:hover{
           background-color: rgb(142, 0, 0);

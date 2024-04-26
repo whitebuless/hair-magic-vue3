@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-for="i in shopList">
+    <div v-for="i in shopList" @click="router.push(`/home/shopDetail/${i.id}`)">
       <shopCardModelVue :shopInfo="i"></shopCardModelVue>
     </div>  
   </div>
@@ -8,6 +8,7 @@
 <script setup>
 import shopCardModelVue from "./components/shopCardModel.vue";
 import { ref,onMounted } from "vue";
+import router from "../../router/index.js";
 import { getMerchantByAllApi} from "../../apis/merchantApi.js"
 // const shopList=ref([])
 const shopList=ref([

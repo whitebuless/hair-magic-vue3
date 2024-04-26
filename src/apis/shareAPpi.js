@@ -20,8 +20,19 @@ const uploadShareApi=function(share){
   })
 }
 
+const getShareByShopIdApi=function(id){
+  return axiosInstance({
+    url:'/share/getbyshopid',
+    method:'GET',
+    params:{
+      id:id
+    }
+  })
+}
+
 export {
   getShareApi,
-  uploadShareApi
+  uploadShareApi,
+  getShareByShopIdApi
 }
 
