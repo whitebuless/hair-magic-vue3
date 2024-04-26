@@ -5,7 +5,7 @@
     </a-avatar>
     </div>
     <div class="baseInfo">
-      <p>
+      <p style="color: #999999;" disabled>
         {{ lookingUser.username }}
         <span 
         v-if="lookingUser.gender=='男'" 
@@ -17,6 +17,9 @@
         ></span>
       </p>
       <p>{{ lookingUser.explain }}</p>
+      <a-button type="primary" block v-if="status=='other'">+关注</a-button>
+      <a-button block v-else-if="status=='myself'">编辑资料</a-button>
+
 
     </div>
   </div>
@@ -26,15 +29,21 @@
 import { onMounted, ref } from 'vue';
 import { findUserById } from '../../apis/userApi';
 import { useRoute } from 'vue-router';
+import { useUserStore } from '../../stores/user';
+const userStore=useUserStore()
 
 const lookingUser=ref({})
-
+const status=ref('other')
 onMounted(()=>{
   const route = useRoute();
   const id = route.params.id;
   findUserById(id).then(res=>{
     lookingUser.value=res.data.data
+    if(res.data.data.id==userStore.userInfo.id){
+      status.value="myself"
+    }
   })
+  
 })
 </script>
 <style lang="scss" scoped>
@@ -42,6 +51,9 @@ onMounted(()=>{
   display: flex;
   .baseInfo{
     padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
 
 }

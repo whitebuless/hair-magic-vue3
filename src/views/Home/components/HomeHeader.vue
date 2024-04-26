@@ -113,11 +113,12 @@ watch(searchText, newValue => {
     .userBox{
       &:hover{
         .actives{
-          visibility:visible;
+          height: 150px;
         }
       }
       .actives{
-        visibility:hidden;
+        height: 0;
+        overflow: hidden;
         cursor: pointer;
         color: black;
         top: 46px;
@@ -127,6 +128,7 @@ watch(searchText, newValue => {
         background-color: rgb(255, 255, 255);
         z-index: 999;
         box-shadow: 0px 0px 3px black;
+        transition: all 0.5s;
         ul{
           width: 100%;
           li{

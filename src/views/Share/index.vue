@@ -6,6 +6,7 @@ import { useShareStore } from "../../stores/share";
 import { getCommentByShareIdApi } from "../../apis/commentApi"
 import { useCommentStore } from "../../stores/comment";
 import { useUserStore } from "../../stores/user";
+import router from "../../router";
 // test
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
@@ -146,7 +147,11 @@ const dislike = () => {
               </span>
               <span key="comment-basic-reply-to">Reply to</span>
             </template>
-            <template #author><a>{{i.userName}}</a></template>
+            <template #author>
+              <a
+                @click="router.push(`/home/user/${i.userId}`)"
+              >{{i.userName}}</a>
+            </template>
             <template #avatar>
               <a-avatar src="https://th.bing.com/th/id/R.0f7e0f8f147bb9dfafc5e4c3bece59f2?rik=auXMf%2b3yZ3xMLQ&riu=http%3a%2f%2fimg.qqtouxiangzq.com%2f6%2f1182%2f32.jpg&ehk=kLA%2fNQgc8j3Poiz5Hva1NiVpJlwbSQosepCOeN5wde4%3d&risl=&pid=ImgRaw&r=0" alt="Han Solo" />
             </template>
