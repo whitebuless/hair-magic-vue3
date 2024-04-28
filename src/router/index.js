@@ -1,22 +1,23 @@
 // 引入依赖
 import {createRouter,createWebHashHistory} from "vue-router"
 
-import LoginView from "../views/Login/index.vue"
-import HomeView from "../views/Home/index.vue"
-import ShareView from "../views/Share/index.vue"
-import ShopView from "../views/Shop/index.vue"
-import FuncView from "../views/Func/index.vue"
+import LoginView from "@/views/Login/index.vue"
+import HomeView from "@/views/Home/index.vue"
+import ShareView from "@/views/Share/index.vue"
+import ShopView from "@/views/Shop/index.vue"
+import FuncView from "@/views/Func/index.vue"
 
-import UploadingClientView from "../views/UploadClient/index.vue"
-import MerchantView from "../views/merchant/index.vue"
+import UploadingClientView from "@/views/UploadClient/index.vue"
+import MerchantView from "@/views/merchant/index.vue"
 
 
-import DataShowView from "../views/merchant/list/DataShow/index.vue"
-import StaffView from "../views/merchant/list/Staff/index.vue"
-import ClientView from "../views/merchant/list/Client/index.vue"
-import ReservationView from "../views/merchant/list/Reservation/index.vue"
-import ShopDetailView from "../views/ShopDetail/index.vue"
-import UserInfoView from "../views/UserInfo/index.vue"
+import DataShowView from "@/views/merchant/list/DataShow/index.vue"
+import StaffView from "@/views/merchant/list/Staff/index.vue"
+import ClientView from "@/views/merchant/list/Client/index.vue"
+import ReservationView from "@/views/merchant/list/Reservation/index.vue"
+import ShopDetailView from "@/views/ShopDetail/index.vue"
+import UserInfoView from "@/views/UserInfo/index.vue"
+import UserOrderView from "@/views/UserOrder/index.vue"
 const routes=[
   {
     path:'/merchant',
@@ -79,6 +80,11 @@ const routes=[
         path:'user/:id',
         component:UserInfoView,
         name:'userInfo'
+      },
+      {
+        path:'userorder',
+        component:UserOrderView,
+        name:'userorder'
       }
     ]
   },

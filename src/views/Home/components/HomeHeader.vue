@@ -66,9 +66,8 @@
           <ul>
             <li @click="router.push(`/home/user/${userStore.userInfo.id}`)">个人中心</li>
             <li>我的分享</li>
-            <li>我的预约</li>
+            <li @click="router.push(`/home/userorder`)">我的预约</li>
           </ul>
-
         </div>
       </div>
     </div>

@@ -6,6 +6,7 @@ import { useShareStore } from "../../stores/share";
 import { getCommentByShareIdApi } from "../../apis/commentApi"
 import { useCommentStore } from "../../stores/comment";
 import { useUserStore } from "../../stores/user";
+import { subCommentApi } from "../../apis/commentApi";
 import router from "../../router";
 // test
 import dayjs from 'dayjs';
@@ -32,7 +33,7 @@ async function getShares(title){
   }))
 }
 
-
+// 点击分享
 function handleCardClick(item){
   getCommentByShareIdApi(item.id).then(res=>{
     commenList.value=res.data.data
@@ -47,13 +48,23 @@ async function subCommentClick(){
     alert('写点东西再发吧')
     return
   }
-  await commentStore.subComment(
+  await subCommentApi(
     userStore.userInfo.id,
     userStore.userInfo.username,
     commentEdit.value,
     shareStore.shareInfo.id
-  )
-  getCommentByShareIdApi(shareStore.shareInfo.id).then(res=>{
+  ) .then(response => {
+          // 处理成功情况
+          alert(response.data.data)
+        })
+        .catch(error => {
+          // 处理错误情况
+          console.log(error);
+        })
+        .finally(() => {
+          // 总是会执行的
+        });
+  await getCommentByShareIdApi(shareStore.shareInfo.id).then(res=>{
     commenList.value=res.data.data
   })
 }

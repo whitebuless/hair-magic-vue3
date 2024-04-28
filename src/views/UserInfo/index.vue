@@ -55,6 +55,5 @@ onMounted(()=>{
     flex-direction: column;
     justify-content: space-between;
   }
-
 }
 </style>
