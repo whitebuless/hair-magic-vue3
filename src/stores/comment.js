@@ -17,7 +17,9 @@ export const useCommentStore = defineStore('comment', {
       subCommentApi(userId,userName,comment,shareId)
         .then(response => {
           // 处理成功情况
+
           alert(response.data.msg)
+
         })
         .catch(error => {
           // 处理错误情况
@@ -26,6 +28,7 @@ export const useCommentStore = defineStore('comment', {
         .finally(() => {
           // 总是会执行的
         });
+
     }
   },
   persist: true

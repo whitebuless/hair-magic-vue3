@@ -132,7 +132,6 @@ function drawDistortedText(ctx, text, x, y) {
   ctx.fillText(text, x, y);
 }
 
-
 // 改变登陆方式
 let changeWay=function(status){
   loginWay.value=status
@@ -170,6 +169,7 @@ let clickLogin=function(){
   background-repeat: no-repeat;
   background-color: #910000;
   .loginFormBox{
+    z-index:999;
     position: absolute;
     width: 404px;
     height: 400px;

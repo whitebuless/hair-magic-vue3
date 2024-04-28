@@ -17,11 +17,11 @@
           </li>
         </ul>
       </div>
-      <div class="BOX">
+      <div class="BOX" style="overflow: scroll;">
         <router-view></router-view>
       </div>
     </div>
-    <HomeFooter></HomeFooter>
+    <!-- <HomeFooter></HomeFooter> -->
   </div>
 </template>
 <script setup>
@@ -39,21 +39,32 @@ onMounted(()=>{
 
 </script>
 <style lang="scss" scoped>
+.homeBox{
+  // 限定高度
+  height: 100vh;
+}
 .content{
   display: flex;
   justify-content: space-between;
+  // 限定高度
+  height: 100%;
   padding: 0 1rem;
   &>div{
     padding: 1rem;
   }
   .menu{
-    background-color: rgb(251, 251, 255);
+    background-color: rgb(32, 32, 32);
     flex: 0.8;
     margin-right: 1rem;
+    // 夏宁高度
+    height: 100%;
+    box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.256);
     ul{
       li{
         padding: 0.6rem;
         cursor: pointer;
+        color: white;
+        border-radius: 5px;
         &:hover{
           background-color: rgb(142, 0, 0);
           color: white;
@@ -65,7 +76,7 @@ onMounted(()=>{
           vertical-align: middle;
           margin-right: 5px;
           font-size: 1.5rem;
-          color: rgb(129, 0, 0);
+          color: rgb(207, 0, 0);
         }
       }
     }

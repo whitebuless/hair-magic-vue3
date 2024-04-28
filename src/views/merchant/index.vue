@@ -57,7 +57,7 @@ function handleChooseMerchant(item){
 .merchantBox{
   background-color: rgb(237, 237, 237);
   width:100%;
-  height: 100%;
+  height: 100vh;
   overflow: hidden;
   display: flex;
   justify-content: space-between;

@@ -7,8 +7,19 @@
       alt="Logo"
       style="width: 25px;margin-right: 1rem;"
       @click="router.push('/home/find')">
-      <div >
-        > 山东
+      <div class="location">
+        <a-space>
+          <a-select
+            v-model:value="province"
+            style="width: 100px"
+            :options="provinceData.map(pro => ({ value: pro }))"
+          ></a-select>
+          <a-select
+            v-model:value="secondCity"
+            style="width: 100px;"
+            :options="cities.map(city => ({ value: city }))"
+          ></a-select>
+        </a-space>
       </div>
     </div>
     <!-- 搜索框区域 -->
@@ -67,11 +78,25 @@
   </div>
 </template>
 <script setup>
-import { ref,watch,provide } from 'vue';
+import { ref,watch,provide,computed } from 'vue';
 import router from '../../../router/index.js';
 import { useUserStore } from '../../../stores/user.js';
 const userStore=useUserStore()
 const searchText = ref('');
+// location相关
+const provinceData = ['山东', 'Jiangsu'];
+const cityData = {
+  山东: ['青岛', '济南', '潍坊'],
+  Jiangsu: ['Nanjing', 'Suzhou', 'Zhenjiang'],
+};
+const province = ref(provinceData[0]);
+const secondCity = ref(cityData[province.value][0]);
+const cities = computed(() => {
+  return cityData[province.value];
+});
+watch(province, val => {
+  secondCity.value = cityData[val][0];
+});
 
 // 监听输入框内容的变化，更新提供的值
 watch(searchText, newValue => {
@@ -143,4 +168,7 @@ watch(searchText, newValue => {
     }
   }
 }
+
+
+
 </style>

@@ -1,6 +1,12 @@
 <template>
   <div class="shopCardBox">
-    {{ shopInfo.name }}
+    <div
+    >
+      {{ shopInfo.name }}
+      <span class="iconfont icon-star-fill"
+      style="color:#aaa;">{{ shopInfo.rank }}</span>
+    </div>
+
     <div class="locations"
     style="font-size: 12px;
     color:rgb(100, 100, 100) ;">
@@ -18,7 +24,6 @@ defineProps({
 .shopCardBox{
   width: 100%;
   height: 5rem;
-  background-color: rgb(246, 246, 246);
   border-radius: 4px;
   box-shadow: 0 0 3px 3px rgb(236, 236, 236);
   padding: 1rem;
@@ -27,6 +32,7 @@ defineProps({
   flex-direction: column;
   justify-content: space-between;
   transition: all .3s;
+  cursor: pointer;
   &:hover{
     box-shadow: 0 0 4px 4px rgba(113, 0, 0, 0.31);
   }
