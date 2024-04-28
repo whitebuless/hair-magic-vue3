@@ -17,12 +17,14 @@
     :dataSource="dataSource"
     @change="handleTableChange"
   >
-    <template #bodyCell="{ column, text }">
+    <template #bodyCell="{ column, text,record }">
       <template v-if="column.key === 'action'">
         <span>
           <a>编辑</a>
           <a-divider type="vertical" />
-          <a style="color: red;">删除</a>
+          <a style="color: red;"
+          @click="handleDeleteClick(record.id)"
+          >删除</a>
           <a-divider type="vertical" />
           <!-- <a class="ant-dropdown-link">
             More actions
@@ -48,56 +50,78 @@
       label="姓名"
       name="姓名"
     >
-      <a-input />
+      <a-input v-model:value="addStaffFormData.name" />
     </a-form-item>
     <a-form-item
         label="联系方式"
         name="联系方式"
       >
-      <a-input />
+      <a-input v-model:value="addStaffFormData.phoneNumber"/>
     </a-form-item>
     <a-form-item
         label="工龄"
         name="工龄"
       >
-      <a-input-number id="inputNumber"  :min="1" :max="100" />
+      <a-input-number id="inputNumber"  
+      v-model:value="addStaffFormData.years"
+      :min="1" :max="100" />
     </a-form-item>
     <a-form-item
         label="单工费"
         name="单工费"
       >
-      <a-input-number id="inputNumber2"  :min="1" :max="1000" />
+      <a-input-number id="inputNumber2"  v-model:value="addStaffFormData.price" :min="1" :max="1000" />
     </a-form-item>
     <a-form-item label="简介">
-      <a-textarea v-model:value="description" />
+      <a-textarea v-model:value="addStaffFormData.detail" />
     </a-form-item>
     <a-form-item
       label="性别"
       name="性别"
     >
-      <a-radio-group v-model:value="gender" name="radioGroup">
+      <a-radio-group v-model:value="addStaffFormData.gender" name="radioGroup">
         <a-radio value="男"><span class="iconfont icon-nan"></span></a-radio>
         <a-radio value="女"><span class="iconfont icon-nv"></span></a-radio>
       </a-radio-group>
     </a-form-item>
-    <a-button type="primary">
+    <a-button type="primary" @click="handleAddClick">
       <span>提交</span>
     </a-button>
 
 
   </a-drawer>
+
+  <!-- 弹出删除确认 -->
+  <a-modal v-model:open="deleteing" title="删除确认窗口" @ok="handleOk">
+      <p>确认删除该员工??</p>
+  </a-modal>
 </template>
 
 <script setup>
-import { computed,onMounted,ref } from 'vue';
+import { computed,onMounted,reactive,ref } from 'vue';
 import { usePagination } from 'vue-request';
 import { staffInMerchantApi } from '../../../../apis/staffApi';
 import axios from 'axios';
+import { useStaffStore } from '../../../../stores/staff';
 import { useMerchantStore } from '../../../../stores/merchant';
+import { addStaffApi } from '../../../../apis/staffApi';
+import { deleteStaffApi } from '../../../../apis/staffApi';
 const merchantStore=useMerchantStore()
+const staffStore=useStaffStore()
+// 删除框配置
+const deleteing = ref(false);
+const deleteingId=ref(0)
 // 新增数据绑定
 const gender=ref('男')
 const description=ref('')
+const addStaffFormData=reactive({
+  name:'',
+  phoneNumber:'',
+  years:1,
+  gender:'男',
+  detail:'',
+  price:0
+})
 // 用户新增侧边栏显示
 const open = ref(false);
 //表格配置
@@ -175,12 +199,40 @@ const onSearch = searchValue => {
   console.log('use value', searchValue);
   console.log('or use this.value', value.value);
 };
-
 // 点击新增
 const afterOpenChange = bool => {
   console.log('open', bool);
 };
 const showDrawer = () => {
   open.value = true;
+};
+// 点击提交
+async function handleAddClick(){
+  if(addStaffFormData.name==''){ alert("输入姓名");return}
+  if(addStaffFormData.phoneNumber==''){ alert("输入联系方式");return}
+  if(addStaffFormData.phoneNumber==''){ alert("输入联系方式");return}
+  if(addStaffFormData.detail==''){ alert("输入简介");return}
+  addStaffFormData.merchant=merchantStore.merchantInfo.id
+  addStaffFormData.merchantName=merchantStore.merchantInfo.name
+  await addStaffApi(addStaffFormData).then(res=>{
+    alert(res.data.data)
+  })
+  open.value = false;
+  await getStaffList(merchantStore.merchantInfo.id)
+}
+// 点击删除
+function handleDeleteClick(id){
+  deleteing.value = true;
+  deleteingId.value=id
+}
+const handleOk =async e => {
+  console.log(e);
+  deleteing.value = false;
+  await deleteStaffApi(deleteingId.value).then(res=>{
+    alert(res.data.data)
+  })
+  await getStaffList(merchantStore.merchantInfo.id)
+
+
 };
 </script>

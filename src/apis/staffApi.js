@@ -6,10 +6,29 @@ const staffInMerchantApi=function(id){
     method:'GET',
     params:{id}
   })
+}
 
+const addStaffApi=function(staff){
+  return axiosInstance({
+    url:'/staff/add',
+    method:'POST',
+    data:staff
+  })
+}
+
+const deleteStaffApi=function(id){
+  return axiosInstance({
+    url:'/staff/delete',
+    method:'GET',
+    params:{
+      id
+    }
+  })
 }
 
 export {
-  staffInMerchantApi
+  staffInMerchantApi,
+  addStaffApi,
+  deleteStaffApi
 }
 

@@ -30,7 +30,11 @@
         ></span>
         预约日期选择</p>
       <div class="date">
-        <div class="dateCard" v-for="i in days" @click="ordering=true;choiceDay=i">
+        <div class="dateCard" 
+        v-for="i in days" 
+        @click="handleDateCardClick(i)"
+        
+        >
           <div class="dateText" >
             {{ new Date(Date.now() + (i-1) * 24 * 60 * 60 * 1000)
           .toLocaleDateString().split('/').join('-') }}
@@ -69,9 +73,9 @@
       </div>
       <div class="formBody" style="padding: 0 20px;">
         <label for="">姓名:</label>
-        <input type="text" class="inp" v-model="name"><br>
+        <input type="text" class="inp" v-model="orderFormData.name"><br>
         <label for="">电话:</label>
-        <input type="text" class="inp" v-model="phoneNumber">
+        <input type="text" class="inp" v-model="orderFormData.phoneNumber">
         <a-select
           v-model:value="staff"
           style="width: 100%;margin-bottom: 10px;"
@@ -81,6 +85,9 @@
           v-for="item in staffList"
           >{{ item.name }} ￥ {{ item.price }}</a-select-option>
         </a-select>
+        <p style="font-size: 12px;">
+          <span style="color: red;">*</span>
+          具体发型师以到店为准</p>
         <a-button type="primary" @click="handleOrdeClick">确认预定</a-button>
       </div>
 
@@ -91,37 +98,68 @@
 import { onMounted,reactive,ref,computed } from 'vue';
 import { useRoute } from 'vue-router';
 import router from '../../router';
+import { useUserStore } from '../../stores/user';
 import { getMerchantByAllApi } from '../../apis/merchantApi';
 import { useMerchantStore } from '../../stores/merchant';
 import { getShareByShopIdApi } from '../../apis/shareAPpi';
+import { addOrderApi } from '../../apis/orderApi';
 import { findOrderByAllApi } from '../../apis/orderApi';
 import { staffInMerchantApi } from '../../apis/staffApi';
 import shareCardModel from '../Share/components/shareCardModel.vue';
+import { number } from 'echarts';
+// 用户信息
+const userStore=useUserStore()
+// 商家信息
 const merchant=ref({})
 const merchantStore=useMerchantStore()
+// 选择面板
 const nowChoice=ref("预约")
+// 店铺相关分享列表
 const shareList=ref([])
+//  预约信息结构体
+const orderFormData=reactive({
+  name:'',
+  phoneNumber:'',
+  clientId:0,
+  merchantId:0,
+  number:0,
+  status:'',
+  orderTime:''
+})
+// dateCard点击处理
+function handleDateCardClick(i){
+  ordering.value=true;
+  choiceDay.value=i;
+}
+
 // 进入预约状态
 const ordering=ref(false)
+// 选中的天编号
 const choiceDay=ref(0)
-const name=ref('')
 const staff=ref('')
-const phoneNumber=ref('')
 const staffList=ref([])
 // 处理预定
-function handleOrdeClick(){
-  if(name.value==''){
+async function handleOrdeClick(){
+  if(orderFormData.name==''){
     alert("请输入姓名")
     return
   }
-  if(phoneNumber.value==''){
+  if(orderFormData.phoneNumber==''){
     alert("请输入联系方式")
     return
   }
-  if(staff.value==''){
-    alert("请选择理发师")
-    return
-  }
+  orderFormData.clientId=userStore.userInfo.id;
+  orderFormData.merchantId=merchant.value.id;
+  orderFormData.number=listNum.value[choiceDay.value]+1;
+  orderFormData.status="未到店"
+  orderFormData.orderTime=
+   new Date(Date.now() + (choiceDay.value-1) * 24 * 60 * 60 * 1000)
+          .toISOString();
+  await addOrderApi(orderFormData).then(res=>{
+    alert(res.data.data)
+  })
+  window.location.reload()
+  
 }
 // 限制预约天数
 const days=ref(8)
@@ -164,6 +202,7 @@ function handleShare(){
     shareList.value=res.data.data
   })
 }
+
 </script>
 <style lang="scss" scoped>
 .detailBox{

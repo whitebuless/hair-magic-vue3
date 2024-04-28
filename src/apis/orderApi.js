@@ -8,8 +8,17 @@ const findOrderByAllApi=function(order){
   })
 }
 
+const addOrderApi=function(order){
+  return axiosInstance({
+    url:'/order/add',
+    method:'POST',
+    data:order
+  })
+}
+
 
 export {
-  findOrderByAllApi
+  findOrderByAllApi,
+  addOrderApi
 }
 
