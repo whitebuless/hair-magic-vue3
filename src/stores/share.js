@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import router from '../router/index.js'
 import { uploadShareApi } from '../apis/shareAPpi.js'
+import { message } from 'ant-design-vue'
 
 export const useShareStore = defineStore('share', {
   state: () => {
@@ -13,7 +14,10 @@ export const useShareStore = defineStore('share', {
   actions: {
     uploadShare(share){
       uploadShareApi(share).then(res=>{
-        alert(res.data.data)
+        if(res.data.code=='200'){
+          message.success("发布成功")
+          router.push("/home/find")
+        }
       })
     }
   },

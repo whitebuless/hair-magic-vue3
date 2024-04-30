@@ -11,6 +11,7 @@ import router from "../../router";
 // test
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import { message } from "ant-design-vue";
 
 const shareStore=useShareStore()
 const commentStore=useCommentStore()
@@ -55,7 +56,8 @@ async function subCommentClick(){
     shareStore.shareInfo.id
   ) .then(response => {
           // 处理成功情况
-          alert(response.data.data)
+          if(response.data.code=='200')
+          message.success("发布成功！")
         })
         .catch(error => {
           // 处理错误情况
@@ -67,6 +69,7 @@ async function subCommentClick(){
   await getCommentByShareIdApi(shareStore.shareInfo.id).then(res=>{
     commenList.value=res.data.data
   })
+  commentEdit.value=''
 }
 
 
@@ -119,6 +122,11 @@ const dislike = () => {
           </div>
           <div class="foot">
             <span class="iconfont icon-weizhi">{{ shareStore.shareInfo.location }}</span>
+            <span style="display: block; float: right;">
+              {{ shareStore.shareInfo.createTime.split("T")[0]+" "+shareStore.shareInfo.createTime.split("T")[1].slice(0,8) }}
+            </span>
+            <span style="display: block; float: right;margin-right: 10px;">{{ shareStore.shareInfo.userName }}</span>
+
           </div>
         </div>
       </div>
@@ -128,27 +136,27 @@ const dislike = () => {
           <a-comment v-for="i in commenList">
             <template #actions>
               <span key="comment-basic-like">
-                <a-tooltip title="Like">
+                <!-- <a-tooltip title="Like">
                   <template v-if="action === 'liked'">
                     <LikeFilled @click="like" />
                   </template>
                   <template v-else>
                     <LikeOutlined @click="like" />
                   </template>
-                </a-tooltip>
+                </a-tooltip> -->
                 <span style="padding-left: 8px; cursor: auto">
                   {{ i.likes }}
                 </span>
               </span>
               <span key="comment-basic-dislike">
-                <a-tooltip title="Dislike">
+                <!-- <a-tooltip title="Dislike">
                   <template v-if="action === 'disliked'">
                     <DislikeFilled @click="dislike" />
                   </template>
                   <template v-else>
                     <DislikeOutlined @click="dislike" />
                   </template>
-                </a-tooltip>
+                </a-tooltip> -->
                 <span style="padding-left: 8px; cursor: auto">
                   {{ dislikes }}
                 </span>

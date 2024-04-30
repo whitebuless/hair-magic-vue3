@@ -62,6 +62,10 @@ const columns = [
         text: '已处理',
         value: '已处理',
       },
+      {
+        text: '已取消',
+        value: '已取消',
+      },
     ],
   },
   {

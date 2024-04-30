@@ -113,7 +113,6 @@ const onSubmit = () => {
   formState.location='山东'
   formState.searchInfo=formState.searchInfo.join(' ')
   formState.gender='男'
-  console.log('submit!', toRaw(formState));
   shareStore.uploadShare(formState)
 };
 // 表单相关

@@ -107,6 +107,7 @@ import { findOrderByAllApi } from '../../apis/orderApi';
 import { staffInMerchantApi } from '../../apis/staffApi';
 import shareCardModel from '../Share/components/shareCardModel.vue';
 import { number } from 'echarts';
+import { message } from 'ant-design-vue';
 // 用户信息
 const userStore=useUserStore()
 // 商家信息
@@ -156,10 +157,11 @@ async function handleOrdeClick(){
    new Date(Date.now() + (choiceDay.value-1) * 24 * 60 * 60 * 1000)
           .toISOString();
   await addOrderApi(orderFormData).then(res=>{
-    alert(res.data.data)
+    if(res.data.code=='200'){
+      message.success(res.data.data)
+    }
   })
   window.location.reload()
-  
 }
 // 限制预约天数
 const days=ref(8)

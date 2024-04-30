@@ -15,7 +15,6 @@
     <a-table
     :columns="columns"
     :dataSource="dataSource"
-    @change="handleTableChange"
   >
     <template #bodyCell="{ column, text,record }">
       <template v-if="column.key === 'action'">
@@ -93,16 +92,84 @@
   </a-drawer>
   <!-- 编辑员工资料抽屉 -->
   <a-drawer
-    title="编辑员工资料"
-    placement="bottom"
-    :closable="false"
-    :open="openEdit"
-    @close="onCloseEdit"
+  title="编辑员工资料"
+  placement="bottom"
+  :closable="false"
+  :open="openEdit"
+  @close="onCloseEdit"
+>
+  <a-form
+    :model="EditStaffFormData"
+    name="EditStaff_login"
+    layout="vertical"
+    autocomplete="off"
   >
-    <p>Some contents...</p>
-    <p>Some contents...</p>
-    <p>Some contents...</p>
-  </a-drawer>
+    <a-row gutter="16">
+      <a-col :span="24">
+        <a-form-item
+          label="姓名"
+          name="name"
+        >
+          <a-input v-model:value="EditStaffFormData.name" />
+        </a-form-item>
+      </a-col>
+
+      <a-col :span="12">
+        <a-form-item
+          label="手机号"
+          name="phoneNumber"
+        >
+          <a-input v-model:value="EditStaffFormData.phoneNumber" />
+        </a-form-item>
+      </a-col>
+
+      <a-col :span="12">
+        <a-form-item
+          label="出席费"
+          name="price"
+        >
+          <a-input v-model:value="EditStaffFormData.price" />
+        </a-form-item>
+      </a-col>
+
+      <a-col :span="12">
+        <a-form-item
+          label="经验"
+          name="years"
+        >
+          <a-input v-model:value="EditStaffFormData.years" />
+        </a-form-item>
+      </a-col>
+
+      <a-col :span="12">
+        <a-form-item
+          label="性别"
+          name="gender"
+        >
+          <a-radio-group v-model:value="EditStaffFormData.gender" name="gender">
+            <a-radio value="男">男</a-radio>
+            <a-radio value="女">女</a-radio>
+          </a-radio-group>
+        </a-form-item>
+      </a-col>
+
+      <a-col :span="24">
+        <a-form-item
+          label="简介"
+          name="detail"
+        >
+          <a-textarea v-model:value="EditStaffFormData.detail" />
+        </a-form-item>
+      </a-col>
+
+    </a-row>
+
+    <a-form-item>
+      <a-button type="primary" @click="handleSaveClick">保存</a-button>
+    </a-form-item>
+  </a-form>
+</a-drawer>
+
 
   <!-- 弹出删除确认 -->
   <a-modal v-model:open="deleteing" title="删除确认窗口" @ok="handleOk">
@@ -119,15 +186,24 @@ import { useStaffStore } from '../../../../stores/staff';
 import { useMerchantStore } from '../../../../stores/merchant';
 import { addStaffApi } from '../../../../apis/staffApi';
 import { deleteStaffApi } from '../../../../apis/staffApi';
+import { updateStaffApi } from '../../../../apis/staffApi';
 const merchantStore=useMerchantStore()
 const staffStore=useStaffStore()
 // 删除框配置
 const deleteing = ref(false);
 const deleteingId=ref(0)
-// 新增数据绑定
-const gender=ref('男')
-const description=ref('')
+// 新增员工数据结构体
 const addStaffFormData=reactive({
+  name:'',
+  phoneNumber:'',
+  years:1,
+  gender:'男',
+  detail:'',
+  price:0
+})
+// 修改员工信息结构体
+const EditStaffFormData=ref({
+  id:'',
   name:'',
   phoneNumber:'',
   years:1,
@@ -208,9 +284,24 @@ const showDrawer = () => {
 };
 // 点击编辑
 function handleEditClick(item){
-  console.log(item)
+  EditStaffFormData.value.id=item.id
+  EditStaffFormData.value.name=item.name
+  EditStaffFormData.value.phoneNumber=item.phoneNumber
+  EditStaffFormData.value.price=item.price
+  EditStaffFormData.value.years=item.years
+  EditStaffFormData.value.detail=item.detail
+  EditStaffFormData.value.gender=item.gender
   openEdit.value=true
 }
+// 点击保存编辑
+function handleSaveClick(){
+  updateStaffApi(EditStaffFormData.value).then(res=>{
+    alert(res.data.data)
+    openEdit.value=false
+    getStaffList(merchantStore.merchantInfo.id)
+  })
+}
+// 更新员工信息关闭
 const onCloseEdit = () => {
   openEdit.value = false;
 };

@@ -25,10 +25,18 @@ const deleteStaffApi=function(id){
     }
   })
 }
-
+// 更新员工信息
+const updateStaffApi=function(staff){
+  return axiosInstance({
+    url:'/staff/update',
+    method:"POST",
+    data:staff
+  })
+}
 export {
   staffInMerchantApi,
   addStaffApi,
-  deleteStaffApi
+  deleteStaffApi,
+  updateStaffApi
 }
 
