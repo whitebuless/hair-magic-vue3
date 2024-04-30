@@ -30,6 +30,10 @@ onMounted(()=>{
 })
 
 const columns = [
+{
+    title: '订单编号',
+    dataIndex: 'id',
+  },
   {
     title: '姓名',
     dataIndex: 'name',
@@ -37,7 +41,6 @@ const columns = [
   {
     title: '电话号',
     dataIndex: 'phoneNumber',
-    sorter: (a, b) => a.age - b.age,
   },
   {
     title: '预约时间',
@@ -50,6 +53,16 @@ const columns = [
   {
     title: '状态',
     dataIndex: 'status',
+    filters: [
+      {
+        text: '未到店',
+        value: '未到店',
+      },
+      {
+        text: '已处理',
+        value: '已处理',
+      },
+    ],
   },
   {
     title: '操作',
@@ -63,6 +76,13 @@ const data = ref([
 ])
 function onChange(pagination, filters, sorter, extra) {
   console.log('params', pagination, filters, sorter, extra);
+  const formData = {
+    merchantId: merchantStore.merchantInfo.id,
+    status: filters.status?.[0], // 获取筛选条件中的状态值
+  };
+  findOrderByAllApi(formData).then(res => {
+    data.value = res.data.data;
+  });
 }
 </script>
 <style lang="scss" scoped>

@@ -18,6 +18,8 @@ import ReservationView from "@/views/merchant/list/Reservation/index.vue"
 import ShopDetailView from "@/views/ShopDetail/index.vue"
 import UserInfoView from "@/views/UserInfo/index.vue"
 import UserOrderView from "@/views/UserOrder/index.vue"
+import AddInfoView from "@/views/AddInfo/index.vue"
+import NewMerchantView from "@/views/NewMerchant/index.vue"
 const routes=[
   {
     path:'/merchant',
@@ -99,6 +101,16 @@ const routes=[
         name:'uploadClient'
       },
     ]
+  },
+  {
+    path:'/addInfo',
+    component:AddInfoView,
+    name:'addInfo'
+  },
+  {
+    path:'/newmerchant',
+    component:NewMerchantView,
+    name:'NewMerchant'
   }
 ] 
 

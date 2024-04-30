@@ -1,11 +1,15 @@
 <template>
+  <div class="Box">
+    <div class="topBox">
+    <NavBar @click="solvedBefore=false"></NavBar>
+  </div>
   <div class="merchantBox">
+    
     <div class="leftView">
       <SideBar></SideBar>
     </div>
-
     <div class="rightView">
-      <NavBar @click="solvedBefore=false"></NavBar>
+
       <div class="tableBox">
         <router-view></router-view>
       </div>
@@ -21,6 +25,7 @@
     </ul>
     </div>
   </div>
+  </div>
 </template>
 <script setup>
 import { onMounted, ref } from 'vue';
@@ -29,6 +34,7 @@ import SideBar from './components/SideBar/index.vue'
 import { useMerchantStore } from '../../stores/merchant';
 import { useUserStore } from '../../stores/user';
 import {getMerchantByUserIdApi} from '../..//apis/merchantApi.js'
+import router from '../../router/index.js';
 const userStore=useUserStore()
 const merchantStore=useMerchantStore()
 const merchantList=ref([])
@@ -42,7 +48,13 @@ onMounted(()=>{
 
 async function getMerchantList(id){
   await getMerchantByUserIdApi(id).then((res=>{
-    merchantList.value=res.data.data
+    if(!res.data.data){
+      router.push('/newmerchant')
+    }
+    else{
+      merchantStore.merchantInfo=res.data.data[0]
+      merchantList.value=res.data.data
+    }
   }))
   console.log(merchantList.value);
 }
@@ -54,10 +66,13 @@ function handleChooseMerchant(item){
 
 </script>
 <style lang="scss" scoped>
+.Box{
+  height: 100vh;
+  overflow: hidden;
+}
 .merchantBox{
   background-color: rgb(237, 237, 237);
   width:100%;
-  height: 100vh;
   overflow: hidden;
   display: flex;
   justify-content: space-between;

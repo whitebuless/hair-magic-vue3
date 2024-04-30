@@ -20,7 +20,7 @@
     <template #bodyCell="{ column, text,record }">
       <template v-if="column.key === 'action'">
         <span>
-          <a>编辑</a>
+          <a @click="handleEditClick(record)">编辑</a>
           <a-divider type="vertical" />
           <a style="color: red;"
           @click="handleDeleteClick(record.id)"
@@ -36,6 +36,7 @@
   </a-table>
 
   </div>
+  <!-- 新增员工抽屉 -->
   <a-drawer
     v-model:open="open"
     class="custom-class"
@@ -90,6 +91,18 @@
 
 
   </a-drawer>
+  <!-- 编辑员工资料抽屉 -->
+  <a-drawer
+    title="编辑员工资料"
+    placement="bottom"
+    :closable="false"
+    :open="openEdit"
+    @close="onCloseEdit"
+  >
+    <p>Some contents...</p>
+    <p>Some contents...</p>
+    <p>Some contents...</p>
+  </a-drawer>
 
   <!-- 弹出删除确认 -->
   <a-modal v-model:open="deleteing" title="删除确认窗口" @ok="handleOk">
@@ -124,6 +137,8 @@ const addStaffFormData=reactive({
 })
 // 用户新增侧边栏显示
 const open = ref(false);
+// 员工资料编辑侧边栏显示
+const openEdit = ref(false);
 //表格配置
 const columns = [
   {
@@ -170,18 +185,6 @@ const columns = [
 ];
 // 
 const dataSource=ref([])
-const data = [
-  {
-    key: '1',
-    name: 'John Brown',
-    phoneNumber:'1231231231',
-    gender:'male',
-    price:20,
-    years:3,
-    detail:"gugugde",
-  },
-];
-
 onMounted(()=>{
   getStaffList(merchantStore.merchantInfo.id)
 })
@@ -190,9 +193,6 @@ async function getStaffList(id){
     dataSource.value=res.data.data
   }))
 } 
-function onChange(pagination, filters, sorter, extra) {
-  console.log('params', pagination, filters, sorter, extra);
-}
 // 搜索框配置
 const value = ref('');
 const onSearch = searchValue => {
@@ -205,6 +205,14 @@ const afterOpenChange = bool => {
 };
 const showDrawer = () => {
   open.value = true;
+};
+// 点击编辑
+function handleEditClick(item){
+  console.log(item)
+  openEdit.value=true
+}
+const onCloseEdit = () => {
+  openEdit.value = false;
 };
 // 点击提交
 async function handleAddClick(){
@@ -232,7 +240,5 @@ const handleOk =async e => {
     alert(res.data.data)
   })
   await getStaffList(merchantStore.merchantInfo.id)
-
-
 };
 </script>

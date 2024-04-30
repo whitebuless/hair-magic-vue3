@@ -35,6 +35,15 @@
                 align-items: center;">
       <div>
         <span 
+        class="iconfont icon-mind-full" 
+        style="font-size: large;
+              cursor: pointer;
+              margin: 0 10px;"
+        title="Ai推荐"
+        @click="router.push('/func/uploadClient')"
+
+        ></span>
+        <span 
         class="iconfont icon-shangchuan" 
         style="font-size: large;
               cursor: pointer;
@@ -65,7 +74,6 @@
         <div class="actives">
           <ul>
             <li @click="router.push(`/home/user/${userStore.userInfo.id}`)">个人中心</li>
-            <li>我的分享</li>
             <li @click="router.push(`/home/userorder`)">我的预约</li>
           </ul>
         </div>

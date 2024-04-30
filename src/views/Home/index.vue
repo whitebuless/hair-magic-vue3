@@ -35,6 +35,9 @@ onMounted(()=>{
   if(userStore.userInfo.identity!="用户"){
     router.replace("/")
   }
+  if(!userStore.userInfo.password){
+    router.push("/addInfo")
+  }
 })
 
 </script>

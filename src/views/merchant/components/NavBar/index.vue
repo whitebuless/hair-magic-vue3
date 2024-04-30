@@ -1,7 +1,6 @@
 <template>
   <div class="navBarBox">
-    <div class="">    欢迎来到{{ merchantStore.merchantInfo.name==null?'***':merchantStore.merchantInfo.name }}后台管理系统</div>
-    <div class=""></div>
+    <span class="title">    欢迎来到{{ merchantStore.merchantInfo.name==null?'***':merchantStore.merchantInfo.name }}后台管理系统</span>
   </div>
 </template>
 <script setup>
@@ -20,5 +19,10 @@ const merchantStore=useMerchantStore()
   display: flex;
   align-items: center;
   padding: 10px;
+  .title{
+    text-align: center;
+    width: 100%;
+    font-size: larger;
+  }
 }
 </style>

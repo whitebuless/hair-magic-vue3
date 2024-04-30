@@ -20,8 +20,18 @@ const getMerchantByAllApi=function(merchant){
     data:merchant
   })
 }
+
+// 新增
+const addMerchantApi=function(merchant){
+  return axiosInstance({
+    url:"/merchant/add",
+    method:"POST",
+    data:merchant
+  })
+}
 export {
   getMerchantByUserIdApi,
-  getMerchantByAllApi
+  getMerchantByAllApi,
+  addMerchantApi
 }
 

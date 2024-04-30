@@ -4,32 +4,41 @@
       <div class="topicBox">
         <h1 class="loginTopic"
         :style="{color:roleColor}"
-        @click="role=true"
+        @click="role='用户'"
         >用户登录</h1>
         <h1 class="loginTopic"
         :style="{color:roleColor2}"
-        @click="role=false">商家登录</h1>
+        @click="role='商家'">商家登录</h1>
         <div class="topicRight">
           <span class="iconfont icon-mimadenglu" :class="loginWay==true?'hightLight':'lowLight'" @click="changeWay(true)"></span>
           <span class="iconfont icon-yanzhengmadenglu" :class="loginWay==false?'hightLight':'lowLight'" @click="changeWay(false)"></span>
         </div>
       </div>
       <form action="" class="formBox">
-        <input type="text" name="account" id="" placeholder="输入手机号" v-model="userData.phoneNumber">
+        <input type="text" name="account" id="" placeholder="输入邮箱" v-model="userData.email">
         <div style="display: flex;" v-if="loginWay==true">
           <input type="text" name="password" id="" placeholder="输入密码" v-model="userData.password">
         </div>
         <div  v-else-if="loginWay==false">
           <div style="display: flex;">
-            <input type="text" name="password" id="" placeholder="输入验证码">
-            <a-button type="primary" >发送验证码</a-button>
+            <input 
+            type="text" 
+            name="password" 
+            id="" 
+            placeholder="输入验证码"
+            v-model="verticalCode">
+            <a-button type="primary" @click="sendCode">发送验证码</a-button>
           </div>
         </div>
         <div style="display: flex;">
           <input type="text" name="" id="" placeholder="输入图形验证码" v-model="userCode">
           <canvas ref="myCanvas" width="120" height="45" @click="generateCode()"></canvas>
         </div>
-        <a-button type="primary" class="loginBtn" @click="clickLogin()">登录/注册</a-button>
+        <a-button v-if="loginWay==true" 
+        type="primary" class="loginBtn" @click="clickLogin()">登录</a-button>
+        <a-button v-else-if="loginWay==false" 
+        type="primary" class="loginBtn" @click="clickLogin()">登录/注册</a-button>
+      
       </form>
       <div class="texts">
         <span style="color: #aaa;">账号不存在将自动注册</span>
@@ -47,25 +56,27 @@
     </div>
     <div class="leftTexts">
       <h1 class="txt"><i><b>海马极客</b></i></h1>
-
       <div class="rectangle"></div>
       <span class="hair"><b>Hair</b></span>     <span class="magic"><b>Magic</b></span>
     </div>
-
   </div>
 </template>
 <script setup>
 // 导入Vue相关依赖
 import { computed, onMounted, ref } from "vue";
 import { useUserStore } from '../../stores/user'
+import { sendEmail } from "../../apis/sendEmail";
+import { getCode } from "../../apis/verticode.js";
 const user = useUserStore()
 // 导入请求
 import {userLoginApi} from "../../apis/userApi"
+// 验证码绑定
+const verticalCode=ref('')
 // 用户类型
-const role=ref(true)
-const roleColor=computed(()=>role.value==true?'black':'#aaaaaa')
-const roleColor2=computed(()=>role.value==false?'black':'#aaaaaa')
-// 登录方式标志
+const role=ref("用户")
+const roleColor=computed(()=>role.value=="用户"?'black':'#aaaaaa')
+const roleColor2=computed(()=>role.value=="商家"?'black':'#aaaaaa')
+// 登录方式标志{true:密码登录；false：验证码登录}
 let loginWay=ref(true)
 // 用户登录信息
 let userData=ref({})
@@ -81,8 +92,20 @@ let checkedColor=ref('black')
 // 生命周期钩子
 onMounted(()=>{
   generateCode()
-
 })
+// 发送验证码
+function sendCode(){
+  if(userData.value.email){
+    getCode(userData.value.email).then(res=>{
+      alert(res.data.data)
+    })
+    return 
+  }
+  else{
+    alert("请输入邮箱")
+    return
+  }
+}
 
 function generateCode(){
   const canvas=myCanvas.value;
@@ -131,7 +154,6 @@ function drawDistortedText(ctx, text, x, y) {
   // 在Canvas上绘制文字
   ctx.fillText(text, x, y);
 }
-
 // 改变登陆方式
 let changeWay=function(status){
   loginWay.value=status
@@ -152,7 +174,12 @@ let clickLogin=function(){
     return
   }
   if(loginWay.value==true){
-    user.login(userData.value.phoneNumber,userData.value.password,role.value)
+    user.login(userData.value.email,userData.value.password)
+  }else{
+    user.loginVertical(userData.value.email,
+                      verticalCode.value,
+                      role.value
+                    )
   }
 }
 

@@ -107,7 +107,7 @@ const options = ref([]);
 // 提交逻辑
 const onSubmit = () => {
   formState.userId=userStore.userInfo.id
-  formState.userName=userStore.userInfo.userName
+  formState.userName=userStore.userInfo.username
   formState.shopName='暖风发廊'
   formState.shopId=1
   formState.location='山东'

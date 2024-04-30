@@ -40,7 +40,7 @@ const shopList=ref([
 ])
 
 onMounted(()=>{
-  let a={location:'山东'}
+  let a={location:''}
   getMerchants(a)
 })
 
