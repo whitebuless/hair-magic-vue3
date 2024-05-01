@@ -32,7 +32,8 @@
           状态:
           <span v-if="item.status=='未到店'"
           style="color: red;">{{ item.status }}</span>
-          
+          <span v-if="item.status=='处理中'"
+          style="color: green;">{{ item.status }}</span>
         </div>
 
         
@@ -50,13 +51,13 @@ const userStore=useUserStore()
 const userOrderList=ref([])
 onMounted(()=>{
   if(!userStore.userInfo.id){
-    router.push("/login")
+    router.push("/")
   }
   const initData={
     clientId:userStore.userInfo.id
   }
   findOrderByAllApi(initData).then(res=>{
-    userOrderList.value=res.data.data
+    userOrderList.value=res.data.data.reverse()
   })
 })
 </script>
@@ -70,6 +71,7 @@ onMounted(()=>{
   .orderList{
     width: 100%;
     display: flex;
+    flex-wrap: wrap;
     .orderCard{
       margin: 10px;
       font-family: 'Courier New', Courier, monospace;
