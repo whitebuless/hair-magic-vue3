@@ -2,7 +2,7 @@
   <div class="userInfoBox">
     <div class="avatar">
       <a-avatar :size="160" src="https://th.bing.com/th/id/R.0f7e0f8f147bb9dfafc5e4c3bece59f2?rik=auXMf%2b3yZ3xMLQ&riu=http%3a%2f%2fimg.qqtouxiangzq.com%2f6%2f1182%2f32.jpg&ehk=kLA%2fNQgc8j3Poiz5Hva1NiVpJlwbSQosepCOeN5wde4%3d&risl=&pid=ImgRaw&r=0">
-    </a-avatar>
+      </a-avatar>
     </div>
     <div class="baseInfo">
       <p style="color: #999999;" disabled>
@@ -23,6 +23,9 @@
 
     </div>
   </div>
+  <a-skeleton active />
+  <a-skeleton active />
+  <a-skeleton active />
 </template>
 
 <script setup>
@@ -49,6 +52,7 @@ onMounted(()=>{
 <style lang="scss" scoped>
 .userInfoBox{
   display: flex;
+  margin-bottom: 30px;
   .baseInfo{
     padding: 20px;
     display: flex;

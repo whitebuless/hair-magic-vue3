@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref,inject, watchEffect,provide } from "vue";
+import { onMounted, ref,inject, watchEffect,provide, reactive } from "vue";
 import { getShareApi } from "../../apis/shareAPpi"
 import ShareCardModelVue from "./components/shareCardModel.vue";
 import { useShareStore } from "../../stores/share";
@@ -34,13 +34,29 @@ async function getShares(title){
   }))
 }
 
+// 
+const shareBody=reactive({
+  imgs:'',
+  title:'',
+  hairType:'',
+  description:'',
+  location:'',
+  createTime:'',
+  userName:'',
+})
 // 点击分享
 function handleCardClick(item){
   getCommentByShareIdApi(item.id).then(res=>{
     commenList.value=res.data.data
   })
   detail.value=!detail.value
-  shareStore.shareInfo=item
+  shareBody.imgs=item.imgs
+  shareBody.title=item.title
+  shareBody.hairType=item.hairType
+  shareBody.description=item.description
+  shareBody.location=item.location
+  shareBody.createTime=item.createTime
+  shareBody.userName=item.userName
 }
 
 // 发表评论
@@ -77,16 +93,6 @@ dayjs.extend(relativeTime);
 const likes = ref(0);
 const dislikes = ref(0);
 const action = ref();
-const like = () => {
-  likes.value = 1;
-  dislikes.value = 0;
-  action.value = 'liked';
-};
-const dislike = () => {
-  likes.value = 0;
-  dislikes.value = 1;
-  action.value = 'disliked';
-};
 
 </script>
 <template>
@@ -103,30 +109,26 @@ const dislike = () => {
     :style="{visibility:detail?'hidden':'visible'}"
     @click="detail=!detail">
     </div>
+    <!-- 浮动细节窗口 -->
     <div class="floatDetail"
     :style="{display:detail?'none':'flex'}">
 
       <div class="leftBox">
         <div class="imgShow">
-          <img :src="shareStore.shareInfo.imgs.split(' ')[0]" alt="">
+          <img :src="shareBody.imgs?.split(' ')[0]" alt="">
         </div>
         <div class="details">
           <div class="head">
-            <span class="title">{{ shareStore.shareInfo.title }}</span>
-            <span class="hairType">{{ shareStore.shareInfo.hairType }}</span>
+            <span class="title">{{ shareBody.title }}</span>
+            <span class="hairType">{{ shareBody.hairType }}</span>
           </div>
           <div class="body">
-            <span class="description">
-              {{ shareStore.shareInfo.description}}
-            </span>
+            <p class="description">{{ shareBody.description }}</p>
           </div>
           <div class="foot">
-            <span class="iconfont icon-weizhi">{{ shareStore.shareInfo.location }}</span>
-            <span style="display: block; float: right;">
-              {{ shareStore.shareInfo.createTime.split("T")[0]+" "+shareStore.shareInfo.createTime.split("T")[1].slice(0,8) }}
-            </span>
-            <span style="display: block; float: right;margin-right: 10px;">{{ shareStore.shareInfo.userName }}</span>
-
+            <span class="iconfont icon-weizhi">{{ shareBody.location }}</span>
+            <span class="createTime">{{ shareBody.createTime.split("T")[0]+" "+shareBody.createTime.split("T")[1]?.slice(0,8) }}</span>
+            <span class="userName">{{ shareBody.userName }}</span>
           </div>
         </div>
       </div>
@@ -208,46 +210,78 @@ const dislike = () => {
     box-shadow: 0 0 15px 15px rgba(0, 0, 0, 0.095);
     display: flex;
     padding: 20px;
-    .leftBox{
+    .leftBox {
       width: 50%;
       padding: 5px;
-      .imgShow{
+      position: relative;
+      display: flex;
+      flex-direction: column; /* 将 leftBox 设为 flex 布局，方便下方的 .details 定位 */
+      .imgShow {
         width: 100%;
-        max-height: 70%;
         overflow: hidden;
-        
-        img{
-          width: 100%;
-          max-height: 70%
+        img {
+          width: auto;
+          max-width: 100%;
+          height: auto;
+          max-height: 100%; /* 确保图片不超出容器，并保持宽度完全展示 */
+          display: block;
+          margin: 0 auto;
         }
         margin-bottom: 0.6rem;
       }
-      .details{
-        display: flex;
-        flex-direction: column;
-        justify-content: space-around;
-        .head{
-          margin-bottom: 10px;
-          .title{
-          }
-          .hairType{
-            color: rgb(146, 146, 146);
-            float:right;
-          }
-        }
-        .body{
-          margin-bottom: 10px;
-          .description{
-            text-indent:24px;
-            color: rgb(146, 146, 146);
-          }
-        }
-        
-        .foot{
-          color: rgb(146, 146, 146);
-        }
-      }
+      .details {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 15px;
+  z-index: 1;
+  overflow: auto;
+  border-top: 1px solid #ccc;
+  font-family: 'Microsoft YaHei', sans-serif;
+  font-size: 14px; /* 调整字体大小 */
+
+  .head {
+    margin-bottom: 15px;
+    .title {
+      font-size: 18px; /* 调整标题字体大小 */
+      font-weight: bold;
+      color: #333;
     }
+    .hairType {
+      color: #666;
+      font-style: italic;
+      float: right;
+    }
+  }
+
+  .body {
+    margin-bottom: 15px;
+    .description {
+      text-indent: 24px;
+      color: #555;
+      /* font-size: 16px; 移除字体大小，使用父级的字体大小 */
+      line-height: 1.6;
+    }
+  }
+
+  .foot {
+    color: #888;
+    font-size: 12px; /* 调整时间和用户名的字体大小 */
+    .icon-weizhi {
+      margin-right: 10px;
+      color: #555;
+    }
+    .createTime,
+    .userName {
+      display: block;
+      color: #777;
+    }
+  }
+}
+}
+
     .rightBox{
       width: 50%;
       padding: 5px;

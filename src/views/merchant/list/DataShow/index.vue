@@ -38,7 +38,7 @@
       </a-card> -->
     </div>
     <div class="chart">
-      <div id="chartBody" style="height:70vh;width:100%" ></div>
+      <div id="chartBody" style="height:60vh;width:100%" ></div>
     </div>
   </div>
 </template>

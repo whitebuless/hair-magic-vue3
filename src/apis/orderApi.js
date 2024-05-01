@@ -15,10 +15,19 @@ const addOrderApi=function(order){
     data:order
   })
 }
+// 更新订单状态
+const updateOrderApi=function(order){
+  return axiosInstance({
+    url:'/order/update',
+    method:'POST',
+    data:order
+  })
+}
 
 
 export {
   findOrderByAllApi,
-  addOrderApi
+  addOrderApi,
+  updateOrderApi
 }
 

@@ -3,7 +3,6 @@
     <div class="uploadForm">
       <a-form :model="formState" 
       :label-col="labelCol" 
-      style="width: 800px;"
       :wrapper-col="wrapperCol">
       <a-form-item label="分享标题" required>
         <a-input 
@@ -16,12 +15,9 @@
           v-model:value="formState.hairType"
           show-search
           placeholder="选择发型标签"
-          style="width: 100%"
           :options="options"
         ></a-select>
       </a-form-item>
-      
-
       <a-upload
         v-model:file-list="fileList"
         action="https://www.imgtp.com/api/upload"
@@ -182,29 +178,52 @@ const handlePreview = async file => {
 };
 
 </script>
+
 <style lang="scss" scoped>
-.uploadBox{
+.uploadContainer {
   display: flex;
   padding: 1rem 2rem;
   width: 100%;
   position: relative;
   overflow: hidden;
   height: auto;
-  .uploadBox{
-    flex: 3;
-    position: absolute;
-    width: 60%;
+
+  .uploadBox {
+    flex: 1;
+    position: relative;
+    padding-right: 1rem;
+
+    .uploadForm {
+      max-width: 600px;
+    }
+
+    .ant-form-item {
+      margin-bottom: 1rem;
+    }
+
+    .ant-form-item-label {
+      width: 150px;
+    }
+
+    .ant-form-item-control {
+      width: calc(100% - 150px);
+    }
+
+    .ant-btn {
+      margin-right: 1rem;
+    }
   }
-  .foresee{
-    position: absolute;
-    top: 0;
-    background-color: rgb(89, 0, 0);
-    width: 40%;
-    height: 600px;
-    right: 40px;
+
+  .foresee {
+    flex: 1;
+    position: relative;
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   }
 }
-/* you can make up upload button and sample style by using stylesheets */
 .ant-upload-select-picture-card i {
   font-size: 32px;
   color: #999;

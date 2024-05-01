@@ -15,7 +15,6 @@ const merchantStore=useMerchantStore()
   color: var(--theme) ;
   width: 100%;
   background-color: white;
-  height: 4rem;
   display: flex;
   align-items: center;
   padding: 10px;

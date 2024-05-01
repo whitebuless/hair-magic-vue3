@@ -1,30 +1,28 @@
 <template>
   <div class="Box">
     <div class="topBox">
-    <NavBar @click="solvedBefore=false"></NavBar>
-  </div>
-  <div class="merchantBox">
-    
-    <div class="leftView">
-      <SideBar></SideBar>
+      <NavBar @click="solvedBefore=false"></NavBar>
     </div>
-    <div class="rightView">
-
-      <div class="tableBox">
-        <router-view></router-view>
+    <div class="merchantBox">
+      <div class="leftView">
+        <SideBar></SideBar>
+      </div>
+      <div class="rightView">
+        <div class="tableBox">
+          <router-view></router-view>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="cover" v-show="!solvedBefore">
-    <div>
-      <h1>选择店铺</h1>
-      <ul>
-      <li v-for="item in merchantList" @click="handleChooseMerchant(item)" >
-        {{ item.name }}
-      </li>
-    </ul>
+    <div class="cover" v-show="!solvedBefore">
+      <div>
+        <h1>选择店铺</h1>
+        <ul>
+          <li v-for="item in merchantList" @click="handleChooseMerchant(item)" >
+            {{ item.name }}
+          </li>
+        </ul>
+      </div>
     </div>
-  </div>
   </div>
 </template>
 <script setup>
@@ -67,31 +65,35 @@ function handleChooseMerchant(item){
 </script>
 <style lang="scss" scoped>
 .Box{
-  height: 100vh;
+  max-height: 100vh;
   overflow: hidden;
-}
-.merchantBox{
-  background-color: rgb(237, 237, 237);
-  width:100%;
-  overflow: hidden;
-  display: flex;
-  justify-content: space-between;
-  .leftView{
-    width: 15%;
-
+  .topBox{
+    height: 30%;
   }
-  .rightView{
-    width: 85%;
-    .tableBox{
-      box-sizing: content-box;
-      padding: 20px;
+  .merchantBox{
+    height: 70%;
+    background-color: rgb(237, 237, 237);
+    width:100%;
+    overflow: hidden;
+    display: flex;
+    justify-content: space-between;
+    .leftView{
+      width: 15%;
       height: 100%;
-      .list-item{
-        background-color: white;
-        border-radius: 10px;
-        height: 100%;
-        padding: 30px;
-        box-shadow: 0 0 4px 4px rgb(207, 207, 207);
+      overflow: scroll;
+    }
+    .rightView{
+      width: 85%;
+      height: 100%;
+      .tableBox{
+        box-sizing: content-box;
+        padding: 20px;
+        .list-item{
+          background-color: white;
+          border-radius: 10px;
+          padding: 30px;
+          box-shadow: 0 0 4px 4px rgb(207, 207, 207);
+        }
       }
     }
   }
