@@ -187,6 +187,7 @@ import { useMerchantStore } from '../../../../stores/merchant';
 import { addStaffApi } from '../../../../apis/staffApi';
 import { deleteStaffApi } from '../../../../apis/staffApi';
 import { updateStaffApi } from '../../../../apis/staffApi';
+import { message } from 'ant-design-vue';
 const merchantStore=useMerchantStore()
 const staffStore=useStaffStore()
 // 删除框配置
@@ -225,16 +226,6 @@ const columns = [
   {
     title: '性别',
     dataIndex: 'gender',
-    filters: [
-      {
-        text: '男',
-        value: '男',
-      },
-      {
-        text: '女',
-        value: '女',
-      },
-    ],
   },
   {
     title:'电话',
@@ -243,12 +234,10 @@ const columns = [
   {
     title:'出席费',
     dataIndex:'price',
-    sorter: true,
   },
   {
     title:'经验',
     dataIndex:'years',
-    sorter:true
   },
   {
     title:'简介',
@@ -314,7 +303,7 @@ async function handleAddClick(){
   addStaffFormData.merchant=merchantStore.merchantInfo.id
   addStaffFormData.merchantName=merchantStore.merchantInfo.name
   await addStaffApi(addStaffFormData).then(res=>{
-    alert(res.data.data)
+    message.success(res.data.data)
   })
   open.value = false;
   await getStaffList(merchantStore.merchantInfo.id)
