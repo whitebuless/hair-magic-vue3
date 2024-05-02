@@ -18,10 +18,10 @@
       <a-divider type="vertical" />
       <!-- 正在进行的订单 -->
       <a-table :columns="columnsIng" :data-source="dataIng" @change="onChange" class="ingTable">
-        <template #bodyCell="{ column }">
+        <template #bodyCell="{ column,row,record }">
           <template v-if="column.key === 'action'">
           <span>
-            <a>结算</a>
+            <a @click="handleCleanClick(record)">结算</a>
             <a-divider type="vertical" />
             <a-divider type="vertical" />
           </span>
@@ -53,16 +53,25 @@
       <a-radio v-for="item in staffList" :style="radioStyle" :value="item">{{item.name}}</a-radio>
     </a-radio-group>
   </a-drawer>
+
+  <!-- 分配对话框 -->
+  <a-modal v-model:open="openClean" title="结算面板" @ok="handleOk">
+    <label for="">金额：</label>
+    <a-input v-model:value="cleaningItem.price" placeholder="Basic usage" />
+  </a-modal>
 </template>
-<script setup>
+<script setup>  
 import { onMounted,ref,reactive } from 'vue';
 import { findOrderByAllApi } from '../../../../apis/orderApi';
 import { useMerchantStore } from '../../../../stores/merchant';
 import { staffInMerchantApi } from '../../../../apis/staffApi';
 import { updateOrderApi } from '../../../../apis/orderApi';
+import { message } from 'ant-design-vue';
 const merchantStore=useMerchantStore()
 // 分配抽泣
 const open=ref(false)
+// 分配对话框
+const openClean=ref(false)
 function alignClick(item){
   choiceOrder.value=item
   staffInMerchantApi(merchantStore.merchantInfo.id).then(res=>{
@@ -73,6 +82,28 @@ function alignClick(item){
 const onClose = () => {
   open.value = false;
 };
+// 结算函数
+const cleaningItem=ref({})
+function handleCleanClick(item){
+  openClean.value=true
+  cleaningItem.value.id=item.id
+  cleaningItem.value.price=item.price
+  console.log(item);
+}
+// 处理确认
+const handleOk=async ()=>{
+  const orderCleanBody={
+    id:cleaningItem.value.id,
+    status:'已完成',
+    price:cleaningItem.value.price
+  }
+  await updateOrderApi(orderCleanBody).then(res=>{
+    message.success(res.data.data)
+  })
+  openClean.value=false
+  await getIngOrder()
+  console.log('ok');
+}
 // 分配样式
 const radioStyle = reactive({
   display: 'flex',
@@ -80,7 +111,7 @@ const radioStyle = reactive({
   lineHeight: '30px',
 });
 // 分配提交函数
-function alignConfirm(){
+async function alignConfirm(){
   const orderBodyUpdate={
     id:choiceOrder.value.id,
     clientId:0,
@@ -89,9 +120,12 @@ function alignConfirm(){
     price:choiceStaff.value.price,
     status:'处理中',
   }
-  updateOrderApi(orderBodyUpdate).then(res=>{
-    console.log(res);
+  await updateOrderApi(orderBodyUpdate).then(res=>{
+    message.success(res.data.data)
   })
+  open.value=false
+  await getTodayOrder()
+  await getIngOrder()
 }
 // 选中的员工
 const choiceStaff=ref({})
@@ -112,23 +146,23 @@ onMounted(()=>{
 
 })
 // 获取今日订单
-function getTodayOrder(){
+async function getTodayOrder(){
   const formDataToday={
     orderTime:new Date(Date.now()).toISOString(),
     merchantId:merchantStore.merchantInfo.id,
     status:"未到店"
   }
-  findOrderByAllApi(formDataToday).then(res=>{
+  await findOrderByAllApi(formDataToday).then(res=>{
     dataToday.value=res.data.data
   })
 }
 // 获取进行中订单
-function getIngOrder(){
+async function getIngOrder(){
   const formDataIng={
     status:'处理中',
     merchantId:merchantStore.merchantInfo.id
   }
-  findOrderByAllApi(formDataIng).then(res=>{
+   await findOrderByAllApi(formDataIng).then(res=>{
     dataIng.value=res.data.data
   })
 }

@@ -54,35 +54,35 @@
         <h1 style="color: #999999;font-size: 18px;">评论</h1>
         <div class="comments">
           <a-comment v-for="i in commenList">
-            <!-- <template #actions>
-              <span key="comment-basic-like"> -->
-                <!-- <a-tooltip title="Like">
+            <template #actions>
+              <span key="comment-basic-like">
+                <a-tooltip title="Like">
                   <template v-if="action === 'liked'">
                     <LikeFilled @click="like" />
                   </template>
                   <template v-else>
                     <LikeOutlined @click="like" />
                   </template>
-                </a-tooltip> -->
-                <!-- <span style="padding-left: 8px; cursor: auto">
+                </a-tooltip>
+                <span style="padding-left: 8px; cursor: auto">
                   {{ i.likes }}
                 </span>
               </span>
-              <span key="comment-basic-dislike"> -->
-                <!-- <a-tooltip title="Dislike">
+              <span key="comment-basic-dislike">
+                <a-tooltip title="Dislike">
                   <template v-if="action === 'disliked'">
                     <DislikeFilled @click="dislike" />
                   </template>
                   <template v-else>
                     <DislikeOutlined @click="dislike" />
                   </template>
-                </a-tooltip> -->
-                <!-- <span style="padding-left: 8px; cursor: auto">
+                </a-tooltip>
+                <span style="padding-left: 8px; cursor: auto">
                   {{ dislikes }}
                 </span>
               </span>
               <span key="comment-basic-reply-to">Reply to</span>
-            </template> -->
+            </template>
             <template #author>
               <a
                 @click="router.push(`/home/user/${i.userId}`)"
@@ -162,8 +162,9 @@ const shareBody=reactive({
   userName:'',
 })
 // 点击分享
-function handleCardClick(item){
-  getCommentByShareIdApi(item.id).then(res=>{
+async function handleCardClick(item){
+  shareStore.shareInfo=item
+  await getCommentByShareIdApi(item.id).then(res=>{
     commenList.value=res.data.data
   })
   detail.value=!detail.value

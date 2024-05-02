@@ -33,10 +33,10 @@
           <span v-if="item.status=='未到店'"
           style="color: red;">{{ item.status }}</span>
           <span v-if="item.status=='处理中'"
+          style="color: blue;">{{ item.status }}</span>
+          <span v-if="item.status=='已完成'"
           style="color: green;">{{ item.status }}</span>
         </div>
-
-        
       </div>
     </div>
   </div>
@@ -72,6 +72,7 @@ onMounted(()=>{
     width: 100%;
     display: flex;
     flex-wrap: wrap;
+    justify-content: space-between;
     .orderCard{
       margin: 10px;
       font-family: 'Courier New', Courier, monospace;

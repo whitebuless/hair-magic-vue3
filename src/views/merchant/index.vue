@@ -23,6 +23,25 @@
         </ul>
       </div>
     </div>
+
+    <button style="width: 100px;
+                  height: 100px;
+                  position: fixed;
+                  top: 20px;
+                  right: 20px;
+                  padding: 20px;
+                  border-radius: 50%;
+                  border: 0;
+                  color: white;
+                  background-color: rgb(100,0,0);
+                  cursor: pointer;
+                  "
+            @click="addNewOrder">游客单+</button>
+
+    <a-modal v-model:open="open" title="新增游客单" @ok="handleOk">
+      <a-form-item label="金额">      <a-input-number v-model:value="newPrice"></a-input-number></a-form-item>
+
+    </a-modal>
   </div>
 </template>
 <script setup>
@@ -31,8 +50,11 @@ import NavBar from './components/NavBar/index.vue'
 import SideBar from './components/SideBar/index.vue'
 import { useMerchantStore } from '../../stores/merchant';
 import { useUserStore } from '../../stores/user';
-import {getMerchantByUserIdApi} from '../..//apis/merchantApi.js'
+import {getMerchantByUserIdApi} from '../../apis/merchantApi.js'
+import { addOrderApi } from '../../apis/orderApi.js';
 import router from '../../router/index.js';
+import { number } from 'echarts';
+import { message } from 'ant-design-vue';
 const userStore=useUserStore()
 const merchantStore=useMerchantStore()
 const merchantList=ref([])
@@ -43,7 +65,34 @@ onMounted(()=>{
     solvedBefore.value=true
   }
 })
+// 游客但编辑面板
+const open=ref(false)
+const newPrice=ref(0)
+// 游客+点击
+function addNewOrder(){
+  open.value=true
+}
+// 确认新增
+function handleOk(){
+  const newOrderBody={
+    name:'游客',
+    phoneNumber:0,
+    clientId:0,
+    merchantId:merchantStore.merchantInfo.id,
+    number:0,
+    price:newPrice.value,
+    status:'处理中',
+    orderTime:new Date(Date.now()).toISOString()
+  }
+  addOrderApi(newOrderBody).then(res=>{
+    if(res.data.code=='200'){
+      message.success('下单成功')
+    }
 
+  })
+  open.value=false
+  location.reload()
+}
 async function getMerchantList(id){
   await getMerchantByUserIdApi(id).then((res=>{
     if(!res.data.data){

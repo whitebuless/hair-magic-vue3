@@ -153,6 +153,7 @@ async function handleOrdeClick(){
   orderFormData.merchantId=merchant.value.id;
   orderFormData.number=listNum.value[choiceDay.value]+1;
   orderFormData.status="未到店"
+  orderFormData.price=0
   orderFormData.orderTime=
    new Date(Date.now() + (choiceDay.value-1) * 24 * 60 * 60 * 1000)
           .toISOString();
