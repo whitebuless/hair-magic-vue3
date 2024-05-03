@@ -23,11 +23,24 @@ const updateOrderApi=function(order){
     data:order
   })
 }
+// 根据日期获取
+const getPriceSumByDay=function(merchantId,startDate,endDate){
+  return axiosInstance({
+    url:'/order/priceSumByDay',
+    method:'GET',
+    params:{
+      merchantId,
+      startDate,
+      endDate
+    }
+  })
+}
 
 
 export {
   findOrderByAllApi,
   addOrderApi,
-  updateOrderApi
+  updateOrderApi,
+  getPriceSumByDay
 }
 

@@ -9,7 +9,7 @@
       box-shadow: 0 0 4px 4px rgb(207,207,207);
       cursor: pointer;
       ">
-        <p :style="cardPStyle">￥32,000元</p>
+        <p :style="cardPStyle">￥{{todayPrice.totalPrice}}元</p>
       </a-card>
       <a-card 
       title="今日预约" 
@@ -37,8 +37,18 @@
         <p :style="cardPStyle">999+</p>
       </a-card> -->
     </div>
+    <a-range-picker v-model:value="dateRange" />
+    <!-- 添加按钮触发获取数据和渲染图表的操作 -->
+    <button @click="fetchAndRenderChart" 
+              style="border: 0;
+                    border-radius: 5px;
+                    background-color: rgb(100,0,0);
+                    padding: 5px;
+                    color: white;
+                    margin-bottom: 20px;"
+    >渲染图表</button>
     <div class="chart">
-      <div id="chartBody" style="height:60vh;width:100%" ></div>
+      <div id="chartBody" style="height:400px;width:100%" ></div>
     </div>
   </div>
 </template>
@@ -47,13 +57,77 @@ import { ref,onMounted } from 'vue';
 import * as echarts from 'echarts';
 import { useMerchantStore } from '../../../../stores/merchant';
 import { findOrderByAllApi } from '../../../../apis/orderApi';
+import { getPriceSumByDay } from '../../../../apis/orderApi';
 import router from '../../../../router';
 const merchantStore=useMerchantStore()
+// 今日营业额
+const todayPrice=ref({})
+//当前选择的日期
+const dateRange = ref([]); // 存储用户选择的时间范围
+// 获取数据和渲染图表的方法
+const fetchAndRenderChart = () => {
+  console.log(dateRange.value[0]);
+  const [startDate, endDate] = dateRange.value; // 获取用户选择的开始日期和结束日期
+  const merchantId = merchantStore.merchantInfo.id; // 获取商户ID
+  getPriceSumByDay(merchantId, 
+                  startDate?.toISOString()?startDate.toISOString():new Date(Date.now()).toISOString(),
+                  endDate?.toISOString()?endDate.toISOString():new Date(Date.now()+8*24*60*60*1000).toISOString()).then(res => {
+    // 处理获取的数据
+    const data = res.data;
+    const totalPriceData = processData(data);
+    // 渲染图表
+    renderChart(totalPriceData);
+  });
+};
+// 处理后端返回的数据
+const processData = (data) => {
+  // 这里根据后端返回的数据格式进行处理，计算每天的总营业额并返回
+  const chartData = [];
+  data.forEach(item => {
+    const orderDate = item.orderDate.split('T')[0]; // 假设后端返回的时间格式为 'YYYY-MM-DDTHH:mm:ss'
+    const totalPrice = item.totalPrice;
+    chartData.push({ orderDate, totalPrice });
+  });
+  return chartData;
+};
+
+// 渲染图表
+const renderChart = (data) => {
+  // 这里使用 ECharts 渲染图表
+  const chart = echarts.init(document.getElementById('chartBody'));
+  const xAxisData = data.map(item => item.orderDate);
+  const seriesData = data.map(item => item.totalPrice);
+  const option = {
+    title: {
+      text: '营业额'
+    },
+    tooltip: {
+      trigger: 'axis'
+    },
+    xAxis: {
+      type: 'category',
+      data: xAxisData
+    },
+    yAxis: {
+      type: 'value'
+    },
+    series: [{
+      data: seriesData,
+      type: 'line',
+      smooth: true
+    }]
+  };
+  chart.setOption(option);
+};
 // 今日客流量数
 const clientCount=ref(0)
 // 待处理预约
 const waitingToSolve=ref(0)
 onMounted(()=>{
+  getPriceSumByDay(merchantStore.merchantInfo.id,new Date(Date.now()).toISOString(),new Date(Date.now()+1*24*60*60*1000).toISOString()).then(res=>{
+    todayPrice.value=res.data[0]
+  })
+  fetchAndRenderChart(); // 页面加载时立即调用获取数据和渲染图表的方法
   const OrderBody={
     merchantId:merchantStore.merchantInfo.id,
     orderTime:new Date(Date.now()).toISOString() 
@@ -66,25 +140,6 @@ onMounted(()=>{
       clientCount.value++
     })
   })
-  // chart生成
-  let myChart = echarts.init(document.getElementById('chartBody'));
-  myChart.setOption({
-    title: {
-      text: '营业额'
-    },
-    tooltip: {},
-    xAxis: {
-    data: ['A', 'B', 'C', 'D', 'E']
-  },
-  yAxis: {},
-  series: [
-    {
-      data: [10, 22, 28, 23, 19],
-      type: 'line',
-      smooth: true
-    }
-  ]
-  });
 })
 
 const cardStyle=ref({

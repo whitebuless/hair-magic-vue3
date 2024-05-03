@@ -103,7 +103,6 @@ async function getMerchantList(id){
       merchantList.value=res.data.data
     }
   }))
-  console.log(merchantList.value);
 }
 
 function handleChooseMerchant(item){
