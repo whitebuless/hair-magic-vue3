@@ -266,17 +266,10 @@ const action = ref();
       width: 50%;
       padding: 5px;
       .details {
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background-color: rgba(255, 255, 255, 0.8);
         padding: 15px;
-        z-index: 1;
         overflow: auto;
-        border-top: 1px solid #ccc;
         font-family: 'Microsoft YaHei', sans-serif;
         font-size: 14px; /* 调整字体大小 */
-
         .head {
           margin-bottom: 15px;
           .title {
@@ -359,7 +352,7 @@ const action = ref();
   height: 540px; /* 设置高度 */
   line-height: 540px; /* 行高与高度相等，实现垂直居中 */
   overflow: hidden; /* 隐藏溢出内容 */
-  background-color: #f3f3f3; /* 设置背景颜色 */
+  // background-color: #f3f3f3; /* 设置背景颜色 */
   display: flex; /* 使用 flex 布局 */
   justify-content: center; /* 水平居中 */
   align-items: center; /* 垂直居中 */
@@ -381,6 +374,4 @@ const action = ref();
   color: #490000;
   opacity: 0.5;
 }
-
-
 </style>
