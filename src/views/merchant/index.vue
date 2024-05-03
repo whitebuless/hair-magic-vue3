@@ -24,19 +24,7 @@
       </div>
     </div>
 
-    <button style="width: 100px;
-                  height: 100px;
-                  position: fixed;
-                  top: 20px;
-                  right: 20px;
-                  padding: 20px;
-                  border-radius: 50%;
-                  border: 0;
-                  color: white;
-                  background-color: rgb(100,0,0);
-                  cursor: pointer;
-                  "
-            @click="addNewOrder">游客单+</button>
+    <button @click="addNewOrder">游客单+</button>
 
     <a-modal v-model:open="open" title="新增游客单" @ok="handleOk">
       <a-form-item label="金额">      <a-input-number v-model:value="newPrice"></a-input-number></a-form-item>
@@ -112,9 +100,23 @@ function handleChooseMerchant(item){
 
 </script>
 <style lang="scss" scoped>
+@import "@/assets/css/color.scss";
 .Box{
   max-height: 100vh;
   overflow: hidden;
+  button{
+    width: 100px;
+    height: 100px;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 20px;
+    border-radius: 50%;
+    border: 0;
+    color: white;
+    background-color:$themeColor;
+    cursor: pointer;
+  }
   .topBox{
     height: 30%;
   }

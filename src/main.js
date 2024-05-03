@@ -1,8 +1,9 @@
 import { createApp } from 'vue'
 // import { DatePicker } from 'ant-design-vue';
 import Antd from 'ant-design-vue';
-import './style.css'
+// import './style.css'
 import 'ant-design-vue/dist/reset.css';
+import '@/assets/css/style.scss';
 
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 

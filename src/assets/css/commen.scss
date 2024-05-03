@@ -1,4 +1,3 @@
-@import url("https://at.alicdn.com/t/c/font_4456847_3a1ure3jbfd.css?spm=a313x.manage_type_myprojects.i1.9.63e33a81H9bKT6&file=font_4456847_3a1ure3jbfd.css");
 *{
   box-sizing: border-box;
     --theme:#6e0000;
@@ -14,4 +13,11 @@ ul{
 li{
   list-style-type:none;   
   text-align: center;
+}
+button{
+  border: 0;
+}
+input{
+  outline: none;
+  border: 0;
 }

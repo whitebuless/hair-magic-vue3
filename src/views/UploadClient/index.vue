@@ -3,7 +3,9 @@
     <div class="uploadForm">
       <a-form :model="formState" 
       :label-col="labelCol" 
-      :wrapper-col="wrapperCol">
+      :wrapper-col="wrapperCol"
+      style="width: 100%;"
+      >
       <a-form-item label="分享标题" required>
         <a-input 
         v-model:value="formState.title"
@@ -54,14 +56,9 @@
       </a-form-item>
       <a-form-item :wrapper-col="{ span: 14, offset: 4 }">
         <a-button type="primary" @click="onSubmit">分享</a-button>
-        <a-button style="margin-left: 10px">保存并退出</a-button>
+        <!-- <a-button style="margin-left: 10px">保存并退出</a-button> -->
       </a-form-item>
     </a-form>
-    </div>
-    <div class="foresee">
-      <img src="https://img2.imgtp.com/2024/04/22/jZ19exPb.jpg" 
-      alt=""
-      style='height: 90%;'>
     </div>
   </div>
 </template>
@@ -114,7 +111,7 @@ const onSubmit = () => {
 // 表单相关
 const labelCol = {
   style: {
-    width: '150px',
+    width: '20%',
   },
 };
 const wrapperCol = {
@@ -180,55 +177,22 @@ const handlePreview = async file => {
 </script>
 
 <style lang="scss" scoped>
-.uploadContainer {
+.uploadBox {
   display: flex;
-  padding: 1rem 2rem;
-  width: 100%;
+  justify-content: center;
   position: relative;
-  overflow: hidden;
-  height: auto;
-
-  .uploadBox {
-    flex: 1;
-    position: relative;
-    padding-right: 1rem;
-
-    .uploadForm {
-      max-width: 600px;
-    }
-
-    .ant-form-item {
-      margin-bottom: 1rem;
-    }
-
-    .ant-form-item-label {
-      width: 150px;
-    }
-
-    .ant-form-item-control {
-      width: calc(100% - 150px);
-    }
-
-    .ant-btn {
-      margin-right: 1rem;
-    }
-  }
-
-  .foresee {
-    flex: 1;
-    position: relative;
-    background-color: #f5f5f5;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 1rem;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  padding-right: 1rem;
+  .uploadForm{
+    width: 60%;
+    display: flex;
+    padding: 20px;
   }
 }
+
 .ant-upload-select-picture-card i {
   font-size: 32px;
   color: #999;
 }
-
 .ant-upload-select-picture-card .ant-upload-text {
   margin-top: 8px;
   color: #d26262;
