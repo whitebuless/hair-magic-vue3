@@ -1,6 +1,6 @@
 <template>
   <div class="shareCardBox">
-    <img :src="shareBody.imgs.split(' ')[0]" alt="">
+    <img :src="shareBody.imgs.split(' ')[0]" alt="" loading="lazy">
     <div class="content">
       <div class="title">
         <b style="margin-right: 10px;">{{ shareBody.title }}</b>

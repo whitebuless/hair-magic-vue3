@@ -42,10 +42,11 @@
     <button @click="fetchAndRenderChart" 
               style="border: 0;
                     border-radius: 5px;
+                    cursor: pointer;
                     background-color: rgb(100,0,0);
                     padding: 5px;
                     color: white;
-                    margin-bottom: 20px;"
+                    margin: 0 20px 20px;"
     >渲染图表</button>
     <div class="chart">
       <div id="chartBody" style="height:400px;width:100%" ></div>
@@ -70,8 +71,8 @@ const fetchAndRenderChart = () => {
   const [startDate, endDate] = dateRange.value; // 获取用户选择的开始日期和结束日期
   const merchantId = merchantStore.merchantInfo.id; // 获取商户ID
   getPriceSumByDay(merchantId, 
-                  startDate?.toISOString()?startDate.toISOString():new Date(Date.now()).toISOString(),
-                  endDate?.toISOString()?endDate.toISOString():new Date(Date.now()+8*24*60*60*1000).toISOString()).then(res => {
+                  startDate?.toISOString()?startDate.toISOString():new Date(Date.now()-8*24*60*60*1000).toISOString(),
+                  endDate?.toISOString()?endDate.toISOString():new Date(Date.now()+1*24*60*60*1000).toISOString()).then(res => {
     // 处理获取的数据
     const data = res.data;
     const totalPriceData = processData(data);
@@ -154,5 +155,6 @@ const cardPStyle=ref({
 .cards{
   display: flex;
   justify-content: space-between;
+  margin-bottom: 20px;
 }
 </style>

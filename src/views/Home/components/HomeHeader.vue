@@ -3,11 +3,11 @@
     <!-- logo展示区域 -->
     <div class="logoBox" style="display: flex;align-items: center;">
       <img 
-      src="https://img2.imgtp.com/2024/04/12/t8p6tbU8.png" 
+      src="@/assets/logoLongWhite.png" 
       alt="Logo"
-      style="width: 25px;margin-right: 1rem;"
+      style="width: 175px;margin-right: 1rem;"
       @click="router.push('/home/find')">
-      <div class="location">
+      <!-- <div class="location">
         <a-space>
           <a-select
             v-model:value="province"
@@ -20,7 +20,7 @@
             :options="cities.map(city => ({ value: city }))"
           ></a-select>
         </a-space>
-      </div>
+      </div> -->
     </div>
     <!-- 搜索框区域 -->
     <div class="searchBox">

@@ -54,7 +54,7 @@
         <h1 style="color: #999999;font-size: 18px;">评论</h1>
         <div class="comments">
           <a-comment v-for="i in commenList">
-            <template #actions>
+            <!-- <template #actions>
               <span key="comment-basic-like">
                 <a-tooltip title="Like">
                   <template v-if="action === 'liked'">
@@ -82,7 +82,7 @@
                 </span>
               </span>
               <span key="comment-basic-reply-to">Reply to</span>
-            </template>
+            </template> -->
             <template #author>
               <a
                 @click="router.push(`/home/user/${i.userId}`)"

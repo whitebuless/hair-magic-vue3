@@ -70,9 +70,9 @@ onMounted(()=>{
   }
   .orderList{
     width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 0 24px; 
     .orderCard{
       margin: 10px;
       font-family: 'Courier New', Courier, monospace;
@@ -90,11 +90,23 @@ onMounted(()=>{
         color: rgb(153, 0, 0);
         text-align: center;
       }
-      .name{
-
-      }
     }
   }
 
 }
+
+@media (min-width: 768px) {
+  /* 调整grid布局 */
+  .orderList {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+@media (min-width: 1024px) {
+
+  /* 点整grid布局 */
+  .orderList {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+
 </style>
