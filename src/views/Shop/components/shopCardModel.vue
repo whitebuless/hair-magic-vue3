@@ -10,9 +10,11 @@
     <div class="locations"
     style="font-size: 12px;
     color:rgb(100, 100, 100) ;">
-    <span class="iconfont icon-weizhi"></span>
-      {{ shopInfo.location }}
+    <span class="iconfont icon-weizhi" style="margin-right: 20px;">{{ shopInfo.location }}</span>
+    <span v-for="i in shopInfo.waiting" class="iconfont icon-renshu"></span>
+      
     </div>
+
   </div>
 </template>
 <script setup>
@@ -21,6 +23,7 @@ defineProps({
 })
 </script>
 <style lang="scss" scoped>
+@import '@/assets/css/color.scss';
 .shopCardBox{
   width: 100%;
   height: 5rem;
@@ -37,6 +40,9 @@ defineProps({
     box-shadow: 0 0 4px 4px rgba(113, 0, 0, 0.31);
   }
   
+}
+.icon-renshu{
+  color: $themeColor;
 }
 
 </style>

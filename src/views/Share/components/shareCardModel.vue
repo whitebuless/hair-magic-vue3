@@ -1,6 +1,6 @@
 <template>
-  <div class="shareCardBox">
-    <img :src="shareBody.imgs.split(' ')[0]" alt="" loading="lazy">
+  <div class="shareCardBox" ref="cardRef">
+    <img :data-src="shareBody.imgs.split(' ')[0]" alt="" ref="imageRef" >
     <div class="content">
       <div class="title">
         <b style="margin-right: 10px;">{{ shareBody.title }}</b>
@@ -18,6 +18,28 @@
 </template>
 
 <script setup>
+import { onMounted,ref } from 'vue';
+
+const cardRef = ref(null);
+const imageRef = ref(null);
+
+onMounted(() => {
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const lazyImage = entry.target.querySelector('img');
+          lazyImage.src = lazyImage.dataset.src;
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { rootMargin: '0px 0px 100px 0px' } // 根据需要调整根边距
+  );
+  observer.observe(cardRef.value);
+});
+
+
 defineProps({
   shareBody: Object
 })
