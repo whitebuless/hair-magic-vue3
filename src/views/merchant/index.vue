@@ -24,7 +24,7 @@
       </div>
     </div>
 
-    <button @click="addNewOrder">游客单+</button>
+    <button @click="addNewOrder"><strong>游客+</strong></button>
 
     <a-modal v-model:open="open" title="新增游客单" @ok="handleOk">
       <a-form-item label="金额">      <a-input-number v-model:value="newPrice"></a-input-number></a-form-item>
@@ -105,8 +105,8 @@ function handleChooseMerchant(item){
   max-height: 100vh;
   overflow: hidden;
   button{
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
     position: fixed;
     top: 20px;
     right: 20px;

@@ -29,9 +29,7 @@
                 <span class="iconfont icon-bg-right" ></span>
               </div>
             </template>
-
               <img :src="item" alt="" style="height: 100%;" v-for="item in imgArray">
-
           </a-carousel>
         </div>
 
@@ -39,19 +37,22 @@
       <div class="rightBox">
         <div class="details">
           <div class="head">
-            <span class="title">{{ shareBody.title }}</span>
-            <span class="hairType">{{ shareBody.hairType }}</span>
+            <a-avatar :size="50" src="https://th.bing.com/th/id/R.0f7e0f8f147bb9dfafc5e4c3bece59f2?rik=auXMf%2b3yZ3xMLQ&riu=http%3a%2f%2fimg.qqtouxiangzq.com%2f6%2f1182%2f32.jpg&ehk=kLA%2fNQgc8j3Poiz5Hva1NiVpJlwbSQosepCOeN5wde4%3d&risl=&pid=ImgRaw&r=0">
+            </a-avatar>
+            <span class="userName">{{ shareBody.userName }}</span>
+            <a-button type="primary" style="margin-left: 10px;" v-show="userStore.userInfo.id!=shareStore.shareInfo.userId">+关注</a-button>
           </div>
           <div class="body">
+            <span class="title"><strong>{{ shareBody.title }}</strong></span>
+            <span class="hairType">{{ shareBody.hairType }}</span>
             <p class="description">{{ shareBody.description }}</p>
           </div>
           <div class="foot">
             <span class="iconfont icon-weizhi">{{ shareBody.location }}</span>
             <span class="createTime">{{ shareBody.createTime.split("T")[0]+" "+shareBody.createTime.split("T")[1]?.slice(0,8) }}</span>
-            <span class="userName">{{ shareBody.userName }}</span>
+
           </div>
         </div>
-        <h1 style="color: #999999;font-size: 18px;">评论</h1>
         <div class="comments">
           <a-comment v-for="i in commenList">
             <!-- <template #actions>
@@ -179,7 +180,6 @@ async function handleCardClick(item){
   if(imgArray.value.length>1){
     imgArray.value.pop()
   }
-  console.log(item.imgs.split(' '))
 }
 // 走马灯图片列表
 const imgArray=ref([])
@@ -222,6 +222,7 @@ const action = ref();
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/css/color.scss';
 #shareBox {
   column-count: 4; /* 设置列数 */
   column-gap: 1rem; /* 设置列之间的间隔 */
@@ -264,47 +265,34 @@ const action = ref();
 
     .rightBox{
       width: 50%;
-      padding: 5px;
+      padding: 25px;
+      margin-left: 20px;
+      border-left:1px dotted $themeColor;
       .details {
         padding: 15px;
-        overflow: auto;
         font-family: 'Microsoft YaHei', sans-serif;
-        font-size: 14px; /* 调整字体大小 */
         .head {
-          margin-bottom: 15px;
-          .title {
-            font-size: 18px; /* 调整标题字体大小 */
-            font-weight: bold;
-            color: #333;
-          }
-          .hairType {
-            color: #666;
-            font-style: italic;
-            float: right;
-          }
+          margin-bottom: 20px;
         }
-
         .body {
-          margin-bottom: 15px;
-          .description {
-            text-indent: 24px;
-            color: #555;
-            /* font-size: 16px; 移除字体大小，使用父级的字体大小 */
-            line-height: 1.6;
+          margin-bottom: 10px;
+          .title{
+            font-size: 20px;
+            margin-bottom: 10px;
+          }
+          .hairType{
+            float: right;
+            color: #666666;
+            margin-bottom: 10px;
+          }
+          .description{
+            margin-top: 20px;
           }
         }
-
         .foot {
-          color: #888;
-          font-size: 12px; /* 调整时间和用户名的字体大小 */
-          .icon-weizhi {
-            margin-right: 10px;
-            color: #555;
-          }
-          .createTime,
-          .userName {
-            display: block;
-            color: #777;
+          color: #666666;
+          .createTime{
+            float: right;
           }
         }
       }
@@ -312,6 +300,20 @@ const action = ref();
         margin-bottom: 10px;
         overflow-y: auto; /* 添加滚动条 */
         max-height: 250px; /* 设置最大高度 */
+          /* 设置滚动条的宽度和颜色 */
+        &::-webkit-scrollbar {
+          width: 5px;
+        }
+        &::-webkit-scrollbar-track {
+          background-color: #f5f5f5;
+        }
+        &::-webkit-scrollbar-thumb {
+          background-color: #888;
+          border-radius: 5px;
+        }
+        &::-webkit-scrollbar-thumb:hover {
+          background: #555;
+        }
         .pcomment{
           padding: 10px;
           cursor: pointer;
@@ -334,7 +336,11 @@ const action = ref();
           }
         }
       }
-    }
+      /* 如果您需要针对滚动条悬停状态进行调整，可以添加下面的样式 */
+      .comments:hover::-webkit-scrollbar-thumb {
+        background-color: #555;
+      }
+    } 
 
   }
   .coverBox{

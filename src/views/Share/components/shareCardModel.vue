@@ -11,7 +11,7 @@
       </div>
       <div class="infos">
         <span style="float: left;">{{ shareBody.userName }}</span>
-        <span class="iconfont icon-dianzan">{{ shareBody.likes }}</span>
+        <!-- <span class="iconfont icon-dianzan">{{ shareBody.likes }}</span> -->
       </div>
     </div>
   </div>

@@ -40,8 +40,6 @@
               cursor: pointer;
               margin: 0 10px;"
         title="Ai推荐"
-        @click="router.push('/func/uploadClient')"
-
         ></span>
         <span 
         class="iconfont icon-shangchuan" 
@@ -61,7 +59,6 @@
               margin: 0 10px;"
         title="设置"
         @click="console.log('进入设置页面')"
-
         ></span>
       </div>
       <!-- 用户信息入口/头像显示 -->
@@ -70,18 +67,21 @@
             style="width: 30px;
             height: 30px;
             margin-left: 10px;
-            background-color: rgb(179, 179, 179);"></div>
+            background-color: rgb(179, 179, 179);">
+                <img src="https://th.bing.com/th/id/R.0f7e0f8f147bb9dfafc5e4c3bece59f2?rik=auXMf%2b3yZ3xMLQ&riu=http%3a%2f%2fimg.qqtouxiangzq.com%2f6%2f1182%2f32.jpg&ehk=kLA%2fNQgc8j3Poiz5Hva1NiVpJlwbSQosepCOeN5wde4%3d&risl=&pid=ImgRaw&r=0" 
+                  alt=""
+                  style="width: 100%;">  
+        </div>
+
         <div class="actives">
           <ul>
             <li @click="router.push(`/home/user/${userStore.userInfo.id}`)">个人中心</li>
             <li @click="router.push(`/home/userorder`)">我的预约</li>
+            <li @click="logOut">退出登录</li>
           </ul>
         </div>
       </div>
     </div>
-
-    
-
   </div>
 </template>
 <script setup>
@@ -104,7 +104,12 @@ const cities = computed(() => {
 watch(province, val => {
   secondCity.value = cityData[val][0];
 });
-
+// 退出登录
+function logOut(){
+  router.replace('/')
+  // userStore.userInfo=null
+  location.reload()
+}
 // 监听输入框内容的变化，更新提供的值
 watch(searchText, newValue => {
   provide('searchText', newValue);
@@ -160,7 +165,8 @@ watch(searchText, newValue => {
         background-color: rgb(255, 255, 255);
         z-index: 999;
         box-shadow: 0px 0px 3px black;
-        transition: all 0.5s;
+        transition: all 0.3s;
+        border-radius: 5px;
         ul{
           width: 100%;
           li{

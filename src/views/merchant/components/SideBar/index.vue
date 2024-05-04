@@ -42,7 +42,7 @@ const items = ref([
   {
     key: '4',
     icon: () => h(CalendarOutlined),
-    label: '预定管理',
+    label: '订单管理',
     title: 'reservation',
   },
 
