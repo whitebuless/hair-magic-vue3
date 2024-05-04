@@ -9,7 +9,7 @@
       box-shadow: 0 0 4px 4px rgb(207,207,207);
       cursor: pointer;
       ">
-        <p :style="cardPStyle">￥{{todayPrice.totalPrice}}元</p>
+        <p :style="cardPStyle">￥{{todayPrice.totalPrice==null?0:todayPrice.totalPrice}}元</p>
       </a-card>
       <a-card 
       title="今日预约" 

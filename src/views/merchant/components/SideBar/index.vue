@@ -33,12 +33,12 @@ const items = ref([
     label: '员工管理',
     title: 'staff',
   },
-  {
-    key: '3',
-    icon: () => h(CalendarOutlined),
-    label: '顾客管理',
-    title: 'client',
-  },
+  // {
+  //   key: '3',
+  //   icon: () => h(CalendarOutlined),
+  //   label: '顾客管理',
+  //   title: 'client',
+  // },
   {
     key: '4',
     icon: () => h(CalendarOutlined),
