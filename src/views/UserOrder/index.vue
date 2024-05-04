@@ -63,6 +63,8 @@ onMounted(()=>{
 </script>
 <style lang="scss" scoped>
 .userOrderBox{
+  overflow: scroll;
+  padding-bottom: 120px;
   .title{
     font-size: 40px;
     margin-bottom: 20px;

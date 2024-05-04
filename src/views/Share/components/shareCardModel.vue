@@ -48,7 +48,7 @@ defineProps({
 <style lang="scss" scoped>
 .shareCardBox {
   margin: 0.5rem;
-  width: calc(100% - 1rem); /* 使用calc函数来动态计算每个卡片的宽度 */
+  // width: calc(100% - 1rem); /* 使用calc函数来动态计算每个卡片的宽度 */
   float: left; /* 左浮动实现瀑布流布局 */
   box-sizing: border-box; /* 计算边框和填充在内 */
   overflow: hidden;
@@ -58,9 +58,9 @@ defineProps({
   cursor: pointer;
   transition: all 0.2s;
   &:hover {
-    background-color: #dcdcdc;
+    // background-color: #dcdcdc;
+    box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.122);
   }
-
   img {
     width: 100%;
     margin-bottom: 0.5rem;

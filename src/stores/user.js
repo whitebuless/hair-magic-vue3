@@ -8,7 +8,8 @@ import router from '../router/index.js'
 export const useUserStore = defineStore('user', {
   state: () => {
     return { 
-      userInfo:{}
+      userInfo:{},
+      following:[],
     }
   },
   // 也可以这样定义

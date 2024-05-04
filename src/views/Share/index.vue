@@ -40,7 +40,17 @@
             <a-avatar :size="50" src="https://th.bing.com/th/id/R.0f7e0f8f147bb9dfafc5e4c3bece59f2?rik=auXMf%2b3yZ3xMLQ&riu=http%3a%2f%2fimg.qqtouxiangzq.com%2f6%2f1182%2f32.jpg&ehk=kLA%2fNQgc8j3Poiz5Hva1NiVpJlwbSQosepCOeN5wde4%3d&risl=&pid=ImgRaw&r=0">
             </a-avatar>
             <span class="userName">{{ shareBody.userName }}</span>
-            <a-button type="primary" style="margin-left: 10px;" v-show="userStore.userInfo.id!=shareStore.shareInfo.userId">+关注</a-button>
+            <div style="display: inline-block;" v-show="userStore.userInfo.id!=shareStore.shareInfo.userId  ">
+              <a-button type="primary" 
+                style="margin-left: 10px;"
+                v-show="!userStore.following.includes(shareBody.userId)"
+                @click="handleFollowClick">+关注</a-button>
+
+                <a-button type="primary" 
+              style="margin-left: 10px;background-color: white; color: rgb(100,0,0);"
+              v-show="userStore.following.includes(shareBody.userId)"
+              @click="handleUnFollowClick">取消关注</a-button>
+            </div>
           </div>
           <div class="body">
             <span class="title"><strong>{{ shareBody.title }}</strong></span>
@@ -98,7 +108,7 @@
               </p>
             </template>
             <template #datetime>
-              <a-tooltip :title="dayjs().format('YYYY-MM-DD HH:mm:ss')">
+              <a-tooltip :title="i.createTime.split('T')[0]">
                 <span>{{ dayjs().from(i.createTime) }}</span>
               </a-tooltip>
             </template>
@@ -106,14 +116,12 @@
         </div>
         <a-textarea v-model:value="commentEdit" 
         placeholder="说点什么吧~"
-        style="margin-bottom: 5px;"/>
+        style="margin-bottom: 5px;max-height: 100px;"/>
         <a-button type="primary" @click="subCommentClick">发表</a-button>
       </div>
     </div>
   </div>
 </template>
-
-
 <script setup>
 import { onMounted, ref,inject, watchEffect,provide, reactive } from "vue";
 import { getShareApi } from "../../apis/shareAPpi"
@@ -130,6 +138,7 @@ import rightCircleOutlined from 'ant-design-vue'
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { message } from "ant-design-vue";
+import { followApi,unfollowApi,getFollowingApi } from "../../apis/followApi";
 
 const shareStore=useShareStore()
 const commentStore=useCommentStore()
@@ -138,8 +147,27 @@ const shareArray=ref([])
 
 
 onMounted(()=>{
+  console.log();
   getShares('')
 })
+// 点击关注
+async function handleFollowClick(){
+  await followApi(userStore.userInfo.id,shareStore.shareInfo.userId).then(res=>{
+    message.success(res.data)
+  })
+  await   getFollowingApi(userStore.userInfo.id).then(res=>{
+    userStore.following=res.data.followers
+  })
+}
+// 点击取消关注
+async function handleUnFollowClick(){
+  await unfollowApi(userStore.userInfo.id,shareStore.shareInfo.userId).then(res=>{
+    message.success(res.data)
+  })
+  await   getFollowingApi(userStore.userInfo.id).then(res=>{
+    userStore.following=res.data.followers
+  })
+}
 // 评论列表
 const commenList=ref([])
 // 详情页相关
@@ -169,6 +197,7 @@ async function handleCardClick(item){
     commenList.value=res.data.data
   })
   detail.value=!detail.value
+  shareBody.userId=item.userId
   shareBody.imgs=item.imgs
   shareBody.title=item.title
   shareBody.hairType=item.hairType
@@ -224,7 +253,7 @@ const action = ref();
 <style lang="scss" scoped>
 @import '@/assets/css/color.scss';
 #shareBox {
-  column-count: 4; /* 设置列数 */
+  column-count: 1; /* 设置列数 */
   column-gap: 1rem; /* 设置列之间的间隔 */
   .floatDetail{
     width: 1000px;
@@ -238,6 +267,9 @@ const action = ref();
     box-shadow: 0 0 15px 15px rgba(0, 0, 0, 0.095);
     display: flex;
     padding: 20px;
+    overflow: hidden;
+    animation: expand 0.2s ;
+  
     .leftBox {
       width: 50%;
       padding: 5px;
@@ -352,6 +384,33 @@ const action = ref();
       background-color: rgba(0, 0, 0, 0.275);
     }
 }
+
+@keyframes expand {
+  0% {
+    width: 0;
+    height: 0;
+    opacity: 0;
+  }
+  100% {
+    width: 1000px;
+    height: 700px;
+    opacity: 1;
+  }
+}
+/* 媒体查询 */
+@media (min-width: 768px) {
+  /* 调整grid布局 */
+  #shareBox {
+    column-count: 3;
+  }
+}
+@media (min-width: 1024px) {
+  /* 调整grid布局 */
+  #shareBox {
+    column-count: 4;
+  }
+}
+
 
 :deep(.slick-slide) {
   text-align: center; /* 文字居中 */

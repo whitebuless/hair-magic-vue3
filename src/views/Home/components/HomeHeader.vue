@@ -122,18 +122,18 @@ watch(searchText, newValue => {
   height: 4rem;
   color: white;
   padding: 1rem 3rem;
-  
+  width: 100vw;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  
   margin-bottom: 1rem;
   .logoBox{
     cursor: pointer;
   }
   .searchBox{
+    width: 30%;
     input{
-      width: 400px;
+      width: 100%;
       height: 20px;
       background: none;
       border: 2px solid rgb(179, 179, 179);
