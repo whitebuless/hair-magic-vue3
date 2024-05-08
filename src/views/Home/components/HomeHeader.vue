@@ -26,7 +26,9 @@
     <div class="searchBox">
       <input type="text"  
       placeholder="输入搜索内容/发型/店铺"
-      v-model="searchText">
+      v-model="searchText"
+      @keyup.enter="search"
+      >
 
     </div>
     <!-- 功能区域 -->
@@ -68,8 +70,8 @@
             height: 30px;
             margin-left: 10px;
             background-color: rgb(179, 179, 179);">
-                <img src="https://th.bing.com/th/id/R.0f7e0f8f147bb9dfafc5e4c3bece59f2?rik=auXMf%2b3yZ3xMLQ&riu=http%3a%2f%2fimg.qqtouxiangzq.com%2f6%2f1182%2f32.jpg&ehk=kLA%2fNQgc8j3Poiz5Hva1NiVpJlwbSQosepCOeN5wde4%3d&risl=&pid=ImgRaw&r=0" 
-                  alt=""
+                <img  src="https://img2.imgtp.com/2024/05/07/ycPa2cfu.jpg"
+                alt=""
                   style="width: 100%;">  
         </div>
 
@@ -115,6 +117,10 @@ watch(searchText, newValue => {
   provide('searchText', newValue);
 });
 
+// 点击搜索
+const search=()=>{
+  router.push(`/home/search/${searchText.value}`)
+}
 </script>
 <style lang="scss" scoped>
 .headerBox{

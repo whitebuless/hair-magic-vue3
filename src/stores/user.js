@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import {userLoginApi,userLoginVerticalApi} from '../apis/userApi'
 
 import router from '../router/index.js'
+import { message } from 'ant-design-vue'
 
 
 
@@ -10,6 +11,7 @@ export const useUserStore = defineStore('user', {
     return { 
       userInfo:{},
       following:[],
+      follower:[],
     }
   },
   // 也可以这样定义
@@ -27,6 +29,9 @@ export const useUserStore = defineStore('user', {
             } else {
               router.push('/merchant');
             }
+          }
+          else if(response.data.code === '500'){
+            message.error(response.data.msg)
           }
         })
         .catch(error => {

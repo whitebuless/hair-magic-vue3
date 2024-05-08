@@ -46,7 +46,7 @@
           <div class="checkbox">
             <label :style="{color:checkedColor}" style="transition: all 0.3s;">
               <input type="checkbox" value="" v-model="checked" >
-                同意<a>用户隐私协议</a>
+                同意<a style="cursor: pointer;">用户隐私协议</a>
             </label>
           </div>
         </span>
@@ -57,7 +57,7 @@
     <div class="leftTexts">
       <h1 class="txt"><i><b>海马极客</b></i></h1>
       <div class="rectangle"></div>
-      <span class="hair"><b>Hair</b></span>     <span class="magic"><b>Magic</b></span>
+      <span class="hair"><b>Hair</b></span><span class="magic"><b>Magic</b></span>
     </div>
   </div>
 </template>
@@ -106,7 +106,7 @@ function sendCode(){
     return
   }
 }
-
+// 验证码生成
 function generateCode(){
   const canvas=myCanvas.value;
   // 获取Canvas的上下文
@@ -173,6 +173,7 @@ let clickLogin=function(){
     alert("请勾选用户隐私协议")
     return
   }
+  // 根据登陆方式选择登录接口
   if(loginWay.value==true){
     user.login(userData.value.email,userData.value.password)
   }else{
@@ -181,6 +182,7 @@ let clickLogin=function(){
                       role.value
                     )
   }
+  generateCode()
 }
 
 
@@ -191,10 +193,10 @@ let clickLogin=function(){
   width: 100vw;
   height: 100vh;
   background-image: url("../../assets/topicImg.jpg");
-  background-size: 110% auto;
+  background-size:  auto 100%; /* 宽度100%，高度自动调整 */
   background-position: center center; 
   background-repeat: no-repeat;
-  background-color: #910000;
+  background-color: #540000;
   .loginFormBox{
     z-index:999;
     position: absolute;
@@ -264,7 +266,7 @@ let clickLogin=function(){
     }
   }
   .leftTexts{
-    width: 700px;
+    max-width: 700px;
     height: 70vh;
     position: absolute;
     top: 15vh;
@@ -303,4 +305,25 @@ let clickLogin=function(){
   }
 }
 
+@media screen and (min-aspect-ratio: 1.5) {
+  /* 添加你的样式 */
+  #loginBox {
+    background-size: 100% auto ;
+  }
+}
+/* 当设备宽高比小于1.5时 */
+@media screen and (max-aspect-ratio: 1.5) {
+  /* 添加你的样式 */
+  #loginBox {
+    background-size: auto  100% ;
+  }
+}
+/* 当屏幕宽度小于768px时 */
+@media screen and (max-width: 767px) {
+  /* 添加你的样式 */
+  .loginFormBox {
+    left: 50%;
+    transform: translate(-50%,0);
+  }
+}
 </style>

@@ -20,7 +20,21 @@ import UserInfoView from "@/views/UserInfo/index.vue"
 import UserOrderView from "@/views/UserOrder/index.vue"
 import AddInfoView from "@/views/AddInfo/index.vue"
 import NewMerchantView from "@/views/NewMerchant/index.vue"
+import SearchView from "@/views/Search/index.vue"
+// 平台管理员部分组件导入
+import SuperLogin from "@/views/Super/Login/index.vue"
+import SuperAccount from "@/views/Super/index.vue"
 const routes=[
+  {
+    path:'/superlogin',
+    component:SuperLogin,
+    name:'superlogin'
+  },
+  {
+    path:'/superaccount',
+    component:SuperAccount,
+    name:'superaccount'
+  },
   {
     path:'/merchant',
     component:MerchantView,
@@ -87,6 +101,11 @@ const routes=[
         path:'userorder',
         component:UserOrderView,
         name:'userorder'
+      },
+      {
+        path:'search/:searchInfo',
+        component:SearchView,
+        name:'search',     
       }
     ]
   },
@@ -111,7 +130,7 @@ const routes=[
     path:'/newmerchant',
     component:NewMerchantView,
     name:'NewMerchant'
-  }
+  },
 ] 
 
 const router=createRouter({

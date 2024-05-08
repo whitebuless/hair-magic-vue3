@@ -1,7 +1,7 @@
 <template>
   <div class="userInfoBox">
     <div class="avatar">
-      <a-avatar :size="160" src="https://th.bing.com/th/id/R.0f7e0f8f147bb9dfafc5e4c3bece59f2?rik=auXMf%2b3yZ3xMLQ&riu=http%3a%2f%2fimg.qqtouxiangzq.com%2f6%2f1182%2f32.jpg&ehk=kLA%2fNQgc8j3Poiz5Hva1NiVpJlwbSQosepCOeN5wde4%3d&risl=&pid=ImgRaw&r=0">
+      <a-avatar :size="160" src="https://img2.imgtp.com/2024/05/07/ycPa2cfu.jpg">
       </a-avatar>
     </div>
     <div class="baseInfo">
@@ -17,6 +17,10 @@
         ></span>
       </p>
       <p>{{ lookingUser.explain }}</p>
+      <div style="margin-bottom: 15px;color: #999999;">
+        <span >关注：{{ lookingUser.following?.length }}</span>
+        <span>粉丝：{{ lookingUser.followers?.length }}</span>
+      </div>
       <a-button type="primary" block v-if="status=='other'">+关注</a-button>
       <a-button block v-else-if="status=='myself'">编辑资料</a-button>
 
@@ -33,6 +37,7 @@ import { onMounted, ref } from 'vue';
 import { findUserById } from '../../apis/userApi';
 import { useRoute } from 'vue-router';
 import { useUserStore } from '../../stores/user';
+import { getFollowerApi,getFollowingApi } from '../../apis/followApi';
 const userStore=useUserStore()
 
 const lookingUser=ref({})
@@ -40,11 +45,19 @@ const status=ref('other')
 onMounted(()=>{
   const route = useRoute();
   const id = route.params.id;
-  findUserById(id).then(res=>{
+   findUserById(id).then( res=>{
     lookingUser.value=res.data.data
     if(res.data.data.id==userStore.userInfo.id){
       status.value="myself"
     }
+     getFollowingApi(res.data.data.id).then(result=>{
+      lookingUser.value.following=result.data.followers
+      console.log(lookingUser.value.following);
+    })
+     getFollowerApi(res.data.data.id).then(result=>{
+      lookingUser.value.followers=result.data.followers
+      console.log(lookingUser.value.followers);
+    })
   })
   
 })

@@ -1,6 +1,7 @@
 <template>
   <div class="uploadBox">
     <div class="uploadForm">
+      <h1><b>填写分享</b></h1><br>
       <a-form :model="formState" 
       :label-col="labelCol" 
       :wrapper-col="wrapperCol"
@@ -39,16 +40,15 @@
 
       <a-form-item label="标签">
         <a-checkbox-group v-model:value="formState.searchInfo">
-          <a-checkbox value="1" name="type">Online</a-checkbox>
-          <a-checkbox value="2" name="type">Promotion</a-checkbox>
-          <a-checkbox value="3" name="type">Offline</a-checkbox>
+          <a-checkbox value="1" name="type">男士</a-checkbox>
+          <a-checkbox value="2" name="type">女士</a-checkbox>
+          <a-checkbox value="3" name="type">烫发</a-checkbox>
         </a-checkbox-group>
       </a-form-item>
       <a-form-item label="类别">
         <a-radio-group v-model:value="formState.type">
-          <a-radio value="1">推荐类</a-radio>
+          <a-radio value="1">评价类</a-radio>
           <a-radio value="2">生活类</a-radio>
-          <a-radio value="3">其他</a-radio>
         </a-radio-group>
       </a-form-item>
       <a-form-item label="说点什么吧~">
@@ -58,8 +58,17 @@
         <a-button type="primary" @click="onSubmit">分享</a-button>
         <!-- <a-button style="margin-left: 10px">保存并退出</a-button> -->
       </a-form-item>
-    </a-form>
+      </a-form>
     </div>
+    <div class="previewContrainer">
+      <h1><b>预览图</b></h1>
+        <ShareCardModelVue
+          :shareBody="formState"
+          style="transition: all .3s;width:300px;"
+          @click="console.log(1)"
+        >
+        </ShareCardModelVue>
+      </div>
   </div>
 </template>
 <script setup>
@@ -67,6 +76,7 @@ import { reactive, toRaw, ref, onMounted } from 'vue';
 import axios from 'axios';
 import { useShareStore } from '../../stores/share';
 import { useUserStore } from '../../stores/user';
+import ShareCardModelVue from "@/views/Share/components/shareCardModel.vue";
 const shareStore=useShareStore()
 const userStore=useUserStore()
 
@@ -82,6 +92,7 @@ onMounted(()=>{
   .catch(error => {
     console.error('Error fetching hair types:', error);
   });
+  formState.userName=userStore.userInfo.username
 
 })
 
@@ -90,7 +101,7 @@ const formState = reactive({
   // 标题
   title: '',
   hairType: '',
-  imgs:'',
+  imgs:'https://img2.imgtp.com/2024/05/01/QuoC5500.jpg ',
   searchInfo:[],
   type: '',
   description: '',
@@ -141,7 +152,6 @@ function uploadImage(file){
   formData.append('image', file.file);
   axios.post('https://www.imgtp.com/api/upload', formData)
   .then(response => {
-    console.log('Upload response:', response.data);
     fileList.value.pop()
     fileList.value.push({
       uid:response.data.data.id,
@@ -179,14 +189,28 @@ const handlePreview = async file => {
 <style lang="scss" scoped>
 .uploadBox {
   display: flex;
-  justify-content: center;
-  position: relative;
-  padding-right: 1rem;
+  justify-content: space-around;
+  padding:0 2rem;
+  height: 88vh;
+  overflow: hidden;
   .uploadForm{
     width: 60%;
-    display: flex;
     padding: 20px;
+    box-shadow: 5px 0 5px rgba(0, 0, 0, 0.2);
+    z-index: 99;
+    height: 100%;
+    border-left:15px solid rgb(100,0,0) ;
   }
+  .previewContrainer{
+    border-right:15px solid rgb(100,0,0) ;
+      width: 40%;
+      height: 100%;
+      padding:  20px 40px;
+      background-color: rgb(128, 0, 0);
+      h1{
+        color: rgb(255, 255, 255);
+      }
+    }
 }
 
 .ant-upload-select-picture-card i {

@@ -30,16 +30,19 @@ import HomeFooter from './components/HomeFooter.vue'
 import router from '../../router';
 import { onMounted, ref,inject } from 'vue';
 import { useUserStore } from "../../stores/user";
-import { getFollowingApi } from '../../apis/followApi';
+import { getFollowingApi,getFollowerApi } from '../../apis/followApi';
 const userStore=useUserStore()
-onMounted(()=>{
+onMounted(async ()=>{
   if(userStore.userInfo.identity!="用户"){
     router.replace("/")
   }
   if(!userStore.userInfo.password){
     router.push("/addInfo")
   }
-  getFollowingApi(userStore.userInfo.id).then(res=>{
+  await getFollowingApi(userStore.userInfo.id).then(res=>{
+    userStore.following=res.data.followers
+  })
+  await getFollowerApi(userStore.userInfo.id).then(res=>{
     userStore.following=res.data.followers
   })
 })

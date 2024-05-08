@@ -7,6 +7,13 @@ const getFollowingApi=function(id){
   })
 }
 
+const getFollowerApi=function(id){
+  return axiosInstance({
+    url:`/${id}/followers`,
+    method:'GET',
+  })
+}
+
 const followApi=function(userId,followingId){
   return axiosInstance({
     url:'/api/follow',
@@ -28,5 +35,6 @@ const unfollowApi=function(userId,followingId){
 export {
   getFollowingApi,
   followApi,
-  unfollowApi
+  unfollowApi,
+  getFollowerApi
 }
