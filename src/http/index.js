@@ -8,7 +8,6 @@ const axiosInstance=axios.create({
 
 // 添加请求拦截器
 axiosInstance.interceptors.request.use(function (config) {
-  // console.log("send request successfully")
   // 在发送请求之前做些什么
   return config;
 }, function (error) {
@@ -19,7 +18,6 @@ axiosInstance.interceptors.request.use(function (config) {
 // 添加响应拦截器
 axiosInstance.interceptors.response.use(function (response) {
   // 2xx 范围内的状态码都会触发该函数。
-  // console.log("resolve response successfully")
   // 对响应数据做点什么
   return response;
 }, function (error) {

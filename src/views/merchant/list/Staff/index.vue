@@ -285,7 +285,7 @@ function handleEditClick(item){
 // 点击保存编辑
 function handleSaveClick(){
   updateStaffApi(EditStaffFormData.value).then(res=>{
-    alert(res.data.data)
+    message.success(res.data.data)
     openEdit.value=false
     getStaffList(merchantStore.merchantInfo.id)
   })
@@ -296,10 +296,10 @@ const onCloseEdit = () => {
 };
 // 点击提交
 async function handleAddClick(){
-  if(addStaffFormData.name==''){ alert("输入姓名");return}
-  if(addStaffFormData.phoneNumber==''){ alert("输入联系方式");return}
-  if(addStaffFormData.phoneNumber==''){ alert("输入联系方式");return}
-  if(addStaffFormData.detail==''){ alert("输入简介");return}
+  if(addStaffFormData.name==''){ message.error("输入姓名");return}
+  if(addStaffFormData.phoneNumber==''){ message.error("输入联系方式");return}
+  if(addStaffFormData.phoneNumber==''){ message.error("输入联系方式");return}
+  if(addStaffFormData.detail==''){ message.error("输入简介");return}
   addStaffFormData.merchant=merchantStore.merchantInfo.id
   addStaffFormData.merchantName=merchantStore.merchantInfo.name
   await addStaffApi(addStaffFormData).then(res=>{
@@ -317,7 +317,7 @@ const handleOk =async e => {
   console.log(e);
   deleteing.value = false;
   await deleteStaffApi(deleteingId.value).then(res=>{
-    alert(res.data.data)
+    message.success(res.data.data)
   })
   await getStaffList(merchantStore.merchantInfo.id)
 };

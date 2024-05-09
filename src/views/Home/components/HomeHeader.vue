@@ -108,7 +108,7 @@ watch(province, val => {
 });
 // 退出登录
 function logOut(){
-  router.replace('/')
+  router.push('/')
   // userStore.userInfo=null
   location.reload()
 }

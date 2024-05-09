@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { addStaffApi } from '../apis/staffApi.js'
 import router from '../router/index.js'
+import { message } from 'ant-design-vue'
 
 
 
@@ -16,7 +17,7 @@ export const useStaffStore = defineStore('staff', {
     addStaff(staff) {
       addStaffApi(staff)
         .then(res=>{
-          alert(res.data.data)
+          message.success(res.data.data)
         })
     }
   },

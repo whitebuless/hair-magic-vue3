@@ -45,7 +45,7 @@ export const useUserStore = defineStore('user', {
     loginVertical(email,code,identity){
       userLoginVerticalApi(email,code,identity).then(res=>{
         if(res.data.data=='验证码错误'){
-          alert(res.data.data)
+          message.error(res.data.data)
         }else{
           this.userInfo = res.data.data;
           if (res.data.data.identity === '用户') {

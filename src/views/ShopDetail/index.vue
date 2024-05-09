@@ -142,11 +142,11 @@ const staffList=ref([])
 // 处理预定
 async function handleOrdeClick(){
   if(orderFormData.name==''){
-    alert("请输入姓名")
+    message.error("请输入姓名")
     return
   }
   if(orderFormData.phoneNumber==''){
-    alert("请输入联系方式")
+    message.error("请输入联系方式")
     return
   }
   orderFormData.clientId=userStore.userInfo.id;

@@ -11,13 +11,14 @@
         <a-input 
         v-model:value="formState.title"
         placeholder="输入分享标题"
+        @change="handleTitleChangeWrapper"
          />
       </a-form-item>
       <a-form-item label="发型" required>
         <a-select
           v-model:value="formState.hairType"
           show-search
-          placeholder="选择发型标签"
+          placeholder="选择发型"
           :options="options"
         ></a-select>
       </a-form-item>
@@ -37,22 +38,19 @@
         <img alt="example" style="width: 100%" :src="previewImage" />
       </a-modal>
 
-
       <a-form-item label="标签">
         <a-checkbox-group v-model:value="formState.searchInfo">
-          <a-checkbox value="1" name="type">男士</a-checkbox>
-          <a-checkbox value="2" name="type">女士</a-checkbox>
-          <a-checkbox value="3" name="type">烫发</a-checkbox>
+          <a-checkbox value="item" name="type" v-for="item in cutWords">{{item}}</a-checkbox>
         </a-checkbox-group>
       </a-form-item>
-      <a-form-item label="类别">
+      <!-- <a-form-item label="类别">
         <a-radio-group v-model:value="formState.type">
           <a-radio value="1">评价类</a-radio>
           <a-radio value="2">生活类</a-radio>
         </a-radio-group>
-      </a-form-item>
-      <a-form-item label="说点什么吧~">
-        <a-textarea v-model:value="formState.description" />
+      </a-form-item> -->
+      <a-form-item label="说点什么吧~"         >
+        <a-textarea v-model:value="formState.description" @change="handleTitleChangeWrapper"/>
       </a-form-item>
       <a-form-item :wrapper-col="{ span: 14, offset: 4 }">
         <a-button type="primary" @click="onSubmit">分享</a-button>
@@ -77,8 +75,13 @@ import axios from 'axios';
 import { useShareStore } from '../../stores/share';
 import { useUserStore } from '../../stores/user';
 import ShareCardModelVue from "@/views/Share/components/shareCardModel.vue";
+import { cutwordApi } from '../../apis/IKcutwordApi';
+import { message } from 'ant-design-vue';
 const shareStore=useShareStore()
 const userStore=useUserStore()
+
+// 切分结果
+const cutWords=ref([])
 
 onMounted(()=>{
   // 获取全部种类
@@ -97,19 +100,73 @@ onMounted(()=>{
 })
 
 
+
+let debounceTimer;
+
+function debounce(func, delay) {
+    return function() {
+        const context = this;
+        const args = arguments;
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+            func.apply(context, args);
+        }, delay);
+    };
+}
+// 在标题改变后执行的函数
+async function handleTitleChange() {
+    // 处理标题
+    await cutwordApi(formState.title).then(res => {
+        const data = res.data.data.filter(word => word.length >= 2); // 过滤长度至少为两个字符的词语
+        if (data.length > 0) {
+            cutWords.value =data;
+        }
+    });
+    // 处理描述
+    await cutwordApi(formState.description).then(res => {
+        const data = res.data.data.filter(word => word.length >= 2); // 过滤长度至少为两个字符的词语
+        if (data.length > 0) {
+            cutWords.value = [...cutWords.value, ...data];
+        }
+    });
+        // 去重
+    cutWords.value = Array.from(new Set(cutWords.value));
+}
+// 创建防抖函数
+const handleTitleChangeDebounced = debounce(handleTitleChange, 1000);
+// 当标题改变时触发的函数
+function handleTitleChangeWrapper() {
+    handleTitleChangeDebounced();
+}
 const formState = reactive({
   // 标题
   title: '',
   hairType: '',
-  imgs:'https://img2.imgtp.com/2024/05/01/QuoC5500.jpg ',
+  imgs:'https://img2.imgtp.com/2024/05/01/QuoC5500.jpg',
   searchInfo:[],
-  type: '',
+  type: '分享类',
   description: '',
 });
 // 发型列表相关
 const options = ref([]);
 // 提交逻辑
 const onSubmit = () => {
+  if(!formState.title){
+    message.warning("给作品起个名字吧~")
+    return
+  }
+  if(!formState.hairType){
+    message.warning("给大家介绍一下这是什么发型吧！")
+    return
+  }
+  if(formState.searchInfo.length==0){
+    message.warning("选择关键字，让大家更容易找到你~")
+    return
+  }
+  if(!formState.description){
+    message.warning("说点什么吧~")
+    return
+  }
   formState.userId=userStore.userInfo.id
   formState.userName=userStore.userInfo.username
   formState.shopName='暖风发廊'
@@ -144,7 +201,7 @@ function beforeUpload(file){
         file.type === "image/jpg" ||
         file.type === "image/png";
   if (!isJpgOrPng) {
-    alert("只能上传jpg/png格式的图片")
+    message.error("只能上传jpg/png格式的图片")
   }
 }
 function uploadImage(file){

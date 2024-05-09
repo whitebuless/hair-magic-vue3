@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { subCommentApi } from '@/apis/commentApi.js'
 import { getCommentByShareIdApi } from '@/apis/commentApi.js'
 import router from '@/router/index.js'
+import { message } from 'ant-design-vue'
 
 
 
@@ -17,9 +18,7 @@ export const useCommentStore = defineStore('comment', {
       subCommentApi(userId,userName,comment,shareId)
         .then(response => {
           // 处理成功情况
-
-          alert(response.data.msg)
-
+          message.success(response.data.msg)
         })
         .catch(error => {
           // 处理错误情况

@@ -1,11 +1,13 @@
 <template>
   <div id="shareBox">
-    <div v-for="(item,i) in shareArray" :key="item.id" class="share">
-      <ShareCardModelVue 
-        :shareBody="item"
-        style="transition: all .3s;"
-        @click="handleCardClick(item)"
-      ></ShareCardModelVue>
+    <div class="shareContainer" v-masonry >
+
+        <ShareCardModelVue v-for="(item,i) in shareArray" :key="item.id" class="share" v-masonry-tile
+          :shareBody="item"
+          style="transition: all .3s;max-width: 23%;"
+          @click="handleCardClick(item)"
+        ></ShareCardModelVue>
+
     </div>
     <!-- 遮蔽盒子 -->
     <div class="coverBox"
@@ -124,7 +126,7 @@
 </template>
 <script setup>
 import { onMounted, ref,inject, watchEffect,provide, reactive } from "vue";
-import { getShareApi } from "../../apis/shareAPpi"
+import { getShareApi,recommendShareApi } from "../../apis/shareAPpi"
 import ShareCardModelVue from "./components/shareCardModel.vue";
 import { useShareStore } from "../../stores/share";
 import { getCommentByShareIdApi } from "../../apis/commentApi"
@@ -139,6 +141,8 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { message } from "ant-design-vue";
 import { followApi,unfollowApi,getFollowingApi } from "../../apis/followApi";
+import { lookApi } from "@/apis/behaviorApi"
+
 
 const shareStore=useShareStore()
 const commentStore=useCommentStore()
@@ -146,9 +150,9 @@ const userStore=useUserStore()
 const shareArray=ref([])
 
 
-onMounted(()=>{
-  console.log();
-  getShares('')
+
+onMounted(async()=>{
+  await getShares(userStore.userInfo.id)
 })
 // 点击关注
 async function handleFollowClick(){
@@ -174,9 +178,10 @@ const commenList=ref([])
 const detail=ref(true)
 // 绑定评论信息
 const commentEdit=ref('')
-async function getShares(title){
-  await getShareApi(title).then((res=>{
-    shareArray.value=res.data.data
+// 获取分享列表
+async function getShares(id){
+  await recommendShareApi(id).then((res=>{
+    shareArray.value=res.data
   }))
 }
 
@@ -193,6 +198,9 @@ const shareBody=reactive({
 // 点击分享
 async function handleCardClick(item){
   shareStore.shareInfo=item
+  lookApi(userStore.userInfo.id,item.id).then(res=>{
+    console.log(res.data);
+  })
   await getCommentByShareIdApi(item.id).then(res=>{
     commenList.value=res.data.data
   })
@@ -216,7 +224,7 @@ const imgArray=ref([])
 // 发表评论
 async function subCommentClick(){
   if(commentEdit.value==''){
-    alert('写点东西再发吧')
+    message.error('写点东西再发吧')
     return
   }
   await subCommentApi(
@@ -241,20 +249,15 @@ async function subCommentClick(){
   })
   commentEdit.value=''
 }
-
-
+// 时间插件
 dayjs.extend(relativeTime);
-const likes = ref(0);
-const dislikes = ref(0);
-const action = ref();
+
 
 </script>
 
 <style lang="scss" scoped>
 @import '@/assets/css/color.scss';
 #shareBox {
-  column-count: 1; /* 设置列数 */
-  column-gap: 1rem; /* 设置列之间的间隔 */
   .floatDetail{
     width: 1000px;
     height: 700px;
@@ -395,19 +398,6 @@ const action = ref();
     width: 1000px;
     height: 700px;
     opacity: 1;
-  }
-}
-/* 媒体查询 */
-@media (min-width: 768px) {
-  /* 调整grid布局 */
-  #shareBox {
-    column-count: 3;
-  }
-}
-@media (min-width: 1024px) {
-  /* 调整grid布局 */
-  #shareBox {
-    column-count: 4;
   }
 }
 

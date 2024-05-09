@@ -5,6 +5,8 @@ import Antd from 'ant-design-vue';
 import 'ant-design-vue/dist/reset.css';
 import '@/assets/css/style.scss';
 
+import { VueMasonryPlugin } from 'vue-masonry';
+
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
 import { createPinia } from 'pinia'
@@ -18,6 +20,7 @@ const app=createApp(App)
 
 // 应用antui库
 // app.use(DatePicker);
+app.use(VueMasonryPlugin);
 app.use(pinia)
 app.use(Antd)
 app.use(router)

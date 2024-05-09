@@ -11,7 +11,6 @@ const getShareApi=function(title){
     }
   })
 }
-
 const uploadShareApi=function(share){
   return axiosInstance({
     url:'/share/upload',
@@ -19,7 +18,6 @@ const uploadShareApi=function(share){
     data:share
   })
 }
-
 const getShareByShopIdApi=function(id){
   return axiosInstance({
     url:'/share/getbyshopid',
@@ -29,10 +27,20 @@ const getShareByShopIdApi=function(id){
     }
   })
 }
+const recommendShareApi=function(userId){
+  return axiosInstance({
+    url:'/share/recommendByContent',
+    method:'GET',
+    params:{
+      userId
+    }
+  })
+}
 
 export {
   getShareApi,
   uploadShareApi,
-  getShareByShopIdApi
+  getShareByShopIdApi,
+  recommendShareApi
 }
 

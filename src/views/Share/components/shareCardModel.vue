@@ -1,6 +1,6 @@
 <template>
   <div class="shareCardBox" ref="cardRef">
-    <img :data-src="shareBody.imgs.split(' ')[0]" alt="" ref="imageRef" >
+    <img :src="shareBody.imgs.split(' ')[0]" alt="" ref="imageRef" >
     <div class="content">
       <div class="title">
         <b style="margin-right: 10px;">{{ shareBody.title }}</b>
@@ -22,23 +22,16 @@ import { onMounted,ref } from 'vue';
 
 const cardRef = ref(null);
 const imageRef = ref(null);
+const cardVisible = ref(false);
+const imageSrc = ref('');
 
 onMounted(() => {
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const lazyImage = entry.target.querySelector('img');
-          lazyImage.src = lazyImage.dataset.src;
-          observer.unobserve(entry.target);
-        }
-      });
-    },
-    { rootMargin: '0px 0px 100px 0px' } // 根据需要调整根边距
-  );
-  observer.observe(cardRef.value);
+
 });
 
+function handleImageLoad() {
+  cardVisible.value = true; // 当图片加载完成后，显示整个组件
+}
 
 defineProps({
   shareBody: Object

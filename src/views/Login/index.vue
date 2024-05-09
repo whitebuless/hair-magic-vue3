@@ -70,6 +70,7 @@ import { getCode } from "../../apis/verticode.js";
 const user = useUserStore()
 // 导入请求
 import {userLoginApi} from "../../apis/userApi"
+import { message } from "ant-design-vue";
 // 验证码绑定
 const verticalCode=ref('')
 // 用户类型
@@ -95,14 +96,16 @@ onMounted(()=>{
 })
 // 发送验证码
 function sendCode(){
-  if(userData.value.email){
+  // 正则表达式匹配邮箱格式
+  const emailRegex = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+  if(emailRegex.test(userData.value.email)){
     getCode(userData.value.email).then(res=>{
-      alert(res.data.data)
+      message.success(res.data.data)
     })
     return 
   }
   else{
-    alert("请输入邮箱")
+    message.error("请输入有效的邮箱地址");
     return
   }
 }
@@ -162,7 +165,7 @@ let changeWay=function(status){
 let clickLogin=function(){
   // 验证码模块检验
   if(userCode.value.toUpperCase()!=checkCode.value){
-    alert("验证码错误")
+    message.error("验证码错误")
     generateCode()
     userCode.value=''
     return
@@ -170,7 +173,7 @@ let clickLogin=function(){
   // 用户协议模块检验
   if(checked.value!=true){
     checkedColor.value='red'
-    alert("请勾选用户隐私协议")
+    message.error("请勾选用户隐私协议")
     return
   }
   // 根据登陆方式选择登录接口
