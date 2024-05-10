@@ -24,7 +24,7 @@ import SearchView from "@/views/Search/index.vue"
 // 平台管理员部分组件导入
 import SuperLogin from "@/views/Super/Login/index.vue"
 import SuperAccount from "@/views/Super/index.vue"
-const routes=[
+const routers=[
   {
     path:'/superlogin',
     component:SuperLogin,
@@ -74,7 +74,7 @@ const routes=[
     children:[
       {
         
-        path:'',
+        path:'/',
         redirect:'/home/find'
       },
       {
@@ -135,7 +135,15 @@ const routes=[
 
 const router=createRouter({
   history:createWebHashHistory(),
-  routes,
+  routes:routers
 })
+
+// 路由守卫
+router.beforeEach((to, from, next) => {
+  // 在这里执行你想要的逻辑，例如权限验证、页面访问记录等
+
+  // 调用 next() 继续路由导航
+  next();
+});
 // 
 export default router

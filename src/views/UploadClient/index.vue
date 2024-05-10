@@ -40,7 +40,7 @@
 
       <a-form-item label="标签">
         <a-checkbox-group v-model:value="formState.searchInfo">
-          <a-checkbox value="item" name="type" v-for="item in cutWords">{{item}}</a-checkbox>
+          <a-checkbox :value="item" name="type" v-for="item in cutWords">{{item}}</a-checkbox>
         </a-checkbox-group>
       </a-form-item>
       <!-- <a-form-item label="类别">
@@ -129,7 +129,7 @@ async function handleTitleChange() {
             cutWords.value = [...cutWords.value, ...data];
         }
     });
-        // 去重
+        // 去重操作
     cutWords.value = Array.from(new Set(cutWords.value));
 }
 // 创建防抖函数
@@ -142,7 +142,7 @@ const formState = reactive({
   // 标题
   title: '',
   hairType: '',
-  imgs:'https://img2.imgtp.com/2024/05/01/QuoC5500.jpg',
+  imgs:'',
   searchInfo:[],
   type: '分享类',
   description: '',
@@ -167,12 +167,16 @@ const onSubmit = () => {
     message.warning("说点什么吧~")
     return
   }
+  formState.imgs=''
+  fileList.value.forEach(item=>{
+    formState.imgs+=item.url+' '
+  })
   formState.userId=userStore.userInfo.id
   formState.userName=userStore.userInfo.username
   formState.shopName='暖风发廊'
   formState.shopId=1
   formState.location='山东'
-  formState.searchInfo=formState.searchInfo.join(' ')
+  formState.searchInfo=formState.searchInfo.join(',')
   formState.gender='男'
   shareStore.uploadShare(formState)
 };
@@ -185,7 +189,6 @@ const labelCol = {
 const wrapperCol = {
   span: 14,
 };
-
 // 图片上传
 function getBase64(file) {
   return new Promise((resolve, reject) => {

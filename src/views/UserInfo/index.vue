@@ -26,10 +26,12 @@
 
 
     </div>
+    <a-tabs v-model:activeKey="activeKey">
+      <a-tab-pane key="1" tab="作品">  <a-skeleton active /></a-tab-pane>
+      <a-tab-pane key="2" tab="点赞" force-render>  <a-skeleton active /></a-tab-pane>
+      <!-- <a-tab-pane key="3" tab="">  <a-skeleton active /></a-tab-pane> -->
+    </a-tabs>
   </div>
-  <a-skeleton active />
-  <a-skeleton active />
-  <a-skeleton active />
 </template>
 
 <script setup>
@@ -39,6 +41,8 @@ import { useRoute } from 'vue-router';
 import { useUserStore } from '../../stores/user';
 import { getFollowerApi,getFollowingApi } from '../../apis/followApi';
 const userStore=useUserStore()
+// 定义tab选择
+const activeKey = ref('1');
 
 const lookingUser=ref({})
 const status=ref('other')
@@ -52,11 +56,10 @@ onMounted(()=>{
     }
      getFollowingApi(res.data.data.id).then(result=>{
       lookingUser.value.following=result.data.followers
-      console.log(lookingUser.value.following);
+
     })
      getFollowerApi(res.data.data.id).then(result=>{
       lookingUser.value.followers=result.data.followers
-      console.log(lookingUser.value.followers);
     })
   })
   
@@ -64,8 +67,7 @@ onMounted(()=>{
 </script>
 <style lang="scss" scoped>
 .userInfoBox{
-  display: flex;
-  margin-bottom: 30px;
+
   .baseInfo{
     padding: 20px;
     display: flex;

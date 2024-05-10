@@ -87,7 +87,7 @@
   </div>
 </template>
 <script setup>
-import { ref,watch,provide,computed } from 'vue';
+import { ref,watch,computed } from 'vue';
 import router from '../../../router/index.js';
 import { useUserStore } from '../../../stores/user.js';
 const userStore=useUserStore()
@@ -110,16 +110,13 @@ watch(province, val => {
 function logOut(){
   router.push('/')
   // userStore.userInfo=null
-  location.reload()
 }
-// 监听输入框内容的变化，更新提供的值
-watch(searchText, newValue => {
-  provide('searchText', newValue);
-});
+
 
 // 点击搜索
 const search=()=>{
-  router.push(`/home/search/${searchText.value}`)
+  router.push(`/home/search/${searchText.value}`);
+
 }
 </script>
 <style lang="scss" scoped>
