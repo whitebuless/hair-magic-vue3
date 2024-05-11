@@ -36,13 +36,13 @@
          style="display: flex;
                 align-items: center;">
       <div>
-        <span 
+        <!-- <span 
         class="iconfont icon-mind-full" 
         style="font-size: large;
               cursor: pointer;
               margin: 0 10px;"
         title="Ai推荐"
-        ></span>
+        ></span> -->
         <span 
         class="iconfont icon-shangchuan" 
         style="font-size: large;
@@ -53,7 +53,7 @@
 
         ></span>
       </div>
-      <div>
+      <!-- <div>
         <span 
         class="iconfont icon-shezhi" 
         style="font-size: large;
@@ -62,7 +62,7 @@
         title="设置"
         @click="console.log('进入设置页面')"
         ></span>
-      </div>
+      </div> -->
       <!-- 用户信息入口/头像显示 -->
       <div class="userBox">
         <div class="box"
@@ -122,7 +122,6 @@ const search=()=>{
 <style lang="scss" scoped>
 .headerBox{
   background: rgb(15, 15, 15);
-  height: 4rem;
   color: white;
   padding: 1rem 3rem;
   width: 100vw;

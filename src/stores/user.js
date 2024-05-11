@@ -36,7 +36,7 @@ export const useUserStore = defineStore('user', {
         })
         .catch(error => {
           // 处理错误情况
-          console.log(error);
+          message.error("服务器错误,请联系管理员")
         })
         .finally(() => {
           // 总是会执行的

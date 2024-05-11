@@ -1,12 +1,5 @@
 <template>
   <div id="shareBox">
-    <div class="tabs" style="padding: 0 10px;margin-bottom: 15px;">
-      <span :style="{ color: activeTab === '长发' ? 'rgb(100,0,0)' : '#999999' }" @click="activateTab1('长发')">长发</span>
-      <a-divider type="vertical" />
-      <span :style="{ color: activeTab === '短发' ? 'rgb(100,0,0)' : '#999999' }" @click="activateTab2('短发')">短发</span>
-      <a-divider type="vertical" />
-      <span :style="{ color: activeTab === '随便看看' ? 'rgb(100,0,0)' : '#999999' }" @click="activateTab3( '关注')">随便看看</span>
-    </div>
     <ShareContainer v-if="shareContainerOpacity == 1"  @card-click="handleCardClick" />
     <div :style="{ opacity: Math.abs(shareContainerOpacity-1) }" 
      v-else
@@ -32,30 +25,26 @@
 <script setup>
 import { onMounted, ref,inject, watchEffect,provide, reactive } from "vue";
 import { getShareApi,recommendShareApi } from "../../apis/shareAPpi"
-import { useShareStore } from "../../stores/share";
-import { getCommentByShareIdApi } from "../../apis/commentApi"
-import { useCommentStore } from "../../stores/comment";
-import { useUserStore } from "../../stores/user";
-import { subCommentApi } from "../../apis/commentApi";
+import { useShareStore } from "@/stores/share";
+import { getCommentByShareIdApi } from "@/apis/commentApi"
+import { useCommentStore } from "@/stores/comment";
+import { useUserStore } from "@/stores/user";
+import { subCommentApi } from "@/apis/commentApi";
 import router from "../../router";
 import leftCircleOutlined from 'ant-design-vue'
 import rightCircleOutlined from 'ant-design-vue'
-import ShareContainer from "./components/shareContainer.vue"
-import FloatDetail from "./components/floatDetail.vue"
+import ShareContainer from "@/views/Share/components/shareContainer.vue"
+import FloatDetail from "@/views/Share/components/floatDetail.vue"
 // test
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { message } from "ant-design-vue";
-import { followApi,unfollowApi,getFollowingApi } from "../../apis/followApi";
+import { followApi,unfollowApi,getFollowingApi } from "@/apis/followApi";
 import { lookApi } from "@/apis/behaviorApi"
+import { getShareFocusApi } from "../../apis/shareAPpi";
 const shareStore=useShareStore()
 const userStore=useUserStore()
 
-const PAGE_SIZE = 10;
-let currentPage = 1;
-
-// tab绑定值
-const activeTab = ref('随便看看');
 // 分享页骨架屏控制
 const shareContainerOpacity = ref(0);
 // 评论列表
@@ -68,18 +57,16 @@ onMounted(async() => {
   setTimeout(() => {
     shareContainerOpacity.value = 1;
   }, 1500);
-
-  await getShares(userStore.userInfo.id, currentPage, PAGE_SIZE);
-
+  if(userStore.following.length==0){
+    message.error("还未关注")
+    router.go(-1)
+  }
+  else{
+    await getShareFocusApi(userStore.following.join(',')).then(res=>{
+      shareStore.shareList=res.data.data
+    })
+  }
 });
-
-
-async function getShares(id, page, pageSize) {
-    const response = await recommendShareApi(id, page, pageSize);
-    const newData = response.data;
-    shareStore.shareList =newData;
-}
-
 
 /**
  * 处理卡片点击事件
@@ -87,10 +74,6 @@ async function getShares(id, page, pageSize) {
 async function handleCardClick(item) {
   // 存入Store
   shareStore.shareInfo=item
-  //浏览行为记录
-  lookApi(userStore.userInfo.id,item.id).then(res=>{
-  })
-
   // 显示细节
   toggleDetail()
   shareBody.userId=item.userId

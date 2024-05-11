@@ -63,8 +63,9 @@ onMounted(()=>{
 </script>
 <style lang="scss" scoped>
 .userOrderBox{
-  overflow: scroll;
+  overflow: hidden;
   padding-bottom: 120px;
+  height: 100%;
   .title{
     font-size: 40px;
     margin-bottom: 20px;
@@ -72,9 +73,11 @@ onMounted(()=>{
   }
   .orderList{
     width: 100%;
+    height: 100%;
     display: grid;
     grid-template-columns: repeat(1, minmax(0, 1fr));
     gap: 0 24px; 
+    overflow-y: scroll;
     .orderCard{
       margin: 10px;
       font-family: 'Courier New', Courier, monospace;

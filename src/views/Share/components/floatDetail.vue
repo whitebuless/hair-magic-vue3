@@ -16,7 +16,7 @@
                 <span class="iconfont icon-bg-right" ></span>
               </div>
             </template>
-              <img :src="item" alt="" style="height: 100%;" v-for="item in shareBody.imgs.split(' ')">
+              <img :src="item" alt="" style="height: 100%;" v-for="item in shareBody.imgs.slice(0,shareBody.imgs.length-1).split(' ')">
           </a-carousel>
         </div>
 
@@ -26,7 +26,7 @@
           <div class="head">
             <a-avatar :size="50" src="https://th.bing.com/th/id/R.0f7e0f8f147bb9dfafc5e4c3bece59f2?rik=auXMf%2b3yZ3xMLQ&riu=http%3a%2f%2fimg.qqtouxiangzq.com%2f6%2f1182%2f32.jpg&ehk=kLA%2fNQgc8j3Poiz5Hva1NiVpJlwbSQosepCOeN5wde4%3d&risl=&pid=ImgRaw&r=0">
             </a-avatar>
-            <span class="userName">{{ shareBody.userName }}</span>
+            <span class="userName" @click="router.push(`/home/user/${shareBody.userId}`)">{{ shareBody.userName }}</span>
             <div style="display: inline-block;" v-show="userStore.userInfo.id!=shareStore.shareInfo.userId  ">
               <a-button type="primary" 
                 style="margin-left: 10px;"
@@ -115,6 +115,7 @@ import { useShareStore } from "../../../stores/share";
 import { getCommentByShareIdApi,subCommentApi } from "../../../apis/commentApi";
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import router from "../../../router";
 import { message } from "ant-design-vue";
 import "@/assets/css/color.scss"
 const shareStore=useShareStore()
@@ -167,12 +168,13 @@ async function subCommentClick(){
   commentEdit.value=''
 }
 // 更新生命周期钩子
-onUpdated(async ()=>{
-  await getCommentByShareIdApi(shareStore.shareInfo.id).then(res=>{
-    commentList.value=res.data.data
-  })
+onMounted(async ()=>{
+  if(shareStore.shareInfo.id){
+    await getCommentByShareIdApi(shareStore.shareInfo.id).then(res=>{
+      commentList.value=res.data.data
+    })
+  }
 })
-
 dayjs.extend(relativeTime);
 
 

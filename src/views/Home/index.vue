@@ -1,6 +1,6 @@
 <template>
   <div class="homeBox">
-    <HomeHeader></HomeHeader>
+    <HomeHeader class="header"></HomeHeader>
     <!--  -->
     <div class="content">
       <div class="menu">
@@ -12,12 +12,12 @@
           <li @click="router.push('/home/shop')">
             <span class="iconfont icon-dianpu">店铺</span>
           </li>
-          <li>
+          <li @click="router.push('/home/focus')">
             <span class="iconfont icon-liulan">关注</span>
           </li>
         </ul>
       </div>
-      <div class="BOX" style="overflow: scroll;">
+      <div class="BOX">
         <router-view></router-view>
       </div>
     </div>
@@ -53,13 +53,17 @@ onMounted(async ()=>{
   // 限定高度
   height: 100vh;
   overflow: hidden;
+  .header{
+    height: 9vh;
+  }
 }
 .content{
   display: flex;
   justify-content: space-between;
   // 限定高度
-  height: 100%;
+  height: 89vh;
   padding: 0 1rem;
+  overflow: hidden;
   &>div{
     padding: 1rem;
   }

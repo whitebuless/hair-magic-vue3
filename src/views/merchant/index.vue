@@ -1,11 +1,11 @@
 <template>
   <div class="Box">
     <div class="topBox">
-      <NavBar @click="solvedBefore=false"></NavBar>
+      <NavBar @click="solvedBefore=false" ></NavBar>
     </div>
     <div class="merchantBox">
       <div class="leftView">
-        <SideBar></SideBar>
+        <SideBar @add-new="addNewOrder"></SideBar>
       </div>
       <div class="rightView">
         <div class="tableBox">
@@ -24,11 +24,9 @@
       </div>
     </div>
 
-    <button @click="addNewOrder"><strong>游客+</strong></button>
 
     <a-modal v-model:open="open" title="新增游客单" @ok="handleOk">
       <a-form-item label="金额">      <a-input-number v-model:value="newPrice"></a-input-number></a-form-item>
-
     </a-modal>
   </div>
 </template>
@@ -104,19 +102,7 @@ function handleChooseMerchant(item){
 .Box{
   max-height: 100vh;
   overflow: hidden;
-  button{
-    width: 80px;
-    height: 80px;
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    padding: 20px;
-    border-radius: 50%;
-    border: 0;
-    color: white;
-    background-color:$themeColor;
-    cursor: pointer;
-  }
+
   .topBox{
     height: 30%;
   }

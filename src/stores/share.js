@@ -6,7 +6,8 @@ import { message } from 'ant-design-vue'
 export const useShareStore = defineStore('share', {
   state: () => {
     return { 
-      shareInfo:{}
+      shareInfo:{},
+      shareList:[],
     }
   },
   // 也可以这样定义
@@ -20,6 +21,5 @@ export const useShareStore = defineStore('share', {
         }
       })
     }
-  },
-  persist: true
+  }
 })
