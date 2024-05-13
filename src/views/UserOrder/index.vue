@@ -8,7 +8,7 @@
       ></div>
     </div>
 
-    <a-table bordered :data-source="userOrderList" :columns="columns">
+    <a-table bordered :data-source="userOrderList" class="table" :columns="columns" :pagination="{ pageSize: pageSize }">
     <template #bodyCell="{ column, text, record }">
       <template v-if="column.dataIndex === 'name'">
         <div class="editable-cell">
@@ -37,6 +37,9 @@
         <span style="color: green;" v-else-if="record.status=='已完成'">{{ record.status }}</span>
         <span style="color: blue;" v-else-if="record.status=='未到店'">{{ record.status }}</span>
       </template>
+      <template v-else-if="column.dataIndex==='orderTime'">
+        {{ record.orderTime.split("T")[0] }}
+      </template>
     </template>
   </a-table>
 
@@ -64,7 +67,7 @@ import { updateOrderApi } from '../../apis/orderApi';
 import { message } from 'ant-design-vue';
 import { addCommentForOrerApi } from '../../apis/commentForOrderApi';
 const userStore=useUserStore()
-
+const pageSize = ref(7); // 默认每页显示 10 条数据
 const open=ref(false)
 
 
@@ -78,6 +81,7 @@ async function handleSubmit(){
   const formData={
     orderId:commentingOrder.value.id,
     userId:userStore.userInfo.id,
+    userAvatar:userStore.userInfo.avatar,
     userName:userStore.userInfo.username,
     merchantId:commentingOrder.value.merchantId,
     content:commentForOrder.value.content,
@@ -121,7 +125,7 @@ function getOrder(){
     clientId:userStore.userInfo.id
   }
   findOrderByAllApi(initData).then(res=>{
-    userOrderList.value=res.data.data.reverse()
+    userOrderList.value=res.data.data
   })
 }
 
@@ -137,7 +141,7 @@ const columns = [
   },
   {
     title: '电话号',
-    dataIndex: 'phoneNumeber',
+    dataIndex: 'phoneNumber',
   },
   {
     title: '号码',
@@ -156,8 +160,8 @@ const columns = [
     dataIndex: 'status',
   },
   {
-    title: '创建时间',
-    dataIndex: 'createTime',
+    title: '预约时间',
+    dataIndex: 'orderTime',
   },
   {
     title: '操作',
@@ -194,32 +198,6 @@ const onDelete = record => {
     font-size: 40px;
     margin-bottom: 20px;
     color: rgb(60, 60, 60);
-  }
-  .orderList{
-    width: 100%;
-    height: 100%;
-    display: grid;
-    grid-template-columns: repeat(1, minmax(0, 1fr));
-    gap: 0 24px; 
-    overflow-y: scroll;
-    .orderCard{
-      margin: 10px;
-      font-family: 'Courier New', Courier, monospace;
-      box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.152);
-      background-color: rgb(255, 255, 255);
-      cursor: pointer;
-      padding: 15px;
-      div{
-        margin: 4px;
-      }
-      .number{
-        width: 100%;
-        font-size: 30px;
-        font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-        color: rgb(153, 0, 0);
-        text-align: center;
-      }
-    }
   }
 
 }

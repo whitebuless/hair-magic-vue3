@@ -90,7 +90,6 @@ async function handleCardClick(item) {
   //浏览行为记录
   lookApi(userStore.userInfo.id,item.id).then(res=>{
   })
-
   // 显示细节
   toggleDetail()
   shareBody.userId=item.userId

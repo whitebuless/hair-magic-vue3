@@ -10,7 +10,7 @@
     <div class="locations"
     style="font-size: 12px;
     color:rgb(100, 100, 100) ;">
-    <span class="iconfont icon-weizhi" style="margin-right: 20px;">{{ shopInfo.location }}</span>
+    <span class="iconfont icon-weizhi" style="margin-right: 20px;font-size: 12px;">{{ shopInfo.location }}</span>
     <span v-for="i in shopInfo.waiting" class="iconfont icon-renshu"></span>
       
     </div>

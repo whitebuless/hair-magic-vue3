@@ -22,6 +22,8 @@ import AddInfoView from "@/views/AddInfo/index.vue"
 import NewMerchantView from "@/views/NewMerchant/index.vue"
 import SearchView from "@/views/Search/index.vue"
 import FocusView from "@/views/Focus/index.vue"
+import BusinessView from "@/views/merchant/list/Business/index.vue"
+import VipView from "@/views/merchant/list/Vip/index.vue"
 // 平台管理员部分组件导入
 import SuperLogin from "@/views/Super/Login/index.vue"
 import SuperAccount from "@/views/Super/index.vue"
@@ -61,6 +63,16 @@ const routers=[
         path:'reservation',
         component:ReservationView,
         name:'reservation'
+      },
+      {
+        path:'business',
+        component:BusinessView,
+        name:'business'
+      },
+      {
+        path:'vip',
+        component:VipView,
+        name:'vip'
       }
     ]
   },

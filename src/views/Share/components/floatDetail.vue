@@ -109,7 +109,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, onActivated, onUpdated } from "vue";
+import { ref, reactive, onMounted,watchEffect } from "vue";
 import { useUserStore } from "../../../stores/user";
 import { useShareStore } from "../../../stores/share";
 import { getCommentByShareIdApi,subCommentApi } from "../../../apis/commentApi";
@@ -126,7 +126,7 @@ const userStore=useUserStore()
  */
 defineProps({
   shareBody: Object,
-  commentList:Array
+
 })
 // 评论编辑框
 const commentEdit=ref('')
@@ -175,6 +175,14 @@ onMounted(async ()=>{
     })
   }
 })
+watchEffect(() => {
+  if (shareStore.shareInfo.id) {
+    getCommentByShareIdApi(shareStore.shareInfo.id).then(res => {
+      commentList.value = res.data.data;
+    });
+  }
+});
+
 dayjs.extend(relativeTime);
 
 

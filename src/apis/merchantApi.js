@@ -29,9 +29,32 @@ const addMerchantApi=function(merchant){
     data:merchant
   })
 }
+// 新增会员
+const addVipApi=function(vips,id){
+  return axiosInstance({
+    url:'/merchant/addVip',
+    method:'GET',
+    params:{
+      vips,
+      id
+    }
+  })
+}
+// 获取vip数组
+const getVipApi=function(vips){
+  return axiosInstance({
+    url:'/merchant/queryVips',
+    method:'GET',
+    params:{
+      vips
+    }
+  })
+}
 export {
   getMerchantByUserIdApi,
   getMerchantByAllApi,
-  addMerchantApi
+  addMerchantApi,
+  addVipApi,
+  getVipApi
 }
 

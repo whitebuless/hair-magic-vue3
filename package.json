@@ -17,6 +17,7 @@
     "echarts": "^5.5.0",
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.1",
+    "sortablejs": "^1.15.2",
     "vue": "^3.4.19",
     "vue-masonry": "^0.16.0",
     "vue-request": "^2.0.4",

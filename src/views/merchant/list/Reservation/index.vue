@@ -30,7 +30,26 @@
       </a-table>
     </div>
     <!-- 全部订单 -->
-    <a-table :columns="columns" :data-source="data" @change="onChange">
+    <a-table :columns="columns" :data-source="data" @change="onChange" :pagination="{ pageSize: pageSize }">
+      <template #bodyCell="{ column, text, record }">
+        <template v-if="column.dataIndex==='orderTime'">
+          <span style="color: black;" >
+            <b>
+              {{ record.orderTime.split("T")[0]}}
+            </b>
+          </span>
+        </template>
+        <template v-if="column.dataIndex==='createTime'">
+          <span style="color: #999;" >
+              {{ record.createTime.split("T")[0]+" "+record.createTime.split("T")[1].slice(0,8)}}
+          </span>
+        </template>
+        <template v-else-if="column.dataIndex==='status'">
+          <span style="color: red;" v-if="record.status=='已取消'">{{ record.status }}</span>
+          <span style="color: green;" v-else-if="record.status=='已完成'">{{ record.status }}</span>
+          <span style="color: blue;" v-else-if="record.status=='未到店'">{{ record.status }}</span>
+        </template>
+      </template>
       <!-- <template #bodyCell="{ column }">
         <template v-if="column.key === 'action'">
         <span>
@@ -68,6 +87,7 @@ import { staffInMerchantApi } from '../../../../apis/staffApi';
 import { updateOrderApi } from '../../../../apis/orderApi';
 import { message } from 'ant-design-vue';
 const merchantStore=useMerchantStore()
+const pageSize = ref(4); // 默认每页显示 10 条数据
 // 分配抽泣
 const open=ref(false)
 // 分配对话框
@@ -139,7 +159,8 @@ onMounted(()=>{
     merchantId:merchantStore.merchantInfo.id
   }
   findOrderByAllApi(formData).then(res=>{
-    data.value=res.data.data
+    data.value = res.data.data.filter(item => item.status !== "已取消");
+
   })
   getTodayOrder()
   getIngOrder()

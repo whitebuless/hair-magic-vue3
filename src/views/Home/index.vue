@@ -43,7 +43,7 @@ onMounted(async ()=>{
     userStore.following=res.data.followers
   })
   await getFollowerApi(userStore.userInfo.id).then(res=>{
-    userStore.following=res.data.followers
+    userStore.follower=res.data.followers
   })
 })
 

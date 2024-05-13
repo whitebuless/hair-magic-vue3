@@ -17,7 +17,7 @@
       <form action="" class="formBox">
         <input type="text" name="account" id="" placeholder="输入邮箱" v-model="userData.email">
         <div style="display: flex;" v-if="loginWay==true">
-          <input type="text" name="password" id="" placeholder="输入密码" v-model="userData.password">
+          <input type="password" name="password" id="" placeholder="输入密码" v-model="userData.password">
         </div>
         <div  v-else-if="loginWay==false">
           <div style="display: flex;">
@@ -27,7 +27,8 @@
             id="" 
             placeholder="输入验证码"
             v-model="verticalCode">
-            <a-button type="primary" @click="sendCode">发送验证码</a-button>
+            <a-button type="primary" @click="sendCode" v-if="!isCounting">发送验证码</a-button>
+            <a-button type="primary" v-else>{{ count }}</a-button>
           </div>
         </div>
         <div style="display: flex;">
@@ -89,6 +90,9 @@ const checkCode=ref('')
 let checked=ref(false)
 let checkedColor=ref('black')
 
+// 倒计时
+const isCounting=ref(false)
+const count=ref(60)
 
 // 生命周期钩子
 onMounted(()=>{
@@ -101,6 +105,17 @@ function sendCode(){
   if(emailRegex.test(userData.value.email)){
     getCode(userData.value.email).then(res=>{
       message.success(res.data.data)
+      // 设置 isCounting 为 true
+      isCounting.value = true;
+      // 设置时间迭代器，每秒 count - 1，直到 count 为 0
+      const timer = setInterval(() => {
+        count.value--;
+        if (count.value === 0) {
+          clearInterval(timer);
+          // 移除迭代器后将 isCounting 设为 false
+          isCounting.value = false;
+        }
+      }, 1000);
     })
     return 
   }

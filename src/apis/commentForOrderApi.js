@@ -8,9 +8,20 @@ const addCommentForOrerApi=function(CommentForOrder){
     data:CommentForOrder
   })
 }
+// 根据店家查询
+const findByMerchantIdApi=function(id){
+  return axiosInstance({
+    url:'/comfororder/findbymerchantid',
+    method:'GET',
+    params:{
+      id
+    }
+  })
+}
 
 
 export {
-  addCommentForOrerApi
+  addCommentForOrerApi,
+  findByMerchantIdApi
 }
 

@@ -1,6 +1,6 @@
 <template>
   <div class="navBarBox">
-    <span class="title">    欢迎来到{{ merchantStore.merchantInfo.name==null?'***':merchantStore.merchantInfo.name }}后台管理系统</span>
+    <span class="title">欢迎来到{{ merchantStore.merchantInfo.name==null?'***':merchantStore.merchantInfo.name }}后台管理系统</span>
   </div>
 </template>
 <script setup>

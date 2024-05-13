@@ -85,15 +85,14 @@ async function getMerchantList(id){
       router.push('/newmerchant')
     }
     else{
-      merchantStore.merchantInfo=res.data.data[0]
       merchantList.value=res.data.data
     }
   }))
 }
 
 function handleChooseMerchant(item){
-  solvedBefore.value=true
   merchantStore.merchantInfo=item
+  solvedBefore.value=true
 }
 
 </script>
