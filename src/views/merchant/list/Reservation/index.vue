@@ -137,7 +137,7 @@ async function alignConfirm(){
     clientId:0,
     merchantId:0,
     number:0,
-    price:choiceStaff.value.price,
+    price:choiceOrder.value.price,
     status:'处理中',
   }
   await updateOrderApi(orderBodyUpdate).then(res=>{
@@ -290,6 +290,10 @@ const columns = [
   {
     title: '创建时间',
     dataIndex: 'createTime',
+  },
+  {
+    title: '金额',
+    dataIndex: 'price',
   },
   {
     title: '状态',

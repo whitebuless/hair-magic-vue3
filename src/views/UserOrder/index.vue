@@ -148,10 +148,6 @@ const columns = [
     dataIndex: 'number',
   },
   {
-    title: '号码',
-    dataIndex: 'number',
-  },
-  {
     title: '价格',
     dataIndex: 'price',
   },

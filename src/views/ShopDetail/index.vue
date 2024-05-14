@@ -2,7 +2,9 @@
   <div class="detailBox">
     <div class="info" v-if="merchant!=null">
       <div class="infoBox">
-        <span class="name"><b>{{ merchant.name }}</b></span>
+        <span class="name"><b>{{ merchant.name }} 
+          <span class="iconfont icon-huiyuan" v-if="imVip" style="color: rgb(156,0,0);font-size: 20px;"></span> 
+        </b></span>
         <p>
           <a-rate v-model:value="merchant.rank" style="font-size: 10px;" disabled/>
         </p>
@@ -114,6 +116,7 @@
         <label for="">电话:</label>
         <input type="text" class="inp" v-model="orderFormData.phoneNumber">
         <a-select
+          v-if="!imVip"
           v-model:value="choiceBusiness"
           style="width: 100%;margin-bottom: 10px;"
           placeholder="Tags Mode"
@@ -121,6 +124,15 @@
         <a-select-option :value="item.price" 
           v-for="item in businessList"
           >{{ item.name }} ￥ {{ item.price }}</a-select-option>
+        </a-select>
+        <a-select v-else
+          v-model:value="choiceBusiness"
+          style="width: 100%;margin-bottom: 10px;"
+          placeholder="Tags Mode"
+        >
+        <a-select-option :value="item.vipPrice" 
+          v-for="item in businessList"
+          >{{ item.name }} ￥ {{ item.vipPrice }}</a-select-option>
         </a-select>
         <p style="font-size: 12px;">
           <span style="color: red;">*</span>
@@ -164,6 +176,10 @@ watchEffect(() => {
     }
   }
 });
+
+// 判断是否为vip
+const imVip=ref(false)
+
 const columns = [
   {
     title: '项目名',
@@ -245,6 +261,14 @@ onMounted(async()=>{
   }
   await getMerchantByAllApi(data).then(res=>{
     merchant.value=res.data.data[0]
+    if(merchant.value.vips){
+      console.log(merchant.value.vips);
+      if(merchant.value.vips.trim().split(' ').indexOf(userStore.userInfo.id.toString())!=-1){
+        imVip.value=true
+      }
+    }
+    console.log(imVip.value);
+
   })
   await staffInMerchantApi(merchant.value.id).then(res=>{
     staffList.value=res.data.data

@@ -12,6 +12,7 @@ export const useUserStore = defineStore('user', {
       userInfo:{},
       following:[],
       follower:[],
+      likes:[],
     }
   },
   // 也可以这样定义
@@ -21,16 +22,17 @@ export const useUserStore = defineStore('user', {
       userLoginApi(email, password)
         .then(response => {
           // 处理成功情况
-          if (response.data.code === '200') {
+          if (response.data.state) {
+            localStorage.setItem("token",response.data.token)
             // 使用箭头函数来确保正确的上下文
-            this.userInfo = response.data.data;
-            if (response.data.data.identity === '用户') {
+            this.userInfo = response.data.user;
+            if (response.data.user.identity === '用户') {
               router.push('/home');
             } else {
               router.push('/merchant');
             }
           }
-          else if(response.data.code === '500'){
+          else{
             message.error(response.data.msg)
           }
         })

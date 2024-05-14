@@ -22,7 +22,7 @@
 import { message } from 'ant-design-vue';
 import {onMounted, ref,watch} from 'vue'
 import { findUserById } from '../../../../apis/userApi';
-import { addVipApi,getVipApi } from '../../../../apis/merchantApi';
+import { addVipApi,getVipApi,getMerchantByAllApi } from '../../../../apis/merchantApi';
 
 import { useMerchantStore } from '../../../../stores/merchant';
 const merchantStore= useMerchantStore()
@@ -72,16 +72,30 @@ onMounted(()=>{
 const searchUser=ref({})
 
 // 确认新增
-function handleAdd(){
+async function handleAdd(){
   if(!searchUser.value){
     message.error("未找到该用户")
   }
-  addVipApi(searchId.value,merchantStore.merchantInfo.id).then(res=>{
+  await addVipApi(searchId.value,merchantStore.merchantInfo.id).then(res=>{
     if(res.data.code=='200'){
       message.success("添加成功")
     }
     if(res.data.code=='500'){
       message.error(res.data.msg)
+    }
+  })
+  const data={
+    id:merchantStore.merchantInfo.id
+  }
+  await getMerchantByAllApi(data).then(res=>{
+    merchantStore.merchantInfo=res.data.data[0]
+  })
+  await getVipApi(merchantStore.merchantInfo.vips).then(res=>{
+    if(res.data.code=='500'){
+      message.error(res.data.msg)
+    }
+    else if(res.data.code=='200'){
+      vipList.value=res.data.data
     }
   })
   open.value=false

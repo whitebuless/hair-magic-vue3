@@ -23,7 +23,6 @@
     </div>
     <!-- 浮动细节窗口 -->
     <FloatDetail v-show="!detail" 
-      :shareBody="shareBody" 
       @follow-click="handleFollowClick" 
       @unfollow-click="handleUnFollowClick" 
       @cover-click="toggleDetail" />
@@ -87,19 +86,19 @@ async function getShares(id, page, pageSize) {
 async function handleCardClick(item) {
   // 存入Store
   shareStore.shareInfo=item
+  if(userStore.likes.indexOf(item.id)!=-1){
+    console.log(userStore.likes.indexOf(item.id));
+    shareStore.shareInfo.isLiking=true
+  }else{
+    console.log(userStore.likes.indexOf(item.id));
+    shareStore.shareInfo.isLiking=false
+  }
   //浏览行为记录
   lookApi(userStore.userInfo.id,item.id).then(res=>{
   })
   // 显示细节
   toggleDetail()
-  shareBody.userId=item.userId
-  shareBody.imgs=item.imgs
-  shareBody.title=item.title
-  shareBody.hairType=item.hairType
-  shareBody.description=item.description
-  shareBody.location=item.location
-  shareBody.createTime=item.createTime
-  shareBody.userName=item.userName
+
   imgArray.value=item.imgs.split(' ')
   if(imgArray.value.length>1){
     imgArray.value.pop()
@@ -140,17 +139,6 @@ const detail=ref(true)
 // 绑定评论信息
 const commentEdit=ref('')
 
-
-
-const shareBody=reactive({
-  imgs:'',
-  title:'',
-  hairType:'',
-  description:'',
-  location:'',
-  createTime:'',
-  userName:'',
-})
 
 // 走马灯图片列表
 const imgArray=ref([])

@@ -11,7 +11,7 @@
       </div>
       <div class="infos">
         <span style="float: left;">{{ shareBody.userName }}</span>
-        <!-- <span class="iconfont icon-dianzan">{{ shareBody.likes }}</span> -->
+        <span class="iconfont icon-dianzan">&nbsp;{{ shareBody.likes }}</span>
       </div>
     </div>
   </div>
@@ -81,11 +81,6 @@ defineProps({
         font-size: 1rem;
         color: rgb(153, 153, 153);
 
-        &:hover {
-          &::before {
-            color: rgb(112, 0, 0);
-          }
-        }
       }
     }
   }

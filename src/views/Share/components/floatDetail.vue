@@ -4,7 +4,6 @@
     >
       <div class="leftBox">
         <div class="imgShow">
-          <!-- <img :src="shareBody.imgs?.split(' ')[0]" alt=""> -->
           <a-carousel style="width: 100%;" arrows>
             <template #prevArrow>
               <div class="custom-slick-arrow" style="left: 10px; z-index: 1">
@@ -16,7 +15,7 @@
                 <span class="iconfont icon-bg-right" ></span>
               </div>
             </template>
-              <img :src="item" alt="" style="height: 100%;" v-for="item in shareBody.imgs.slice(0,shareBody.imgs.length-1).split(' ')">
+              <img :src="item" alt="" style="height: 100%;" v-for="item in shareStore.shareInfo.imgs?.slice(0,shareStore.shareInfo.imgs?.length-1).split(' ')">
           </a-carousel>
         </div>
 
@@ -26,27 +25,26 @@
           <div class="head">
             <a-avatar :size="50" src="https://th.bing.com/th/id/R.0f7e0f8f147bb9dfafc5e4c3bece59f2?rik=auXMf%2b3yZ3xMLQ&riu=http%3a%2f%2fimg.qqtouxiangzq.com%2f6%2f1182%2f32.jpg&ehk=kLA%2fNQgc8j3Poiz5Hva1NiVpJlwbSQosepCOeN5wde4%3d&risl=&pid=ImgRaw&r=0">
             </a-avatar>
-            <span class="userName" @click="router.push(`/home/user/${shareBody.userId}`)">{{ shareBody.userName }}</span>
+            <span class="userName" @click="router.push(`/home/user/${shareStore.shareInfo.userId}`)">{{ shareStore.shareInfo.userName }}</span>
             <div style="display: inline-block;" v-show="userStore.userInfo.id!=shareStore.shareInfo.userId  ">
               <a-button type="primary" 
                 style="margin-left: 10px;"
-                v-show="!userStore.following.includes(shareBody.userId)"
+                v-show="!userStore.following.includes(shareStore.shareInfo.userId)"
                 @click="handleFollowClick">+关注</a-button>
               <a-button type="primary" 
                 style="margin-left: 10px;background-color: white; color: rgb(100,0,0);"
-                v-show="userStore.following.includes(shareBody.userId)"
+                v-show="userStore.following.includes(shareStore.shareInfo.userId)"
                 @click="handleUnFollowClick">取消关注</a-button>
             </div>
           </div>
           <div class="body">
-            <span class="title"><strong>{{ shareBody.title }}</strong></span>
-            <span class="hairType">{{ shareBody.hairType }}</span>
-            <p class="description">{{ shareBody.description }}</p>
+            <span class="title"><strong>{{ shareStore.shareInfo.title }}</strong></span>
+            <span class="hairType">{{ shareStore.shareInfo.hairType }}</span>
+            <p class="description">{{ shareStore.shareInfo.description }}</p>
           </div>
           <div class="foot">
-            <span class="iconfont icon-weizhi">{{ shareBody.location }}</span>
-            <span class="createTime">{{ shareBody.createTime.split("T")[0]+" "+shareBody.createTime.split("T")[1]?.slice(0,8) }}</span>
-
+            <span class="iconfont icon-weizhi">{{ shareStore.shareInfo.location }}</span>
+            <span class="createTime">{{ shareStore.shareInfo.createTime?.split("T")[0]+" "+shareStore.shareInfo.createTime?.split("T")[1]?.slice(0,8) }}</span>
           </div>
         </div>
         <div class="comments">
@@ -102,8 +100,14 @@
         </div>
         <a-textarea v-model:value="commentEdit" 
         placeholder="说点什么吧~"
-        style="margin-bottom: 5px;max-height: 100px;"/>
+        style="margin-bottom: 5px;max-height: 90px;"/>
         <a-button type="primary" @click="subCommentClick">发表</a-button>
+        <div class="actions" >
+          <span class="iconfont icon-liked unlike" v-if="!shareStore.shareInfo.isLiking" @click="likeBtn"
+          >&nbsp;{{ shareStore.shareInfo.likes }}</span>
+          <span class="iconfont icon-liked like" v-else @click="unlikeBtn"
+          >&nbsp;{{ shareStore.shareInfo.likes }}</span>
+        </div>
       </div>
     </div>
 </template>
@@ -117,6 +121,7 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import router from "../../../router";
 import { message } from "ant-design-vue";
+import { likeApi,unlikeApi,getLikeApi } from "../../../apis/likeApi";
 import "@/assets/css/color.scss"
 const shareStore=useShareStore()
 const userStore=useUserStore()
@@ -124,10 +129,9 @@ const userStore=useUserStore()
 /**
  * 父向子参数
  */
-defineProps({
-  shareBody: Object,
-
-})
+// defineProps({
+//   shareBody: Object,
+// })
 // 评论编辑框
 const commentEdit=ref('')
 // emit事件绑定
@@ -137,6 +141,29 @@ function handleFollowClick(){
 }
 function handleUnFollowClick(){
  emit("unfollow-click")
+}
+
+// 点击点赞按钮
+async function likeBtn(){
+  await likeApi(userStore.userInfo.id,shareStore.shareInfo.id).then(res=>{
+    message.success(res.data)
+  })
+  shareStore.shareInfo.isLiking=true
+  shareStore.shareInfo.likes++
+  await getLikeApi(userStore.userInfo.id).then(res=>{
+    userStore.likes=res.data.data
+  })
+}
+// 点击取消点赞按钮
+async function unlikeBtn(){
+  await unlikeApi(userStore.userInfo.id,shareStore.shareInfo.id).then(res=>{
+    message.success(res.data)
+  })
+  shareStore.shareInfo.isLiking=false
+  shareStore.shareInfo.likes--
+  await getLikeApi(userStore.userInfo.id).then(res=>{
+    userStore.likes=res.data.data
+  })
 }
 
 // 提交评论
@@ -307,7 +334,28 @@ const commentList=ref([])
       .comments:hover::-webkit-scrollbar-thumb {
         background-color: #555;
       }
-    } 
+      .actions{
+        bottom: 2rem;position: absolute;
+        .unlike{
+          font-size: 18px;
+          font-weight: 200;
+          color: #666666;
+          cursor: pointer;
+          &::before{
+            font-size: 30px;
+          }
+        }
+        .like{
+          cursor: pointer;
+          font-size: 18px;
+          font-weight: 200;
+          color: rgb(100,0,0);
+          &::before{
+            font-size: 30px;
+          }
+        }
+    }
+  } 
 
-  }
+}
 </style>

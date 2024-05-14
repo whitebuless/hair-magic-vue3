@@ -31,6 +31,7 @@ import router from '../../router';
 import { onMounted, ref,inject } from 'vue';
 import { useUserStore } from "../../stores/user";
 import { getFollowingApi,getFollowerApi } from '../../apis/followApi';
+import { getLikeApi } from '../../apis/likeApi';
 const userStore=useUserStore()
 onMounted(async ()=>{
   if(userStore.userInfo.identity!="用户"){
@@ -44,6 +45,9 @@ onMounted(async ()=>{
   })
   await getFollowerApi(userStore.userInfo.id).then(res=>{
     userStore.follower=res.data.followers
+  })
+  await getLikeApi(userStore.userInfo.id).then(res=>{
+    userStore.likes=res.data.data
   })
 })
 

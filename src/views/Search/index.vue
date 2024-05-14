@@ -1,12 +1,12 @@
 <template>
   <div class="searchContaner">
-    <div class="tabs">
+    <!-- <div class="tabs">
       <span :style="{ color: activeTab === '动态' ? 'rgb(100,0,0)' : '#999999' }" @click="activateTab1('动态')">动态</span>
       <a-divider type="vertical" />
       <span :style="{ color: activeTab === '店铺' ? 'rgb(100,0,0)' : '#999999' }" @click="activateTab2('店铺')">店铺</span>
       <a-divider type="vertical" />
       <span :style="{ color: activeTab === '关注' ? 'rgb(100,0,0)' : '#999999' }" @click="activateTab3( '关注')">关注</span>
-    </div>
+    </div> -->
     <div v-if="activeTab=='动态'" class="tab">
       <div class="shareContainer" v-masonry >
         <ShareCardModelVue v-for="(item,i) in shareList" :key="item.id" class="share" v-masonry-tile
@@ -15,12 +15,12 @@
         ></ShareCardModelVue>
       </div>
     </div>
-    <div v-if="activeTab=='店铺'" class="tab">
+    <!-- <div v-if="activeTab=='店铺'" class="tab">
       这是店铺页面
     </div>
     <div v-if="activeTab=='关注'" class="tab">
       关注页面
-    </div>
+    </div> -->
 
   </div>
 </template>

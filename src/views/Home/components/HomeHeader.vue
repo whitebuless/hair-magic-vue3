@@ -25,7 +25,7 @@
     <!-- 搜索框区域 -->
     <div class="searchBox">
       <input type="text"  
-      placeholder="输入搜索内容/发型/店铺"
+      placeholder="输入搜索内容"
       v-model="searchText"
       @keyup.enter="search"
       >

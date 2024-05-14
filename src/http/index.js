@@ -1,3 +1,4 @@
+import { message } from 'ant-design-vue';
 import axios from 'axios';
 
 const axiosInstance=axios.create({
@@ -9,6 +10,12 @@ const axiosInstance=axios.create({
 // 添加请求拦截器
 axiosInstance.interceptors.request.use(function (config) {
   // 在发送请求之前做些什么
+  // 从本地存储中获取 token
+  const token = localStorage.getItem('token');
+  // 如果 token 存在，则将其附加到请求头中
+  if (token) {
+    config.headers.token = `${token}`;
+  }
   return config;
 }, function (error) {
   // 对请求错误做些什么
@@ -19,6 +26,9 @@ axiosInstance.interceptors.request.use(function (config) {
 axiosInstance.interceptors.response.use(function (response) {
   // 2xx 范围内的状态码都会触发该函数。
   // 对响应数据做点什么
+  if(response.data.state=='false'){
+    message.error(response.data.msg)
+  }
   return response;
 }, function (error) {
   // 超出 2xx 范围的状态码都会触发该函数。

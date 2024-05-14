@@ -209,6 +209,7 @@ onMounted(async ()=>{
   await getShareByUserId(id).then(async res=>{
     shareList.value=res.data.data
   })
+  // 
 })
 
 
